@@ -1,0 +1,1310 @@
+@import url('https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i|Rubik:300,300i,400,400i,500,500i,700,700i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=BenchNine:300,400,700');
+
+/* =========================================================
+        1. CSS CUSTOM PROPERTIES & DYNAMIC COLOR THEME SYSTEM
+    ========================================================= */
+:root {
+    --primary-color: #dc3545;
+    --primary-rgb: 13, 77, 46;
+    --accent-color: #ae2d1b;
+    --accent-rgb: 174, 45, 27;
+    --accent-hover: #8b2215;
+    --light-bg: #f8faf9;
+    --card-bg: #ffffff;
+    --text-main: #212529;
+    --text-muted: #6c757d;
+    --border-color: #e9ecef;
+    --nav-bg: rgba(255, 255, 255, 0.95);
+    --topbar-bg: var(--primary-color);
+    --hero-overlay: rgba(0, 0, 0, 0.55);
+    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.3s;
+}
+
+/* Dark Theme Variables */
+[data-bs-theme="dark"],
+[data-theme="dark"] {
+    --light-bg: #121815;
+    --card-bg: #1e2521;
+    --text-main: #f1f3f2;
+    --text-muted: #a0aec0;
+    --border-color: #2d3732;
+    --nav-bg: rgba(25, 33, 29, 0.95);
+    --topbar-bg: #092e1b;
+    --hero-overlay: rgba(0, 0, 0, 0.75);
+    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Base Styles & Global Zero Border-Radius Override */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-main);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    overflow-x: hidden;
+}
+
+/* Remove border-radius on cards, buttons, badges, inputs, dropdowns, icons & elements */
+*,
+*::before,
+*::after,
+.card,
+.service-card,
+.stat-card,
+.venue-flip-card,
+.venue-flip-front,
+.venue-flip-back,
+.btn,
+.btn-theme-primary,
+.btn-theme-accent,
+.btn-outline-theme,
+.btn-outline-light,
+.badge,
+.badge-theme,
+.logo-badge,
+.nav-icon-badge,
+.dropdown-menu,
+.form-control,
+.form-select,
+.quote-form-card,
+.about-img-box,
+.about-experience-badge,
+.about-gallery-swiper,
+.about-gallery-swiper .swiper-slide img,
+.gallery-item-box,
+.why-center-img,
+.why-rotate-ring,
+.why-rotate-ring-inner,
+.why-icon,
+.stat-icon-wrapper,
+.theme-customizer-widget,
+.color-palette-panel,
+.color-swatch,
+.custom-toast,
+.offcanvas,
+.accordion-button,
+.slider-control-btn,
+.venue-flip-back-icon,
+.venue-book-btn,
+.gallery-zoom-icon,
+.ceo-section-wrapper,
+.ceo-img-container,
+.rounded-pill,
+.rounded-3,
+.rounded-4,
+.rounded-circle,
+.rounded-2,
+.rounded {
+    border-radius: 0 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.font-heading {
+    font-family: 'Outfit', sans-serif;
+}
+
+.font-phudu {
+    font-family: 'Phudu', sans-serif;
+}
+
+.font-rajdhani {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* Dynamic Colors */
+.text-theme-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-theme-accent {
+    color: var(--accent-color) !important;
+}
+
+.bg-theme-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-theme-accent {
+    background-color: var(--accent-color) !important;
+}
+
+/* Buttons */
+.btn-theme-primary {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    padding: 12px 28px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all var(--transition-speed);
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+}
+
+.btn-theme-primary:hover {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(var(--accent-rgb), 0.4);
+}
+
+.btn-theme-accent {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    padding: 12px 28px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all var(--transition-speed);
+    box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+}
+
+.btn-theme-accent:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.4);
+}
+
+.btn-outline-theme {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 10px;
+    transition: all var(--transition-speed);
+}
+
+.btn-outline-theme:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Badges */
+.badge-theme {
+    background-color: rgba(var(--primary-rgb), 0.12);
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 6px 18px;
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+           2. TOP HEADER & NAVBAR WITH ENHANCED SUB MENU ICON DESIGN
+        ========================================================= */
+.top-header {
+    background-color: var(--topbar-bg);
+    color: #ffffff;
+    font-size: 0.88rem;
+    padding: 8px 0;
+    transition: background-color var(--transition-speed);
+}
+
+.top-header a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.top-header a:hover {
+    opacity: 0.8;
+}
+
+.main-navbar {
+    background-color: var(--nav-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+    transition: all var(--transition-speed);
+}
+
+.navbar-brand .logo-badge {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-family: 'Phudu', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-nav .nav-link {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 1.02rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-main);
+    padding: 14px 16px !important;
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--accent-color) !important;
+}
+
+/* Enhanced Sub-Menu & Sub-Sub-Menu Icon Design */
+.dropdown-menu {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    border-radius: 12px;
+    padding: 10px 0;
+    margin-top: 5px;
+    min-width: 260px;
+}
+
+.dropdown-item {
+    color: var(--text-main);
+    font-size: 0.93rem;
+    font-weight: 500;
+    padding: 10px 18px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(var(--primary-rgb), 0.08);
+    color: var(--accent-color);
+    padding-left: 22px;
+}
+.nav-link:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+/* Desktop Dropdown Hover */
+@media (min-width: 992px) {
+    .navbar .dropdown-menu .dropend {
+        position: relative;
+    }
+    .navbar .dropdown-menu .dropend > .dropdown-item.dropdown-toggle {
+        width: 100%;
+        background: transparent;
+        border: 0;
+        cursor: default;
+    }
+    .navbar .dropdown-menu .dropend .dropdown-menu {
+        top: 0;
+        left: calc(100% - 1px);
+        margin-left: 0;
+        margin-top: 0;
+        display: none;
+        animation: fadeInUp 0.25s ease;
+        z-index: 1050;
+    }
+    .navbar .dropdown-menu .dropend:hover > .dropdown-menu { display: block; }
+    .navbar .nav-item.dropdown:hover > .dropdown-menu { display: block; }
+}
+
+/* Offcanvas Mobile Navbar & Toggle Icon Fix */
+.navbar-toggler {
+    padding: 8px 14px;
+    border: 1px solid var(--border-color) !important;
+    background-color: var(--card-bg);
+    color: var(--primary-color) !important;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.navbar-toggler i {
+    color: var(--primary-color);
+    transition: color 0.25s ease;
+    font-size: 1.25rem;
+}
+
+.navbar-toggler:hover,
+.navbar-toggler:focus,
+.navbar-toggler[aria-expanded="true"] {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.navbar-toggler:hover i,
+.navbar-toggler:focus i,
+.navbar-toggler[aria-expanded="true"] i {
+    color: #ffffff !important;
+}
+
+.offcanvas-body .mobile-nav-link {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-main);
+    padding: 12px 0;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.offcanvas-body .accordion-button {
+    background: transparent;
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    box-shadow: none !important;
+}
+
+.offcanvas-body .sub-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.offcanvas-body .sub-item:hover {
+    color: var(--accent-color);
+    background-color: rgba(var(--primary-rgb), 0.08);
+}
+
+/* =========================================================
+           3. HERO SLIDER WITH KEN BURNS IMAGE ZOOM EFFECT
+        ========================================================= */
+.hero-carousel .carousel-item {
+    height: 660px;
+    min-height: 520px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 7s ease-out;
+}
+
+/* Slow Zoom In Animation on Active Slide */
+.hero-carousel .carousel-item.active .hero-slide-bg {
+    animation: kenBurnsZoom 7s ease-out forwards;
+}
+
+@keyframes kenBurnsZoom {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.18);
+    }
+}
+
+.hero-carousel .carousel-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.45) 50%, rgba(0, 0, 0, 0.85) 100%);
+    z-index: 1;
+}
+
+.hero-carousel .carousel-caption {
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.hero-carousel h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 992px) {
+    .hero-carousel h1 {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-carousel .carousel-item {
+        height: 520px;
+    }
+
+    .hero-carousel h1 {
+        font-size: 1.9rem;
+    }
+
+    .hero-carousel p.fs-5 {
+        font-size: 1rem !important;
+    }
+
+    .hero-carousel .carousel-caption .d-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-carousel .carousel-caption {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-carousel .carousel-item {
+        height: 580px;
+    }
+
+    .hero-carousel h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Carousel Navigation Buttons */
+.hero-carousel .carousel-control-prev,
+.hero-carousel .carousel-control-next {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 12px;
+    opacity: 0.85;
+    transition: all 0.3s;
+}
+
+.hero-carousel .carousel-control-prev:hover,
+.hero-carousel .carousel-control-next:hover {
+    background-color: var(--accent-color);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* =========================================================
+           4. OUR SERVICES SLIDER (SWIPER PLUGIN INTEGRATION)
+        ========================================================= */
+.swiper-services {
+    padding: 20px 5px 60px;
+}
+
+.service-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-speed);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-color);
+}
+
+.service-img-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.service-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-img-wrapper img {
+    transform: scale(1.08);
+}
+
+.service-card .card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Swiper Controls Custom Styling */
+.slider-control-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.slider-control-btn:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
+.swiper-pagination-bullet-active {
+    background-color: var(--accent-color) !important;
+    width: 24px !important;
+    border-radius: 10px !important;
+}
+
+/* =========================================================
+           5. TRUSTED CHOICE (WHY US) - ROTATING CENTERED IMAGE
+        ========================================================= */
+.why-center-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.why-center-img {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid var(--card-bg);
+    box-shadow: var(--shadow-lg);
+    animation: floatY 4.5s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+}
+
+/* Rotating Outer Dashed Circle */
+.why-rotate-ring {
+    position: absolute;
+    inset: -20px;
+    border: 2px dashed var(--accent-color);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: spinCircle 18s linear infinite;
+    z-index: 1;
+}
+
+.why-rotate-ring-inner {
+    position: absolute;
+    inset: -35px;
+    border: 2px dotted var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: spinReverse 25s linear infinite;
+    z-index: 0;
+}
+
+@keyframes spinCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinReverse {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+.why-item-box {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.why-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+           5b. STAT CARD & ABOUT SECTION STYLES
+        ========================================================= */
+.stat-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 22px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.stat-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--accent-rgb), 0.15));
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.stat-card h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+    color: var(--text-main);
+}
+
+.stat-card p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+@media (max-width: 576px) {
+    .stat-card {
+        padding: 16px 14px;
+    }
+
+    .stat-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .stat-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+    }
+}
+
+/* About Image Box */
+.about-img-box {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.about-img-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    transition: transform 0.6s ease;
+}
+
+.about-img-box:hover img {
+    transform: scale(1.04);
+}
+
+.about-experience-badge {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: #ffffff;
+    padding: 16px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.about-experience-badge h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1;
+}
+
+.about-experience-badge span {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* About Gallery Swiper */
+.about-gallery-swiper {
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 28px;
+    position: relative;
+}
+
+.about-gallery-swiper .swiper-slide img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 14px;
+    transition: transform 0.5s ease;
+}
+
+.about-gallery-swiper .swiper-slide:hover img {
+    transform: scale(1.06);
+}
+
+.about-gallery-swiper .swiper-pagination-bullet-active {
+    background-color: var(--accent-color) !important;
+}
+
+/* =========================================================
+           6. OUR PRESENCE — 3D Y-AXIS FLIP CARD
+        ========================================================= */
+.swiper-venues {
+    padding: 20px 5px 70px;
+}
+
+/* Flip Card Wrapper */
+.venue-flip-card {
+    perspective: 1200px;
+    height: 360px;
+    cursor: pointer;
+}
+
+.venue-flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.venue-flip-card:hover .venue-flip-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front Face */
+.venue-flip-front,
+.venue-flip-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.venue-flip-front {
+    background-color: var(--card-bg);
+}
+
+.venue-flip-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.venue-flip-front-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(13, 61, 38, 0.92) 100%);
+    padding: 24px 20px 20px;
+    color: #ffffff;
+}
+
+/* Back Face */
+.venue-flip-back {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0a3820 100%);
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+    color: #ffffff;
+    box-shadow: var(--shadow-lg);
+}
+
+.venue-flip-back-icon {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    margin: 0 auto 18px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.venue-flip-back h4 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.venue-flip-back p {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.venue-flip-back .venue-book-btn {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #ffffff;
+    font-size: 0.88rem;
+    padding: 9px 22px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.venue-flip-back .venue-book-btn:hover {
+    background: #ffffff;
+    color: var(--primary-color);
+}
+
+@media (max-width: 576px) {
+    .venue-flip-card {
+        height: 320px;
+    }
+}
+
+/* =========================================================
+           7. GALLERY PLUGIN (GLIGHTBOX) & FILTER TABS
+        ========================================================= */
+.gallery-filter-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 22px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 4px;
+    transition: all 0.25s ease;
+}
+
+.gallery-filter-btn:hover,
+.gallery-filter-btn.active {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+.gallery-item-box {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    height: 270px;
+}
+
+.gallery-item-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.gallery-item-box:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-item-box:hover .gallery-item-overlay {
+    opacity: 1;
+}
+
+.gallery-zoom-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item-box:hover .gallery-zoom-icon {
+    transform: scale(1);
+}
+
+/* =========================================================
+           8. CEO MESSAGE SECTION
+        ========================================================= */
+.ceo-section-wrapper {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #062b19 100%);
+    color: #ffffff;
+    border-radius: 24px;
+    padding: 50px 40px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.ceo-quote-mark {
+    font-size: 8rem;
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    opacity: 0.12;
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.ceo-img-container {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border: 4px solid rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================================
+           9. RESERVATION FORM & FOOTER
+        ========================================================= */
+.quote-form-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--shadow-md);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 10px;
+    padding: 12px 16px;
+    transition: all 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--card-bg);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15);
+    color: var(--text-main);
+}
+
+footer {
+    background-color: #071f13;
+    color: #d1dcd5;
+    padding-top: 70px;
+    padding-bottom: 30px;
+    font-size: 0.92rem;
+}
+
+footer h5 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 22px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer ul li {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+footer ul li i {
+    color: var(--accent-color);
+    margin-top: 4px;
+}
+
+footer a {
+    color: #d1dcd5;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: #ffffff;
+}
+
+/* =========================================================
+           10. RESPONSIVE FIXES (MOBILE)
+        ========================================================= */
+@media (max-width: 991px) {
+
+    /* Top header stacks nicely */
+    .top-header .top-contacts {
+        display: none;
+    }
+
+    /* Offcanvas background */
+    .offcanvas {
+        background-color: var(--card-bg);
+    }
+
+    .offcanvas-header {
+        background-color: var(--card-bg);
+    }
+
+    /* Why-Us responsive center */
+    .why-center-img {
+        width: 240px;
+        height: 240px;
+    }
+
+    /* CEO section */
+    .ceo-section-wrapper {
+        padding: 32px 22px;
+    }
+
+    /* Quote form */
+    .quote-form-card {
+        padding: 24px 18px;
+    }
+}
+
+@media (max-width: 767px) {
+
+    /* Section headings */
+    h2.display-5 {
+        font-size: 1.8rem !important;
+    }
+
+    h2.display-6 {
+        font-size: 1.6rem !important;
+    }
+
+    /* Stats */
+    .stat-card {
+        flex-direction: row;
+    }
+
+    /* Gallery grid */
+    .gallery-item-box {
+        height: 200px;
+    }
+
+    /* About gallery */
+    .about-gallery-swiper .swiper-slide img {
+        height: 160px;
+    }
+
+    /* Buttons */
+    .btn-lg {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+
+    /* Why section center image */
+    .why-center-wrapper {
+        margin: 0 auto;
+    }
+
+    .why-center-img {
+        width: 220px;
+        height: 220px;
+    }
+
+    /* Services swiper */
+    .swiper-services {
+        padding-bottom: 50px;
+    }
+
+    /* Venues */
+    .swiper-venues {
+        padding-bottom: 50px;
+    }
+
+    /* Venue flip card */
+    .venue-flip-card {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-badge {
+        font-size: 1.2rem !important;
+        padding: 4px 10px !important;
+    }
+
+    .stat-card h3 {
+        font-size: 1.35rem;
+    }
+}
+
+/* =========================================================
+           11. DYNAMIC COLOR PALETTE & THEME SWITCHER FLOATER
+        ========================================================= */
+.theme-customizer-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1090;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.customizer-toggle-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.customizer-toggle-btn:hover {
+    transform: scale(1.1) rotate(30deg);
+}
+
+.color-palette-panel {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    animation: fadeInUp 0.3s ease;
+    width: 220px;
+}
+
+.color-palette-panel.show {
+    display: block;
+}
+
+.color-swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.color-swatch:hover {
+    transform: scale(1.2);
+}
+
+.custom-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1095;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 14px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    display: none;
+    animation: fadeInLeft 0.4s ease;
+}
