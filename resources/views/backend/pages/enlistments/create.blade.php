@@ -1,4 +1,4 @@
-<x-backend-layout title="Add New Project">
+<x-backend-layout title="Add New Enlistment">
     @push('css')
         <link rel="stylesheet" href="{{asset('backend/libs/summernote/summernote-lite.min.css')}}" />
         <style>
@@ -116,19 +116,19 @@
     @endpush
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-        <h1 class="page-title fw-semibold fs-18 mb-0">Add New Project</h1>
+        <h1 class="page-title fw-semibold fs-18 mb-0">Add New Enlistment</h1>
         <div class="ms-md-1 ms-0">
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('projects.index') }}">Projects</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('enlistments.index') }}">Enlistments</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Add New</li>
                 </ol>
             </nav>
         </div>
     </div>
 
-    <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('enlistments.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -141,7 +141,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="title" class="form-label">Project Title <span class="text-danger">*</span></label>
+                                <label for="title" class="form-label">Enlistment Title <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                                 @error('title')
                                     <div class="text-danger mt-1">{{ $message }}</div>
@@ -169,66 +169,14 @@
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Info -->
-                <div class="card custom-card mt-3">
-                    <div class="card-header">
-                        <div class="card-title">Project Information</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="client_name" class="form-label">Client Name</label>
-                                <input type="text" class="form-control" id="client_name" name="client_name" value="{{ old('client_name') }}">
-                                @error('client_name')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="location" class="form-label">Client Location</label>
-                                <input type="text" class="form-control" id="location" name="location" value="{{ old('location') }}">
+                            <div class="col-md-12 mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <textarea name="location" id="location" class="form-control" rows="2">{!! old('location') !!}</textarea>
                                 @error('location')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="tech_stack" class="form-label">Tech Stack (e.g. PHP, Laravel, MySQL)</label>
-                                <input type="text" class="form-control" id="tech_stack" name="tech_stack" value="{{ old('tech_stack') }}">
-                                @error('tech_stack')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="launch_year" class="form-label">Launch Year</label>
-                                <input type="number" class="form-control" id="launch_year" name="launch_year" value="{{ old('launch_year') }}">
-                                @error('launch_year')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="project_budget" class="form-label">Project Budget</label>
-                                <input type="text" class="form-control" id="project_budget" name="project_budget" value="{{ old('project_budget') }}">
-                                @error('project_budget')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="live_link" class="form-label">Live Link / Demo URL</label>
-                                <input type="text" class="form-control" id="live_link" name="live_link" value="{{ old('live_link') }}">
-                                @error('live_link')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -282,7 +230,7 @@
                     </div>
                     <div class="card-body">
                         <!-- Add Image Card -->
-                        <label for="images" class="form-label">Project Images</label>
+                        <label for="images" class="form-label">Enlistment Images</label>
                         <div class="row g-3 mt-2" id="images-container">
                             <div class="col-md-3 col-sm-4 col-6 m-0" id="add-btn-wrapper">
                                 <label for="images" class="add-image-btn w-100 h-100 position-relative">
@@ -320,8 +268,8 @@
                 <!-- Actions -->
                 <div class="card custom-card mt-3">
                     <div class="card-body">
-                        <button type="submit" class="btn btn-primary w-100">Save Project</button>
-                        <a href="{{ route('projects.index') }}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary w-100">Save Enlistment</button>
+                        <a href="{{ route('enlistments.index') }}" class="btn btn-secondary w-100 mt-2">Cancel</a>
                     </div>
                 </div>
             </div>

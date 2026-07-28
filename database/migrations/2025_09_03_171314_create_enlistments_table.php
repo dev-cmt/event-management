@@ -10,22 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('enlistments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-
-            // Project Info
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-
-            // Client Info
-            $table->string('client_name')->nullable();
-            $table->string('location')->nullable();
-            $table->string('tech_stack')->nullable(); // e.g. 1200.50 sqft
-            $table->year('launch_year')->nullable();
-            $table->decimal('project_budget', 15, 2)->nullable();
-            $table->string('live_link')->nullable();
+            $table->text('location')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
@@ -36,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('enlistments');
     }
 };

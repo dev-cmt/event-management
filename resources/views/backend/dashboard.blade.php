@@ -3,7 +3,7 @@
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
         <div>
             <p class="fw-semibold fs-18 mb-0">Site Analytics Dashboard</p>
-            <span class="fs-semibold text-muted">Real-time tracking of visits, projects, and site activity.</span>
+            <span class="fs-semibold text-muted">Real-time tracking of visits, enlistments, and site activity.</span>
         </div>
         <div class="btn-list mt-md-0 mt-2">
             <button type="button" class="btn btn-primary btn-wave">
@@ -30,8 +30,8 @@
                                             <div class="fw-semibold fs-18 text-fixed-white mb-2">Welcome, {{ Auth::user()->name }}</div>
                                             <span class="d-block fs-12 text-fixed-white">
                                                 <span class="op-7">You have</span>
-                                                <span class="fw-semibold text-warning">{{ $data['total_projects'] }}
-                                                    Projects</span>,
+                                                <span class="fw-semibold text-warning">{{ $data['total_enlistments'] }}
+                                                    Enlistments</span>,
                                                 <span class="fw-semibold text-warning">{{ $data['total_services'] }}
                                                     Services</span>, and
                                                 <span class="fw-semibold text-warning">{{ $data['total_blogs'] }}
@@ -54,7 +54,7 @@
                         <div class="card custom-card">
                             <div class="card-header justify-content-between">
                                 <div class="card-title">
-                                    Latest Projects
+                                    Latest Enlistments
                                 </div>
                                 <div class="dropdown">
                                     <a aria-label="anchor" href="javascript:void(0);"
@@ -63,37 +63,37 @@
                                         <i class="fe fe-more-vertical"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{ route('projects.index') }}">View All</a>
+                                        <li><a class="dropdown-item" href="{{ route('enlistments.index') }}">View All</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <ul class="list-unstyled crm-top-deals mb-0">
-                                    @foreach($data['recent_projects'] as $project)
+                                    @foreach($data['recent_enlistments'] as $enlistment)
                                         <li>
                                             <div class="d-flex align-items-center flex-nowrap gap-2">
                                                 <div class="flex-shrink-0">
                                                     <span
                                                         class="avatar avatar-sm avatar-rounded bg-primary-transparent fw-semibold">
-                                                        {{ substr($project->title, 0, 2) }}
+                                                        {{ substr($enlistment->title, 0, 2) }}
                                                     </span>
                                                 </div>
                                                 <div class="flex-fill" style="min-width: 0;">
                                                     <p class="fw-semibold mb-0 text-truncate d-block fs-14"
-                                                        title="{{ $project->title }}">{{ $project->title }}</p>
-                                                    <span class="text-muted fs-11">{{ $project->category->category_name ?? 'General' }}</span>
+                                                        title="{{ $enlistment->title }}">{{ $enlistment->title }}</p>
+                                                    <span class="text-muted fs-11">{{ $enlistment->category->category_name ?? 'General' }}</span>
                                                 </div>
                                                 <div class="fw-semibold fs-15 flex-shrink-0">
-                                                    <a href="{{ route('projects.edit', $project->id) }}"
+                                                    <a href="{{ route('enlistments.edit', $enlistment->id) }}"
                                                         class="btn btn-sm btn-icon btn-light"><i
                                                             class="ri-edit-line"></i></a>
                                                 </div>
                                             </div>
                                         </li>
                                     @endforeach
-                                    @if($data['recent_projects']->isEmpty())
-                                        <li class="text-center text-muted">No projects found.</li>
+                                    @if($data['recent_enlistments']->isEmpty())
+                                        <li class="text-center text-muted">No enlistments found.</li>
                                     @endif
                                 </ul>
                             </div>
@@ -423,7 +423,7 @@
                             <div class="card custom-card">
                                 <div class="card-header justify-content-between">
                                     <div class="card-title">
-                                        Project Categories
+                                    Enlistment Categories
                                     </div>
                                     <div class="dropdown">
                                         <a href="javascript:void(0);" class="p-2 fs-12 text-muted"
@@ -439,9 +439,9 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-3">
-                                        <h4 class="fw-bold mb-0">{{ $data['total_projects'] }}</h4>
+                                        <h4 class="fw-bold mb-0">{{ $data['total_enlistments'] }}</h4>
                                         <div class="ms-2">
-                                            <span class="badge bg-success-transparent">Total Projects</span>
+                                            <span class="badge bg-success-transparent">Total Enlistments</span>
                                         </div>
                                     </div>
                                     <ul class="list-unstyled mb-0 pt-2 crm-deals-status">
@@ -450,13 +450,13 @@
                                                 class="{{ ['primary', 'info', 'warning', 'success', 'danger', 'secondary'][$loop->index % 6] }}">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <div>{{ $category->category_name }}</div>
-                                                    <div class="fs-12 text-muted">{{ $category->projects_count }} projects
+                                                    <div class="fs-12 text-muted">{{ $category->enlistments_count }} enlistments
                                                     </div>
                                                 </div>
                                             </li>
                                         @endforeach
                                         @if($data['category_distribution']->isEmpty())
-                                            <li class="text-center text-muted">No categorized projects.</li>
+                                            <li class="text-center text-muted">No categorized enlistments.</li>
                                         @endif
                                     </ul>
                                 </div>
@@ -478,7 +478,7 @@
                                             <li><a class="dropdown-item" href="{{ route('blogs.index') }}">Blogs</a>
                                             </li>
                                             <li><a class="dropdown-item"
-                                                    href="{{ route('projects.index') }}">Projects</a></li>
+                                                    href="{{ route('enlistments.index') }}">Projects</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -525,7 +525,7 @@
             /* Target Incomplete Chart */
             var options = {
                 chart: { height: 127, width: 100, type: "radialBar" },
-                series: [{{ round(($data['total_projects'] / max(1, $data['total_projects'] + 5)) * 100) }}],
+                series: [{{ round(($data['total_enlistments'] / max(1, $data['total_enlistments'] + 5)) * 100) }}],
                 colors: ["rgba(255,255,255,0.9)"],
                 plotOptions: {
                     radialBar: {

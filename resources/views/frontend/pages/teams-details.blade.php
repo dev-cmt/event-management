@@ -49,7 +49,7 @@
                     <div class="inner-column wow fadeInRight">
                         <h2>{{ $team->name }}</h2>
                         <span class="designation">{{ $team->designation ?? 'Team Member' }}</span>
-                        
+
                         <div class="text">
                             @if($team->details)
                                 {!! nl2br(e($team->details)) !!}
@@ -63,7 +63,7 @@
                             <ul class="info-list">
                                 <li>
                                     <span class="icon fa fa-building"></span>
-                                    <strong>Company:</strong> Sky Tech Solve
+                                    <strong>Company:</strong> Pro Devs Ltd.
                                 </li>
                                 @if($team->linkedin)
                                 <li>
@@ -73,7 +73,7 @@
                                 @endif
                             </ul>
                         </div>
-                        
+
                         <div class="btn-box">
                             <a href="{{ route('page.contact-us') }}" class="theme-btn btn-style-one">Get In Touch</a>
                             <a href="{{ route('page.teams') }}" class="theme-btn btn-style-two" style="margin-left: 20px;">View All Team</a>

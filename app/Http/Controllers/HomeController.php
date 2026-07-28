@@ -16,10 +16,12 @@ use App\Models\Story;
 use App\Models\Client;
 use App\Models\Service;
 use App\Models\Team;
-use App\Models\Project;
+use App\Models\Enlistment;
 use App\Models\Achievement;
 use App\Models\BlogPost;
 use App\Models\Product;
+use App\Models\Gallery;
+use App\Models\Booking;
 use App\Models\Page;
 use App\Http\Traits\SeoTrait;
 
@@ -41,8 +43,8 @@ class HomeController extends Controller implements HasMiddleware
                 'contact',
                 'services',
                 'servicesDetails',
-                'projects',
-                'projectsDetails',
+                'enlistments',
+                'enlistmentsDetails',
                 'products',
                 'productsDetails',
                 'blogs',
@@ -60,8 +62,9 @@ class HomeController extends Controller implements HasMiddleware
         $services = Service::active()->ordered()->get();
         $teams = Team::where('status', true)->orderBy('order')->get();
         $achievements = Achievement::where('status', 'active')->orderBy('sort_order')->get();
-        $projects = Project::with('media')->latest()->take(8)->get();
+        $enlistments = Enlistment::with('media')->latest()->take(8)->get();
         $blogPosts = BlogPost::with('author')->where('status', 'published')->where('published_date', '<=', now())->orderBy('published_date', 'desc')->take(3)->get();
+        $galleries = Gallery::active()->ordered()->get();
 
         // SEO
         $page = Page::with('seo')->where('slug', 'home')->firstOrFail();
@@ -71,7 +74,7 @@ class HomeController extends Controller implements HasMiddleware
             ['name' => 'Home', 'url' => url('/')],
         ]);
 
-        return view('frontend.index', compact('sliders', 'story', 'services', 'achievements', 'testimonials', 'teams', 'clients', 'projects', 'blogPosts', 'seotags', 'breadcrumbs', 'page'));
+        return view('frontend.index', compact('sliders', 'story', 'services', 'achievements', 'testimonials', 'teams', 'clients', 'enlistments', 'blogPosts', 'galleries', 'seotags', 'breadcrumbs', 'page'));
     }
     /**________________________________________________________________________________________
      * About Menu Pages
@@ -148,6 +151,27 @@ class HomeController extends Controller implements HasMiddleware
 
         return view('frontend.pages.contact-us', compact('clients', 'seotags', 'breadcrumbs', 'page'));
     }
+    /**________________________________________________________________________________________
+     * Gallery Page
+     * ________________________________________________________________________________________
+     */
+    public function gallery()
+    {
+        $galleries = Gallery::active()->ordered()->get();
+
+        $galleryCategories = $galleries->pluck('category')->unique()->filter()->values();
+
+        // SEO
+        $page = Page::with('seo')->where('slug', 'home')->first();
+        $seotags = $this->applySeo($page, 'Photo Gallery');
+
+        $breadcrumbs = $this->generateBreadcrumbJsonLd([
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Gallery', 'url' => url()->current()],
+        ]);
+
+        return view('frontend.pages.gallery', compact('galleries', 'galleryCategories', 'seotags', 'breadcrumbs'));
+    }
     public function contactStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -219,56 +243,40 @@ class HomeController extends Controller implements HasMiddleware
         return view('frontend.pages.services-details', compact('service', 'allServices', 'seotags', 'breadcrumbs'));
     }
     /**________________________________________________________________________________________
-     * Project Menu Pages
+     * Enlistments Menu Pages
      * ________________________________________________________________________________________
      */
-    public function projects()
+    public function enlistments()
     {
-        $projects = Project::with('category')->latest()->paginate(9);
+        $enlistments = Enlistment::with('category')->latest()->paginate(9);
 
         // SEO
-        $page = Page::with('seo')->where('slug', 'projects')->firstOrFail();
+        $page = Page::with('seo')->where('slug', 'enlistments')->firstOrFail();
         $seotags = $this->applySeo($page);
 
         $breadcrumbs = $this->generateBreadcrumbJsonLd([
             ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Projects', 'url' => url()->current()],
+            ['name' => 'Enlistments', 'url' => url()->current()],
         ]);
 
-        return view('frontend.pages.projects', compact('projects', 'seotags', 'breadcrumbs', 'page'));
+        return view('frontend.pages.enlistments', compact('enlistments', 'seotags', 'breadcrumbs', 'page'));
     }
-    public function projectsDetails($slug)
+    public function enlistmentsDetails($slug)
     {
-        $project = Project::with('category')->where('slug', $slug)->firstOrFail();
+        $enlistment = Enlistment::with(['category', 'media'])->where('slug', $slug)->firstOrFail();
 
         // SEO
-        $seotags = $this->applySeo($project, $project->title);
+        $seotags = $this->applySeo($enlistment, $enlistment->title);
         // $json_ld = $this->generateProductJsonLd($data);
 
         $breadcrumbs = $this->generateBreadcrumbJsonLd([
             ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Project Details', 'url' => url()->current()],
+            ['name' => 'Enlistment Details', 'url' => url()->current()],
         ]);
 
-        return view('frontend.pages.projects-details', compact('project', 'seotags', 'breadcrumbs'));
+        return view('frontend.pages.enlistments-details', compact('enlistment', 'seotags', 'breadcrumbs'));
     }
-    /**________________________________________________________________________________________
-     * Project Menu Pages
-     * ________________________________________________________________________________________
-     */
-    public function projectsVideo()
-    {
-        // SEO
-        $page = Page::with('seo')->where('slug', 'projects-video')->firstOrFail();
-        $seotags = $this->applySeo($page);
 
-        $breadcrumbs = $this->generateBreadcrumbJsonLd([
-            ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Projects', 'url' => url()->current()],
-        ]);
-
-        return view('frontend.pages.projects-video', compact('seotags', 'breadcrumbs', 'page'));
-    }
     /**________________________________________________________________________________________
      * Blog Menu Pages
      * ________________________________________________________________________________________
@@ -415,7 +423,7 @@ class HomeController extends Controller implements HasMiddleware
         return back()->with('success', 'Comment submitted successfully!');
     }
     /**
-     * AJAX search for Services, Projects, and Blogs
+     * AJAX search for Services, Enlistments, and Blogs
      */
     public function blogsAjaxSearch(Request $request)
     {
@@ -441,18 +449,18 @@ class HomeController extends Controller implements HasMiddleware
             ];
         }
 
-        // Projects
-        $projects = Project::active()
+        // Enlistments
+        $enlistments = Enlistment::active()
             ->where('title', 'LIKE', "%{$query}%")
             ->take(5)
             ->get(['title', 'slug']);
-        foreach ($projects as $project) {
-            $mainImg = $project->media->where('is_main', 1)->first();
+        foreach ($enlistments as $enlistment) {
+            $mainImg = $enlistment->media->where('is_main', 1)->first();
             $results[] = [
-                'title' => $project->title,
-                'link' => route('page.projects-details', $project->slug),
+                'title' => $enlistment->title,
+                'link' => route('page.enlistments-details', $enlistment->slug),
                 'image' => $mainImg ? asset($mainImg->path) : asset('frontend/images/resource/news-1.jpg'),
-                'type' => 'Project'
+                'type' => 'Enlistment'
             ];
         }
 
@@ -470,119 +478,39 @@ class HomeController extends Controller implements HasMiddleware
             ];
         }
 
-        // Products
-        $products = Product::active()
-            ->where('title', 'LIKE', "%{$query}%")
-            ->take(5)
-            ->get(['title', 'image']);
-        foreach ($products as $product) {
-            $mainImg = $product->media->where('is_main', 1)->first();
-            $results[] = [
-                'title' => $product->title,
-                'link' => route('page.products'),
-                'image' => $mainImg ? asset($mainImg->path) : asset('frontend/images/resource/news-1.jpg'),
-                'type' => 'Product'
-            ];
-        }
-
         return response()->json($results);
     }
+
     /**________________________________________________________________________________________
-     * Products Menu Pages
+     * Booking Menu Pages
      * ________________________________________________________________________________________
      */
-    public function products()
+    public function storeBooking(Request $request)
     {
-        $products = Product::with(['pricePlans', 'media'])->active()->ordered()->get();
-
-        // SEO
-        $page = Page::with('seo')->where('slug', 'products')->first();
-        $seotags = $this->applySeo($page, 'Products');
-
-        $breadcrumbs = $this->generateBreadcrumbJsonLd([
-            ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Products', 'url' => url()->current()],
+        $validator = Validator::make($request->all(), [
+            'name'       => 'required|string|max:255',
+            'phone'      => 'required|string|max:20',
+            'email'      => 'nullable|email|max:255',
+            'event_type' => 'required|string',
+            'event_date' => 'required|date',
+            'guests'     => 'required|integer|min:1',
+            'location'   => 'nullable|string|max:255',
+            'notes'      => 'nullable|string',
+            'service_id' => 'nullable|integer',
         ]);
 
-        return view('frontend.pages.products', compact('products', 'seotags', 'breadcrumbs', 'page'));
-    }
-
-    public function productsDetails($slug)
-    {
-        $product = Product::with(['pricePlans' => function($q) {
-            $q->active()->ordered();
-        }, 'media'])
-            ->active()
-            ->where('slug', $slug)
-            ->firstOrFail();
-
-        // Related products (same type, excluding current)
-        $relatedProducts = Product::with('media')
-            ->active()
-            ->where('id', '!=', $product->id)
-            ->when($product->type, fn($q) => $q->where('type', $product->type))
-            ->ordered()
-            ->take(3)
-            ->get();
-
-        // SEO
-        $seotags = $this->applySeo($product, $product->title, [
-            'description' => $product->subtitle ?? '',
-        ]);
-
-        $breadcrumbs = $this->generateBreadcrumbJsonLd([
-            ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Products', 'url' => route('page.products')],
-            ['name' => $product->title, 'url' => url()->current()],
-        ]);
-
-        return view('frontend.pages.products-details', compact('product', 'relatedProducts', 'seotags', 'breadcrumbs'));
-    }
-
-    public function productsPurchaseEnquiry(Request $request, $slug)
-    {
-        $product = Product::active()->where('slug', $slug)->firstOrFail();
-
-        $validated = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
-            'phone'   => 'nullable|string|max:30',
-            'plan_id' => 'nullable|integer',
-            'note'    => 'nullable|string|max:2000',
-            'source'  => 'nullable|string|max:100',
-        ]);
-
-        $selectedPlan = null;
-        if (!empty($validated['plan_id'])) {
-            $selectedPlan = $product->pricePlans()->whereKey($validated['plan_id'])->first();
-        }
-
-        $planName = $selectedPlan ? $selectedPlan->name : null;
-        $planId = $selectedPlan ? $selectedPlan->id : null;
-        $planPart = $planName ? ' — Plan: ' . $planName : '';
-
-        Sale::create([
-            'product_id' => $product->id,
-            'plan_id' => $planId,
-            'source' => $validated['source'] ?? 'product_page',
-            'customer_ip' => $request->ip(),
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'subject' => 'Purchase Enquiry: ' . $product->title . $planPart,
-            'message' => $validated['note'] ?? null,
-            'status' => 'new',
-        ]);
-
-        if ($request->ajax()) {
+        if ($validator->fails()) {
             return response()->json([
-                'success' => true,
-                'message' => 'Thank you, ' . $validated['name'] . '! Your enquiry has been received. We\'ll contact you shortly.'
-            ]);
+                'status' => 'error',
+                'errors' => $validator->errors()->all()
+            ], 422);
         }
 
-        return redirect()
-            ->route('page.products-details', $slug)
-            ->with('purchase_success', 'Thank you, ' . $validated['name'] . '! Your enquiry has been received. We\'ll contact you at ' . $validated['email'] . ' shortly.');
+        Booking::create($validator->validated());
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Thank you! Your booking request has been submitted successfully.'
+        ], 200);
     }
 }

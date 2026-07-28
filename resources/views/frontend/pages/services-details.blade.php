@@ -1,135 +1,211 @@
-<x-frontend-layout title="{{ $service->seo->title ?? $service->title }}" :breadcrumbs="$breadcrumbs"
-    :seotags="$seotags">
-    <!--Page Title-->
-    <section class="page-title" style="background-image:url({{ asset('frontend/images/pages/bg-title.jpg') }});">
-        <div class="auto-container">
-            <div class="inner-container clearfix">
-                <div class="title-box">
-                    <h1 class="mb-0">{{ $service->title }}</h1>
+<x-frontend-layout title="{{ $service->seo->title ?? $service->title }}" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
+
+    {{-- =========================================================
+        PAGE HERO BANNER
+    ========================================================= --}}
+    <section class="detail-page-hero"
+             style="background-image: url('{{ asset('frontend/images/pages/bg-title.jpg') }}');">
+        <div class="detail-page-hero-overlay"></div>
+        <div class="container position-relative z-2">
+            <div class="row align-items-center" style="min-height:260px;">
+                <div class="col-12 text-center text-white">
+                    <span class="badge bg-white bg-opacity-20 text-dark fw-semibold mb-3 px-3 py-2 text-uppercase"
+                          style="letter-spacing:2px; font-size:.78rem;">Our Services</span>
+                    <h1 class="display-5 fw-bold mb-3"
+                        style="text-shadow:0 4px 20px rgba(0,0,0,.5);">{{ $service->title }}</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ url('/') }}" class="text-white opacity-75 text-decoration-none">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('page.services') }}" class="text-white opacity-75 text-decoration-none">Services</a>
+                            </li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">{{ $service->title }}</li>
+                        </ol>
+                    </nav>
                 </div>
-                <ul class="bread-crumb clearfix pt-0">
-                    <li><a href="{{ url('/') }}">Home</a></li>
-                    <li>{{ $service->title }}</li>
-                </ul>
             </div>
         </div>
     </section>
 
-    <div class="sidebar-page-container">
-        <div class="auto-container">
-            <div class="row clearfix">
+    {{-- =========================================================
+        MAIN CONTENT AREA
+    ========================================================= --}}
+    <section class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="row g-5">
 
-                <!--Sidebar-->
-                <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
-                    <aside class="sidebar services-sidebar">
+                {{-- ── SIDEBAR ────────────────────────────────────── --}}
+                <div class="col-lg-4 order-lg-2" data-aos="fade-left">
 
-                        <!-- All Services List -->
-                        <div class="sidebar-widget sidebar-blog-category">
-                            <ul class="blog-cat">
-                                @foreach($allServices as $s)
-                                    <li class="{{ $s->slug === $service->slug ? 'active' : '' }}">
-                                        <a
-                                            href="{{ route('page.services-details', $s->slug) }}">{{ strtoupper($s->title) }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                    {{-- All Services List --}}
+                    <div class="detail-sidebar-card mb-4">
+                        <div class="detail-sidebar-card-header">
+                            <i class="fas fa-concierge-bell me-2"></i> All Services
                         </div>
-
-                        <!-- Dynamic Brochures (Attachments) -->
-                        @if($service->media->where('type', 'document')->count())
-                            <div class="sidebar-widget brochure-widget">
-                                <h3 class="sidebar-title">Download Brochures</h3>
-                                @foreach($service->media->where('type', 'document') as $file)
-                                    <div class="brochure-box">
-                                        <div class="inner">
-                                            @php
-                                                $ext = pathinfo($file->path, PATHINFO_EXTENSION);
-                                            @endphp
-                                            <span class="icon fa fa-file-{{ $ext }}-o"></span>
-                                            <div class="text">{{ $file->name }}</div>
-                                        </div>
-                                        <a href="{{ asset($file->path) }}" class="overlay-link" target="_blank"></a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
-                        <!-- Quick Contact -->
-                        <div class="help-box"
-                            style="background-image:url({{ asset('frontend/images/pages/bg-service-details.jpg') }})">
-                            <div class="inner">
-                                <span class="title">Quick Contact</span>
-                                <h2>Get Solution</h2>
-                                <div class="text">Contact us at the Interior office nearest to you or submit a business
-                                    inquiry online.</div>
-                                <a class="theme-btn btn-style-three" href="{{route('page.contact-us')}}">Contact</a>
-                            </div>
-                        </div>
-                        <div class="image mt-4">
-                            <img loading="lazy" src="{{ asset('images/banner-logo.jpg') }}" alt="company banner">
-                        </div>
-                    </aside>
-                </div>
-
-                <!--Main Content-->
-                <div class="content-side col-lg-8 col-md-12 col-sm-12">
-                    <div class="service-detail">
-                        <div class="inner-box">
-                            <!-- Images Carousel -->
-                            @if($service->media->count())
-                                <div class="image-box">
-                                    <div class="single-item-carousel owl-carousel owl-theme">
-                                        @foreach($service->media->where('type', 'image') as $img)
-                                            <figure class="image">
-                                                <img loading="lazy" src="{{ asset($img->path) }}"
-                                                    alt="{{ $img->alt_text ?? $service->title }}">
-                                            </figure>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endif
-
-                            <h2>{{ $service->title }}</h2>
-                            <div class="text">
-                                {!! $service->description !!}
-                            </div>
-                        </div>
-
-                        <!-- Message For CEO -->
-                        <blockquote>
-                            {{ $settings->description ?? 'CEO Message' }}<cite>{{ $settings->company_name ?? 'CEO' }}</cite>
-                        </blockquote>
-
-                        <!-- Product Info Tabs (Example content; replace or loop from DB if needed) -->
-                        <div class="product-info-tabs">
-                            <div class="prod-tabs tabs-box">
-                                <ul class="tab-btns tab-buttons clearfix">
-                                    <li data-tab="#precautions" class="tab-btn active-btn">Precautions</li>
-                                    <li data-tab="#intelligence" class="tab-btn">Intelligence</li>
-                                    <li data-tab="#specializations" class="tab-btn">Specializations</li>
-                                </ul>
-                                <div class="tabs-content">
-                                    <div class="tab active-tab" id="precautions">
-                                        <div class="content">
-                                            {!! $service->seo?->meta_keywords ?? 'Add your precautions content here' !!}
-                                        </div>
-                                    </div>
-                                    <div class="tab" id="intelligence">
-                                        <div class="content">
-                                            <p>Add your intelligence content here</p>
-                                        </div>
-                                    </div>
-                                    <div class="tab" id="specializations">
-                                        <div class="content">
-                                            <p>Add your specializations content here</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End Tabs -->
+                        <ul class="services-list-sidebar">
+                            @foreach($allServices as $s)
+                                <li class="{{ $s->slug === $service->slug ? 'active' : '' }}">
+                                    <a href="{{ route('page.services-details', $s->slug) }}">
+                                        <i class="fas fa-chevron-right me-2 fs-7"></i>
+                                        {{ $s->title }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                </div>
-            </div>
+
+                    {{-- Quick Contact CTA --}}
+                    <div class="detail-cta-card mb-4">
+                        <div class="detail-cta-quote-mark">"</div>
+                        <div class="position-relative z-2 text-center">
+                            <i class="fas fa-headset fs-1 mb-3 opacity-75"></i>
+                            <h4 class="fw-bold mb-2">Need Quick Help?</h4>
+                            <p class="opacity-85 mb-4 fs-7">Contact our team for a prompt catering quotation tailored to your event.</p>
+                            <a href="{{ route('page.contact-us') }}" class="btn btn-light fw-bold w-100 mb-2"
+                               style="color: var(--primary-color);">
+                                <i class="fas fa-envelope me-2"></i>Contact Us
+                            </a>
+                            <a href="tel:01711306501" class="btn btn-outline-light fw-bold w-100">
+                                <i class="fas fa-phone-alt me-2"></i>01711-306501
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Brochure Downloads (if any) --}}
+                    @if($service->media->where('type', 'document')->count())
+                        <div class="detail-sidebar-card mb-4">
+                            <div class="detail-sidebar-card-header">
+                                <i class="fas fa-file-download me-2"></i> Download Brochures
+                            </div>
+                            <div class="p-3">
+                                @foreach($service->media->where('type', 'document') as $file)
+                                    @php $ext = pathinfo($file->path, PATHINFO_EXTENSION); @endphp
+                                    <a href="{{ asset($file->path) }}"
+                                       target="_blank"
+                                       class="d-flex align-items-center gap-3 p-3 mb-2 rounded border bg-white text-decoration-none text-dark"
+                                       style="transition: all .25s;">
+                                        <div class="stat-icon-wrapper flex-shrink-0"
+                                             style="width:44px;height:44px;font-size:1.2rem;">
+                                            <i class="fas fa-file-{{ $ext === 'pdf' ? 'pdf' : 'alt' }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold font-rajdhani fs-6">{{ $file->name }}</div>
+                                            <small class="text-muted text-uppercase">{{ strtoupper($ext) }} file</small>
+                                        </div>
+                                        <i class="fas fa-download ms-auto text-muted"></i>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                </div>{{-- /sidebar --}}
+
+                {{-- ── MAIN CONTENT ─────────────────────────────── --}}
+                <div class="col-lg-8 order-lg-1" data-aos="fade-right">
+
+                    {{-- Image Swiper Carousel --}}
+                    @if($service->media->where('type','image')->count())
+                        <div class="service-detail-gallery mb-4">
+                            <div class="swiper swiper-service-detail">
+                                <div class="swiper-wrapper">
+                                    @foreach($service->media->where('type','image') as $img)
+                                        <div class="swiper-slide">
+                                            <a href="{{ asset($img->path) }}"
+                                               class="glightbox"
+                                               data-gallery="service-detail-gallery"
+                                               data-title="{{ $img->alt_text ?? $service->title }}">
+                                                <img src="{{ asset($img->path) }}"
+                                                     alt="{{ $img->alt_text ?? $service->title }}"
+                                                     loading="lazy"
+                                                     class="service-detail-img">
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="swiper-pagination service-detail-pagination"></div>
+                                <div class="swiper-button-prev service-detail-prev"></div>
+                                <div class="swiper-button-next service-detail-next"></div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Title & Description --}}
+                    <div class="mb-4">
+                        <span class="badge-theme mb-2">Service Detail</span>
+                        <h2 class="fw-bold mb-3 font-rajdhani" style="font-size:2rem;">{{ $service->title }}</h2>
+                        <div class="service-detail-content text-muted" style="line-height:1.9; font-size:1rem;">
+                            {!! $service->description !!}
+                        </div>
+                    </div>
+
+                    {{-- CEO Blockquote --}}
+                    @if($settings->description ?? false)
+                        <div class="service-blockquote mb-4">
+                            <div class="service-blockquote-icon"><i class="fas fa-quote-left"></i></div>
+                            <p class="mb-2">{{ $settings->description }}</p>
+                            <cite class="fw-bold text-theme-primary">— {{ $settings->company_name ?? 'Management' }}</cite>
+                        </div>
+                    @endif
+
+                    {{-- Info Tabs --}}
+                    <div class="mt-4">
+                        <ul class="nav service-detail-tabs mb-0" id="serviceDetailTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="service-tab-btn active" data-bs-toggle="tab"
+                                        data-bs-target="#sdTab1" type="button" role="tab">
+                                    <i class="fas fa-shield-alt me-2"></i>Precautions
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="service-tab-btn" data-bs-toggle="tab"
+                                        data-bs-target="#sdTab2" type="button" role="tab">
+                                    <i class="fas fa-lightbulb me-2"></i>Intelligence
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="service-tab-btn" data-bs-toggle="tab"
+                                        data-bs-target="#sdTab3" type="button" role="tab">
+                                    <i class="fas fa-star me-2"></i>Specializations
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content service-tab-content">
+                            <div class="tab-pane fade show active" id="sdTab1" role="tabpanel">
+                                <div class="text-muted" style="line-height:1.85;">
+                                    {!! $service->seo?->meta_keywords ?? '<p>Information about precautions for this service will appear here.</p>' !!}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="sdTab2" role="tabpanel">
+                                <p class="text-muted" style="line-height:1.85;">Intelligence and performance insights for this service will appear here.</p>
+                            </div>
+                            <div class="tab-pane fade" id="sdTab3" role="tabpanel">
+                                <p class="text-muted" style="line-height:1.85;">Our specializations and unique offerings for this service will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>{{-- /main content --}}
+
+            </div>{{-- /row --}}
         </div>
-    </div>
+    </section>
+
+    @push('js')
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (document.querySelector('.swiper-service-detail')) {
+            new Swiper('.swiper-service-detail', {
+                loop: true,
+                autoplay: { delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true },
+                pagination: { el: '.service-detail-pagination', clickable: true },
+                navigation: { nextEl: '.service-detail-next', prevEl: '.service-detail-prev' },
+            });
+        }
+    });
+    </script>
+    @endpush
+
 </x-frontend-layout>

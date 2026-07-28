@@ -2,12 +2,13 @@
     <!-- Start::main-sidebar-header -->
     <div class="main-sidebar-header">
         <a href="{{ route('dashboard') }}" class="header-logo">
-            <img src="{{ asset($settings ? $settings->logo_light : '') }}" alt="logo" class="desktop-logo">
+            <img src="{{ asset($settings ? $settings->logo : '') }}" alt="logo">
+            {{-- <img src="{{ asset($settings ? $settings->logo_light : '') }}" alt="logo" class="desktop-logo">
             <img src="{{ asset($settings ? $settings->logo_dark : '') }}" alt="logo" class="toggle-logo">
             <img src="{{ asset($settings ? $settings->logo_light : '') }}" alt="logo" class="desktop-dark">
             <img src="{{ asset($settings ? $settings->logo_light : '') }}" alt="logo" class="toggle-dark">
             <img src="{{ asset($settings ? $settings->logo_dark : '') }}" alt="logo" class="desktop-white">
-            <img src="{{ asset($settings ? $settings->logo_dark : '') }}" alt="logo" class="toggle-white">
+            <img src="{{ asset($settings ? $settings->logo_dark : '') }}" alt="logo" class="toggle-white"> --}}
         </a>
     </div>
     <!-- End::main-sidebar-header -->
@@ -45,6 +46,15 @@
                     </li>
                 @endcan
 
+                <!-- Photo Gallery -->
+                <li class="slide">
+                    <a href="{{ route('galleries.index') }}"
+                        class="side-menu__item {{ Request::is('galleries*') ? 'active' : '' }}">
+                        <i class="bx bx-images side-menu__icon"></i>
+                        <span class="side-menu__label">Photo Gallery</span>
+                    </a>
+                </li>
+
                 <!-- Category -->
                 @can('view categories')
                     <li class="slide">
@@ -67,13 +77,24 @@
                     </li>
                 @endcan
 
-                <!-- Project -->
-                @can('view projects')
+                <!-- Enlistments -->
+                @can('view enlistments')
                     <li class="slide">
-                        <a href="{{ route('projects.index') }}"
-                            class="side-menu__item {{ Request::is('projects*') ? 'active' : '' }}">
+                        <a href="{{ route('enlistments.index') }}"
+                            class="side-menu__item {{ Request::is('enlistments*') ? 'active' : '' }}">
                             <i class="bx bx-network-chart side-menu__icon"></i>
-                            <span class="side-menu__label">Project</span>
+                            <span class="side-menu__label">Enlistments</span>
+                        </a>
+                    </li>
+                @endcan
+
+                <!-- Achievement -->
+                @can('view achievements')
+                    <li class="slide">
+                        <a href="{{ route('achievements.index') }}"
+                            class="side-menu__item {{ Request::is('achievements*') ? 'active' : '' }}">
+                            <i class="bx bx-trophy side-menu__icon"></i>
+                            <span class="side-menu__label">Achievement</span>
                         </a>
                     </li>
                 @endcan
@@ -99,18 +120,6 @@
                         </a>
                     </li>
                 @endcan
-
-                <!-- Achievement -->
-                @can('view achievements')
-                    <li class="slide">
-                        <a href="{{ route('achievements.index') }}"
-                            class="side-menu__item {{ Request::is('achievements*') ? 'active' : '' }}">
-                            <i class="bx bx-trophy side-menu__icon"></i>
-                            <span class="side-menu__label">Achievement</span>
-                        </a>
-                    </li>
-                @endcan
-
 
                 <!-- Team -->
                 @can('view teams')
@@ -145,13 +154,13 @@
                     </li>
                 @endcan
 
-                <!-- Submissions -->
-                @can('view submissions')
+                <!-- Bookings -->
+                @can('view bookings')
                     <li class="slide">
-                        <a href="{{ route('submissions.index') }}"
-                            class="side-menu__item {{ Request::is('submissions*') ? 'active' : '' }}">
+                        <a href="{{ route('bookings.index') }}"
+                            class="side-menu__item {{ Request::is('bookings*') ? 'active' : '' }}">
                             <i class="bx bx-party side-menu__icon"></i>
-                            <span class="side-menu__label">Submissions</span>
+                            <span class="side-menu__label">Bookings</span>
                         </a>
                     </li>
                 @endcan

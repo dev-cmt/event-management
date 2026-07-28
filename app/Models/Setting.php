@@ -12,8 +12,6 @@ class Setting extends Model
     protected $fillable = [
         'company_name',
         'logo',
-        'logo_dark',
-        'logo_light',
         'favicon',
         'phone',
         'phone2',
@@ -24,6 +22,7 @@ class Setting extends Model
         'map_url',
         'description',
         'copyright_text',
+        'noties',
         'facebook',
         'twitter',
         'instagram',
@@ -31,7 +30,5 @@ class Setting extends Model
         'youtube',
         'whatsapp',
         'telegram',
-        'is_loading',
-        'is_slider',
     ];
 }

@@ -8,19 +8,14 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Str;
 
-class Project extends Model
+class Enlistment extends Model
 {
     protected $fillable = [
         'title',
         'slug',
         'description',
-        'category_id',
-        'client_name',
         'location',
-        'tech_stack',
-        'launch_year',
-        'project_budget',
-        'live_link',
+        'category_id',
         'status',
     ];
 

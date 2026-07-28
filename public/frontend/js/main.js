@@ -191,10 +191,51 @@ document.addEventListener('DOMContentLoaded', function () {
     const reservationForm = document.getElementById('reservationForm');
     const bookingToast = document.getElementById('bookingToast');
 
-    reservationForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        bookingToast.style.display = 'block';
-        reservationForm.reset();
-        setTimeout(() => { bookingToast.style.display = 'none'; }, 4000);
-    });
+    if (reservationForm && bookingToast) {
+        reservationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            bookingToast.style.display = 'block';
+            reservationForm.reset();
+            setTimeout(() => { bookingToast.style.display = 'none'; }, 4000);
+        });
+    }
+
+    /* 9. Clients Brand Carousel Swiper */
+    if (document.querySelector('.swiper-clients')) {
+        const clientsSwiper = new Swiper('.swiper-clients', {
+            slidesPerView: 2,
+            spaceBetween: 16,
+            loop: true,
+            speed: 600,
+            autoplay: { delay: 2500, disableOnInteraction: false, pauseOnMouseEnter: true },
+            breakpoints: {
+                480: { slidesPerView: 3, spaceBetween: 16 },
+                768: { slidesPerView: 4, spaceBetween: 18 },
+                992: { slidesPerView: 5, spaceBetween: 20 },
+                1200: { slidesPerView: 6, spaceBetween: 20 }
+            }
+        });
+
+        /* Hover → pause / resume */
+        const clientsEl = document.querySelector('.swiper-clients');
+        clientsEl.addEventListener('mouseenter', () => clientsSwiper.autoplay.stop());
+        clientsEl.addEventListener('mouseleave', () => clientsSwiper.autoplay.start());
+    }
+
+    /* 10. Scroll To Top */
+    const scrollBtn = document.querySelector('.scroll-to-top');
+    if (scrollBtn) {
+        // Show / hide on scroll
+        const toggleScrollBtn = () => {
+            scrollBtn.classList.toggle('open', window.scrollY > 300);
+        };
+
+        toggleScrollBtn();
+        window.addEventListener('scroll', toggleScrollBtn, { passive: true });
+
+        // Click → smooth scroll to target
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 });

@@ -53,7 +53,7 @@ class FrontendLayout extends Component
         $data = [
             '@context' => 'https://schema.org',
             '@type' => 'Organization',
-            'name' => $settings && !empty($settings->company_name) ? $settings->company_name : config('app.name', 'Sky Tech Solve'),
+            'name' => $settings && !empty($settings->company_name) ? $settings->company_name : config('app.name', 'Pro Devs Ltd.'),
             'url' => url('/'),
             'logo' => asset($logoPath),
         ];

@@ -89,12 +89,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" role="tab" href="#project-tab">
-                <i class="ri-article-line"></i> Projects Page
-            </a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="tab" role="tab" href="#project-video-tab">
-                <i class="ri-video-line"></i> Projects Video
+                <i class="ri-article-line"></i> Enlistments Page
             </a>
         </li>
         <li class="nav-item" role="presentation">
@@ -110,66 +105,171 @@
             <form action="{{ route('settings.pages-content.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="slug" value="home">
-                <div class="page-section-header">
-                    <div class="section-icon"><i class="ri-home-wifi-line fs-20"></i></div>
-                    <h4>Home Page Sections</h4>
-                </div>
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-xl-6 mb-3">
                         <div class="card custom-card mb-0">
                             <div class="card-header">
-                                <div class="card-title">Slider Content</div>
+                                <div class="card-title">Services</div>
                             </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label>Main Title</label>
-                                    <input type="text" name="content[slider][title]" class="form-control"
-                                        placeholder="Slider Title"
-                                        value="{{ data_get($pages['home']->content, 'slider.title') }}">
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[services][badge_text]" class="form-control"
+                                        placeholder="Our Services"
+                                        value="{{ data_get($pages['home']->content, 'services.badge_text') }}">
                                 </div>
-                                <div class="mb-3">
+                                <div class="col-md-8 mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="content[services][title]" class="form-control"
+                                        placeholder="Our Services"
+                                        value="{{ data_get($pages['home']->content, 'services.title') }}">
+                                </div>
+                                <div class="col-md-12 mb-3">
                                     <label>Sub Title</label>
-                                    <input type="text" name="content[slider][sub_title]" class="form-control"
-                                        placeholder="Slider Sub Title"
-                                        value="{{ data_get($pages['home']->content, 'slider.sub_title') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label>Button Text</label>
-                                    <input type="text" name="content[slider][button_text]" class="form-control"
-                                        placeholder="Button Text"
-                                        value="{{ data_get($pages['home']->content, 'slider.button_text') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label>Button URL</label>
-                                    <input type="text" name="content[slider][button_url]" class="form-control"
-                                        placeholder="Button URL"
-                                        value="{{ data_get($pages['home']->content, 'slider.button_url') }}">
+                                    <textarea name="content[services][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'services.sub_title') }}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+
+                    <div class="col-xl-6 mb-3">
+                        <div class="card custom-card mb-0">
+                            <div class="card-header">
+                                <div class="card-title">Why Us?</div>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[why_us][badge_text]" class="form-control"
+                                        placeholder="Trusted Choice"
+                                        value="{{ data_get($pages['home']->content, 'why_us.badge_text') }}">
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="content[why_us][title]" class="form-control"
+                                        placeholder="Why Choose Us?"
+                                        value="{{ data_get($pages['home']->content, 'why_us.title') }}">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label>Sub Title</label>
+                                    <textarea name="content[why_us][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'why_us.sub_title') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 mb-3">
+                        <div class="card custom-card mb-0">
+                            <div class="card-header">
+                                <div class="card-title">Enlisted</div>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[enlisted][badge_text]" class="form-control"
+                                        placeholder="Enlisted Badge"
+                                        value="{{ data_get($pages['home']->content, 'enlisted.badge_text') }}">
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="content[enlisted][title]" class="form-control"
+                                        placeholder="Enlisted Title"
+                                        value="{{ data_get($pages['home']->content, 'enlisted.title') }}">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label>Sub Title</label>
+                                    <textarea name="content[enlisted][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'enlisted.sub_title') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 mb-3">
+                        <div class="card custom-card mb-0">
+                            <div class="card-header">
+                                <div class="card-title">Gallery</div>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[gallery][badge_text]" class="form-control"
+                                        placeholder="Gallery Badge"
+                                        value="{{ data_get($pages['home']->content, 'gallery.badge_text') }}">
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="content[gallery][title]" class="form-control"
+                                        placeholder="Gallery Title"
+                                        value="{{ data_get($pages['home']->content, 'gallery.title') }}">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label>Sub Title</label>
+                                    <textarea name="content[gallery][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'gallery.sub_title') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 mb-3">
                         <div class="card custom-card mb-0">
                             <div class="card-header">
                                 <div class="card-title">Testimonial</div>
                             </div>
-                            <div class="card-body">
-                                <div class="mb-3">
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[testimonial][badge_text]" class="form-control"
+                                        placeholder="Testimonial Badge"
+                                        value="{{ data_get($pages['home']->content, 'testimonial.badge_text') }}">
+                                </div>
+                                <div class="col-md-8 mb-3">
                                     <label>Title</label>
                                     <input type="text" name="content[testimonial][title]" class="form-control"
                                         placeholder="Testimonial Title"
                                         value="{{ data_get($pages['home']->content, 'testimonial.title') }}">
                                 </div>
-                                <div class="mb-3">
-                                    <label>Description</label>
-                                    <textarea name="content[testimonial][description]"
-                                        class="form-control summernote">{{ data_get($pages['home']->content, 'testimonial.description') }}</textarea>
+                                <div class="col-md-12 mb-3">
+                                    <label>Sub Title</label>
+                                    <textarea name="content[testimonial][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'testimonial.sub_title') }}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-xl-6 mb-3">
+                        <div class="card custom-card mb-0">
+                            <div class="card-header">
+                                <div class="card-title">Reserve Event</div>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[reserve][badge_text]" class="form-control"
+                                        placeholder="Reserve Event Badge"
+                                        value="{{ data_get($pages['home']->content, 'reserve.badge_text') }}">
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="content[reserve][title]" class="form-control"
+                                        placeholder="Reserve Event Title"
+                                        value="{{ data_get($pages['home']->content, 'reserve.title') }}">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label>Sub Title</label>
+                                    <textarea name="content[reserve][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'reserve.sub_title') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="mt-2 text-end">
+                <div class="text-end">
                     <button class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
                         <i class="ri-save-line me-1"></i> Update Home Content
                     </button>
@@ -184,12 +284,11 @@
                 <input type="hidden" name="slug" value="about">
 
                 <!-- General Section -->
-                <div class="page-section-header">
-                    <div class="section-icon"><i class="ri-layout-top-line fs-20"></i></div>
-                    <h4>General & Header</h4>
-                </div>
                 <div class="card custom-card">
-                    <div class="card-body">
+                    <div class="card-header">
+                        <div class="card-title">Header & About Description</div>
+                    </div>
+                    <div class="card-body row">
                         <div class="row">
                             <div class="col-xl-6">
                                 <label>Page Title</label>
@@ -203,88 +302,10 @@
                                     placeholder="The Interior speak for themselves"
                                     value="{{ data_get($pages['about']->content, 'header.subtitle') }}">
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Features Section -->
-                <div class="page-section-header">
-                    <div class="section-icon"><i class="ri-star-line fs-20"></i></div>
-                    <h4>Features Section</h4>
-                </div>
-                <div class="card custom-card">
-                    <div class="card-body">
-                        <div class="row">
-                            @for ($i = 1; $i <= 3; $i++)
-                                <div class="col-xl-4">
-                                    <div class="p-3 border rounded-3 bg-light mb-3 mb-xl-0">
-                                        <h6 class="fw-bold mb-3 text-primary">Feature Box 0{{ $i }}</h6>
-                                        <label>Title</label>
-                                        <input type="text" name="content[features_box{{ $i }}][title]"
-                                            class="form-control mb-2"
-                                            value="{{ data_get($pages['about']->content, 'features_box' . $i . '.title') }}">
-                                        <label>Sub Title</label>
-                                        <textarea name="content[features_box{{ $i }}][sub_title]" class="form-control"
-                                            rows="2">{{ data_get($pages['about']->content, 'features_box' . $i . '.sub_title') }}</textarea>
-                                    </div>
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Process Section -->
-                <div class="page-section-header">
-                    <div class="section-icon"><i class="ri-flow-chart fs-20"></i></div>
-                    <h4>Proven Process (How We Work)</h4>
-                </div>
-                <div class="card custom-card">
-                    <div class="card-body">
-                        <div class="row">
-                            @for ($i = 1; $i <= 4; $i++)
-                                <div class="col-xl-3">
-                                    <div class="p-3 border rounded-3 h-100">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <span class="badge bg-primary-transparent text-primary me-2">{{ $i }}</span>
-                                            <label class="mb-0">Step Title</label>
-                                        </div>
-                                        <input type="text" name="content[process][step{{ $i }}][title]"
-                                            class="form-control mb-2"
-                                            value="{{ data_get($pages['about']->content, 'process.step' . $i . '.title') }}">
-                                        <label>Description</label>
-                                        <textarea name="content[process][step{{ $i }}][text]" class="form-control"
-                                            rows="2">{{ data_get($pages['about']->content, 'process.step' . $i . '.text') }}</textarea>
-                                    </div>
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Marketing Section -->
-                <div class="page-section-header">
-                    <div class="section-icon"><i class="ri-advertisement-line fs-20"></i></div>
-                    <h4>Video Campaign</h4>
-                </div>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="card custom-card h-100">
-                            <div class="card-header">
-                                <div class="card-title">Video Campaign</div>
-                            </div>
-                            <div class="card-body">
-                                <label>Title</label>
-                                <input type="text" name="content[video][title]" class="form-control mb-2"
-                                    value="{{ data_get($pages['about']->content, 'video.title') }}">
-                                <label>Header</label>
-                                <input type="text" name="content[video][header]" class="form-control mb-2"
-                                    value="{{ data_get($pages['about']->content, 'video.header') }}">
-                                <label>YouTube Video URL</label>
-                                <input type="text" name="content[video][url]" class="form-control mb-2"
-                                    value="{{ data_get($pages['about']->content, 'video.url') }}">
-                                <label>Brief Text</label>
-                                <textarea name="content[video][text]" class="form-control"
-                                    rows="2">{{ data_get($pages['about']->content, 'video.text') }}</textarea>
+                            <div class="col-xl-12">
+                                <label>About Description</label>
+                                <textarea name="content[about][description]" class="form-control summernote"
+                                    rows="4">{{ data_get($pages['about']->content, 'about.description') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -327,70 +348,6 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="card custom-card">
-                            <div class="card-header">
-                                <div class="card-title">Offer Details</div>
-                            </div>
-                            <div class="card-body">
-                                <label>Title</label>
-                                <input type="text" name="content[services_offer][title]" class="form-control mb-2"
-                                    value="{{ data_get($pages['services']->content, 'services_offer.title') }}">
-                                <label>Header Content</label>
-                                <input type="text" name="content[services_offer][header]" class="form-control mb-2"
-                                    value="{{ data_get($pages['services']->content, 'services_offer.header') }}">
-                                <label>Discount Percentage</label>
-                                <input type="text" name="content[services_offer][discount]" class="form-control mb-2"
-                                    value="{{ data_get($pages['services']->content, 'services_offer.discount') }}">
-                                <label>Description</label>
-                                <textarea name="content[services_offer][description]" class="form-control"
-                                    rows="5">{{ data_get($pages['services']->content, 'services_offer.description') }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card custom-card">
-                            <div class="card-header">
-                                <div class="card-title">Services Content</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <label>Title</label>
-                                        <input type="text" name="content[services_content][title]"
-                                            class="form-control mb-2"
-                                            value="{{ data_get($pages['services']->content, 'services_content.title') }}">
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <label>Header Content</label>
-                                        <input type="text" name="content[services_content][header]"
-                                            class="form-control mb-2"
-                                            value="{{ data_get($pages['services']->content, 'services_content.header') }}">
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <label>Description</label>
-                                        <textarea name="content[services_content][description]"
-                                            class="form-control summernote mb-2">{{ data_get($pages['services']->content, 'services_content.description') }}</textarea>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <label>Button Text</label>
-                                        <input type="text" name="content[services_content][button_text]"
-                                            class="form-control mb-2"
-                                            value="{{ data_get($pages['services']->content, 'services_content.button_text') }}">
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <label>Button Link</label>
-                                        <input type="text" name="content[services_content][button_link]"
-                                            class="form-control mb-2"
-                                            value="{{ data_get($pages['services']->content, 'services_content.button_link') }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="mt-2 text-end">
                     <button class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
                         <i class="ri-save-line me-1"></i> Update Services Content
@@ -422,39 +379,6 @@
                                 <input type="text" name="content[header][subtitle]" class="form-control"
                                     placeholder="The minds behind the magic"
                                     value="{{ data_get($pages['teams']->content, 'header.subtitle') }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="card-title">CTA (Call to Action)</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <label>Title</label>
-                                <input type="text" name="content[cta][title]" class="form-control mb-2"
-                                    placeholder="Ready to start your next project?"
-                                    value="{{ data_get($pages['teams']->content, 'cta.title') }}">
-                            </div>
-                            <div class="col-xl-6">
-                                <label>Subtitle</label>
-                                <textarea name="content[cta][subtitle]" class="form-control mb-2"
-                                    placeholder="Let’s create something amazing together"
-                                    rows="1">{{ data_get($pages['teams']->content, 'cta.subtitle') }}</textarea>
-                            </div>
-                            <div class="col-xl-6">
-                                <label>Button Text</label>
-                                <input type="text" name="content[cta][button_text]" class="form-control mb-2"
-                                    placeholder="Contact Us"
-                                    value="{{ data_get($pages['teams']->content, 'cta.button_text') }}">
-                            </div>
-                            <div class="col-xl-6">
-                                <label>Button Link</label>
-                                <input type="text" name="content[cta][button_link]" class="form-control mb-2"
-                                    placeholder="https://example.com"
-                                    value="{{ data_get($pages['teams']->content, 'cta.button_link') }}">
                             </div>
                         </div>
                     </div>

@@ -14,8 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->string('company_name')->nullable();
             $table->string('logo')->nullable();
-            $table->string('logo_dark')->nullable();
-            $table->string('logo_light')->nullable();
             $table->string('favicon')->nullable();
             $table->string('phone')->nullable();
             $table->string('phone2')->nullable();
@@ -26,6 +24,7 @@ return new class extends Migration {
             $table->text('map_url')->nullable();
             $table->text('description')->nullable();
             $table->text('copyright_text')->nullable();
+            $table->text('noties')->nullable();
 
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();
@@ -33,9 +32,6 @@ return new class extends Migration {
             $table->string('linkedin')->nullable();
             $table->string('youtube')->nullable();
             $table->string('whatsapp')->nullable();
-
-            $table->boolean('is_loading')->default(true);
-            $table->boolean('is_slider')->default(false);
             $table->timestamps();
         });
     }

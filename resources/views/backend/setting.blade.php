@@ -72,39 +72,15 @@
                                 <textarea name="description" id="description" rows="2"
                                     class="form-control">{{ $settings ? $settings->description : '' }}</textarea>
                             </div>
-                            <div class="col-md-12 mb-2">
+                            <div class="col-md-6 mb-2">
                                 <label class="form-label" for="copyright_text">Copyright Text</label>
-                                <textarea name="copyright_text" id="copyright_text" rows="1"
+                                <textarea name="copyright_text" id="copyright_text" rows="2"
                                     class="form-control">{{ $settings ? $settings->copyright_text : '' }}</textarea>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card custom-card">
-                    <div class="card-header justify-content-between">
-                        <div class="card-title">
-                            Frontend Settings
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="form-check form-switch mt-2">
-                                    <input type="hidden" name="is_loading" value="0">
-                                    <input type="checkbox" name="is_loading" id="is_loading" value="1"
-                                        class="form-check-input" role="switch" {{ $settings ? ($settings->is_loading ? 'checked' : '') : '' }}>
-                                    <label class="form-check-label fw-semibold" for="is_loading">Enable
-                                        Pre-Loader</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="form-check form-switch mt-2">
-                                    <input type="hidden" name="is_slider" value="0">
-                                    <input type="checkbox" name="is_slider" id="is_slider" value="1"
-                                        class="form-check-input" role="switch" {{ $settings ? ($settings->is_slider ? 'checked' : '') : '' }}>
-                                    <label class="form-check-label fw-semibold" for="is_slider">Enable Frontend
-                                        Slider</label>
-                                </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label" for="noties">Noties</label>
+                                <textarea name="noties" id="noties" rows="2"
+                                    class="form-control">{{ $settings ? $settings->noties : '' }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -125,9 +101,9 @@
                                             value="{{ $settings ? $settings->facebook : '' }}">
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <label for="twitter" class="form-label">Twitter</label>
-                                        <input type="text" name="twitter" class="form-control" id="twitter"
-                                            value="{{ $settings ? $settings->twitter : '' }}">
+                                        <label for="youtube" class="form-label">YouTube</label>
+                                        <input type="text" name="youtube" class="form-control" id="youtube"
+                                            value="{{ $settings ? $settings->youtube : '' }}">
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <label for="instagram" class="form-label">Instagram</label>
@@ -172,38 +148,6 @@
                                     @endif
                                 @endif
                                 <input type="file" name="favicon" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card custom-card">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">Logo Light </div>
-                            </div>
-                            <div class="card-body">
-                                @if ($settings)
-                                    @if ($settings->logo_light)
-                                        <img class="mb-2" src="{{ asset($settings->logo_light) }}"
-                                            alt="{{ $settings->logo_light }}" width="50">
-                                    @endif
-                                @endif
-                                <input type="file" name="logo_light" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card custom-card">
-                            <div class="card-header justify-content-between">
-                                <div class="card-title">Logo Dark </div>
-                            </div>
-                            <div class="card-body">
-                                @if ($settings)
-                                    @if ($settings->logo_dark)
-                                        <img class="mb-2" src="{{ asset($settings->logo_dark) }}"
-                                            alt="{{ $settings->logo_dark }}" width="50">
-                                    @endif
-                                @endif
-                                <input type="file" name="logo_dark" class="form-control">
                             </div>
                         </div>
                     </div>

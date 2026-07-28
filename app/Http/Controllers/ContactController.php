@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Submission;
+use App\Models\Booking;
 use App\Models\Contact;
 use App\Models\Sale;
 
@@ -62,14 +62,14 @@ class ContactController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Frontend Contact Form Submissions
+    | Frontend Contact Form Bookings
     |--------------------------------------------------------------------------
     */
 
-    public function indexSubmissions()
+    public function indexBookings()
     {
-        $submissions = Submission::latest()->paginate(10);
-        return view('backend.pages.contact.subscribers', compact('submissions'));
+        $bookings = Booking::latest()->paginate(10);
+        return view('backend.pages.contact.bookings', compact('bookings'));
     }
 
 

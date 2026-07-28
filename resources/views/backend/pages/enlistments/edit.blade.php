@@ -122,14 +122,14 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('projects.index') }}">Projects</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('enlistments.index') }}">Enlistments</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Edit</li>
                 </ol>
             </nav>
         </div>
     </div>
 
-    <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('enlistments.update', $enlistment->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -145,7 +145,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="title" class="form-label">Project Title <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="title" name="title"
-                                       value="{{ old('title', $project->title) }}" required>
+                                       value="{{ old('title', $enlistment->title) }}" required>
                                 @error('title')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
@@ -156,7 +156,7 @@
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
-                                            {{ old('category_id', $project->category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ old('category_id', $enlistment->category_id) == $category->id ? 'selected' : '' }}>
                                             {{ $category->category_name }}
                                         </option>
                                     @endforeach
@@ -168,56 +168,17 @@
 
                             <div class="col-md-12 mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" class="form-control summernote" rows="5">{!! old('description', $project->description) !!}</textarea>
+                                <textarea name="description" id="description" class="form-control summernote" rows="5">{!! old('description', $enlistment->description) !!}</textarea>
                                 @error('description')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Info -->
-                <div class="card custom-card mt-3">
-                    <div class="card-header">
-                        <div class="card-title">Project Information</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="client_name" class="form-label">Client Name</label>
-                                <input type="text" class="form-control" id="client_name" name="client_name"
-                                       value="{{ old('client_name', $project->client_name) }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="location" class="form-label">Client Location</label>
-                                <input type="text" class="form-control" id="location" name="location"
-                                       value="{{ old('location', $project->location) }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="tech_stack" class="form-label">Tech Stack</label>
-                                <input type="text" class="form-control" id="tech_stack" name="tech_stack"
-                                       value="{{ old('tech_stack', $project->tech_stack) }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="launch_year" class="form-label">Launch Year</label>
-                                <input type="number" class="form-control" id="launch_year" name="launch_year"
-                                       value="{{ old('launch_year', $project->launch_year) }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="project_budget" class="form-label">Project Budget</label>
-                                <input type="text" class="form-control" id="project_budget" name="project_budget"
-                                       value="{{ old('project_budget', $project->project_budget) }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="live_link" class="form-label">Live Link / Demo URL</label>
-                                <input type="text" class="form-control" id="live_link" name="live_link"
-                                       value="{{ old('live_link', $project->live_link) }}">
+                            <div class="col-md-12 mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <textarea name="location" id="location" class="form-control" rows="2">{!! old('location', $enlistment->location) !!}</textarea>
+                                @error('location')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -231,26 +192,26 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="meta_title" class="form-label">Meta Title</label>
-                            <input type="text" class="form-control" id="meta_title" name="meta_title" value="{{ old('meta_title', $project->seo->meta_title) }}">
+                            <input type="text" class="form-control" id="meta_title" name="meta_title" value="{{ old('meta_title', $enlistment->seo->meta_title) }}">
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="meta_keywords" class="form-label">Meta Keywords</label>
-                                <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" value="{{ old('meta_keywords', $project->seo->meta_keywords) }}">
+                                <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" value="{{ old('meta_keywords', $enlistment->seo->meta_keywords) }}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="meta_image" class="form-label">Meta Image</label>
                                 <input type="file" class="form-control" id="meta_image" name="meta_image" accept="image/*">
-                                @if($project->seo->og_image)
-                                    <img src="{{ asset($project->seo->og_image) }}" class="mt-2" height="60">
+                                @if($enlistment->seo->og_image)
+                                    <img src="{{ asset($enlistment->seo->og_image) }}" class="mt-2" height="60">
                                 @endif
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="meta_description" class="form-label">Meta Description</label>
-                            <textarea class="form-control" id="meta_description" name="meta_description" rows="3">{{ old('meta_description', $project->seo->meta_description) }}</textarea>
+                            <textarea class="form-control" id="meta_description" name="meta_description" rows="3">{{ old('meta_description', $enlistment->seo->meta_description) }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -276,7 +237,7 @@
                             </div>
 
                             <!-- Existing images -->
-                            @foreach($project->media as $media)
+                            @foreach($enlistment->media as $media)
                                 <div class="col-md-3 col-sm-4 col-6 m-0 text-center image-wrapper">
                                     <div class="image-container {{ $media->is_main ? 'default-image' : '' }}">
                                         <img src="{{ asset($media->path) }}" class="img-thumbnail">
@@ -299,8 +260,8 @@
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
                             <select class="form-select" id="status" name="status">
-                                <option value="1" {{ old('status', $project->status) == 1 ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ old('status', $project->status) == 0 ? 'selected' : '' }}>Inactive</option>
+                                <option value="1" {{ old('status', $enlistment->status) == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ old('status', $enlistment->status) == 0 ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
                     </div>
@@ -310,7 +271,7 @@
                 <div class="card custom-card mt-3">
                     <div class="card-body">
                         <button type="submit" class="btn btn-primary w-100">Update Project</button>
-                        <a href="{{ route('projects.index') }}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+                        <a href="{{ route('enlistments.index') }}" class="btn btn-secondary w-100 mt-2">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -346,7 +307,7 @@
 
                     if (confirm('Are you sure you want to delete this image?')) {
                         $.ajax({
-                            url: '{{ route("projects.image.delete", ":id") }}'.replace(':id', mediaId),
+                            url: '{{ route("enlistments.image.delete", ":id") }}'.replace(':id', mediaId),
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'

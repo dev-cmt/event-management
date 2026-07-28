@@ -1,90 +1,172 @@
-<!-- =========================================================
-       13. FOOTER SECTION
-    ========================================================= -->
-<footer>
-    <div class="container">
-        <div class="row g-4 pb-5 border-bottom border-secondary border-opacity-25">
+@php
+    $recentServices = \App\Models\Service::where('status', 1)
+        ->latest()
+        ->take(2)
+        ->get();
 
-            <!-- Company Info & Social Links -->
-            <div class="col-lg-4">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <a href="{{ url('/') }}">
-                        <img src="{{ asset($settings?->logo ?? 'catering_logo.png') }}" height="50" alt="{{ $settings?->site_name ?? 'Logo' }}">
-                    </a>
-                </div>
-                <p class="text-white fs-7 mb-0">
-                    {{ $settings?->about_text ?? 'Delivering culinary excellence and unforgettable event experiences across Dhaka for over 34 years.' }}
-                </p>
-                <div class="d-flex gap-3 fs-5 mt-3">
-                    @if(!empty($settings?->facebook))
-                        <a href="{{ $settings->facebook }}" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    @endif
-                    @if(!empty($settings?->youtube))
-                        <a href="{{ $settings->youtube }}" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    @endif
-                    @if(!empty($settings?->linkedin))
-                        <a href="{{ $settings->linkedin }}" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    @endif
-                    @if(!empty($settings?->instagram))
-                        <a href="{{ $settings->instagram }}" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    @endif
+    $recentEnlistments = \App\Models\Enlistment::active()
+        ->with('media')
+        ->latest()
+        ->take(6)
+        ->get();
+@endphp
+
+<!-- Main Footer -->
+<footer class="main-footer pt-5 pb-4 text-white position-relative {{ request()->is('/') ? '' : 'alternate' }}"
+        style="background-image: url('{{ asset('frontend/images/pages/bg-ooter.jpg') }}');">
+
+    <div class="container position-relative z-2">
+        <div class="row g-4 g-lg-5">
+
+            <!-- Left Big Column -->
+            <div class="col-xl-7 col-lg-12">
+                <div class="row g-4">
+
+                    <!-- About & Contact Widget -->
+                    <div class="col-md-6 col-12">
+                        <div class="footer-widget about-widget pe-md-3">
+                            <div class="footer-logo text-center mb-4">
+                                <a href="{{ url('/') }}" class="d-inline-block">
+                                    <img loading="lazy"
+                                         src="{{ asset($settings->logo ?? 'images/logo.png') }}"
+                                         alt="Logo"
+                                         class="footer-logo-img">
+                                </a>
+                            </div>
+
+                            <div class="footer-contact-info d-flex flex-column gap-3">
+                                <!-- Location -->
+                                <div class="contact-item d-flex align-items-center">
+                                    <div class="icon-box me-3">
+                                        <i class="fa fa-map-marker"></i>
+                                    </div>
+                                    <div class="text-box">
+                                        <span class="label">Location</span>
+                                        <span class="value">{{ $settings->address ?? 'Address' }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="contact-item d-flex align-items-center">
+                                    <div class="icon-box me-3">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <div class="text-box">
+                                        <span class="label">Phone</span>
+                                        <a href="tel:{{ $settings->phone }}" class="value link-hover">
+                                            {{ $settings->phone ?? 'Phone' }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="contact-item d-flex align-items-center">
+                                    <div class="icon-box me-3">
+                                        <i class="fa fa-envelope"></i>
+                                    </div>
+                                    <div class="text-box">
+                                        <span class="label">Email</span>
+                                        <a href="mailto:{{ $settings->email }}" class="value link-hover">
+                                            {{ $settings->email ?? 'Email' }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Posts Widget -->
+                    <div class="col-md-6 col-12">
+                        <div class="footer-widget recent-posts">
+                            <h4 class="widget-title">Services</h4>
+                            <div class="widget-content d-flex flex-column gap-3">
+                                @foreach($recentServices as $service)
+                                    <div class="post-item d-flex align-items-center">
+                                        <div class="thumb flex-shrink-0 me-3">
+                                            <a href="{{ route('page.services-details', $service->slug) }}">
+                                                <img loading="lazy"
+                                                     src="{{ asset($service->media->where('is_main', 1)->first()?->path) }}"
+                                                     alt="{{ $service->title }}"
+                                                     class="img-fluid rounded">
+                                            </a>
+                                        </div>
+                                        <div class="post-info">
+                                            <h6>
+                                                <a href="{{ route('page.services-details', $service->slug) }}" class="text-white text-decoration-none hover-primary">
+                                                    {{ $service->title }}
+                                                </a>
+                                            </h6>
+                                            <ul class="meta-info list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <i class="fa fa-calendar-alt me-1"></i>
+                                                    {{ $service->created_at->format('M d, Y') }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Dynamic Office Locations -->
-            @forelse($offices ?? [] as $office)
-                <div class="col-md-4 {{ $loop->first ? 'col-lg-3' : ($loop->last ? 'col-lg-3' : 'col-lg-2') }}">
-                    <h5>{{ $office->name }}</h5>
-                    <ul class="list-unstyled">
-                        @if($office->address)
-                            <li class="mb-2">
-                                <i class="fas fa-map-marker-alt me-2"></i> {{ $office->address }}
-                            </li>
-                        @endif
-                        @if($office->phone)
-                            <li>
-                                <i class="fas fa-phone-alt me-2"></i>
-                                @if(is_array($office->phone))
-                                    {{ implode(', ', $office->phone) }}
-                                @else
-                                    <a href="tel:{{ $office->phone }}" class="text-decoration-none text-reset">{{ $office->phone }}</a>
-                                @endif
-                            </li>
-                        @endif
-                    </ul>
-                </div>
-            @empty
-                <!-- Fallback Static / Hardcoded Offices if database model isn't passed -->
-                <div class="col-md-4 col-lg-3">
-                    <h5>Mohammadpur Office</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 88/A, Sher-Shah-Suri Road, Baitul Falah Masjid Market, 2nd Floor, Mohammadpur, Dhaka-1207</li>
-                        <li><i class="fas fa-phone-alt me-2"></i> <a href="tel:01711306501" class="text-reset text-decoration-none">01711-306501</a>, <a href="tel:01746710102" class="text-reset text-decoration-none">01746-710102</a></li>
-                    </ul>
-                </div>
+            <!-- Right Big Column -->
+            <div class="col-xl-5 col-lg-12">
+                <div class="row g-4">
 
-                <div class="col-md-4 col-lg-2">
-                    <h5>Adabor Office</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 4/1, Main Road, Block-A, Noboday Housing Society, Adabor, Dhaka-1207</li>
-                        <li><i class="fas fa-phone-alt me-2"></i> <a href="tel:01711306501" class="text-reset text-decoration-none">01711-306501</a></li>
-                    </ul>
-                </div>
+                    <!-- Useful Links Widget -->
+                    <div class="col-md-5 col-sm-6 col-12">
+                        <div class="footer-widget links-widget">
+                            <h4 class="widget-title">Useful Links</h4>
+                            <ul class="footer-links list-unstyled mb-0">
+                                <li><a href="{{ route('page.about-us') }}">About Us</a></li>
+                                <li><a href="{{ route('page.services') }}">Our Services</a></li>
+                                <li><a href="{{ route('page.enlistments') }}">Recent Enlistments</a></li>
+                                <li><a href="{{ route('page.blogs') }}">Latest News</a></li>
+                                <li><a href="{{ route('page.contact-us') }}">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
-                <div class="col-md-4 col-lg-3">
-                    <h5>Uttara Office</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Plot #20, Road #13D, Sector #6, Uttara, Dhaka-1230</li>
-                        <li><i class="fas fa-phone-alt me-2"></i> <a href="tel:01761339553" class="text-reset text-decoration-none">01761-339553</a>, <a href="tel:01773872670" class="text-reset text-decoration-none">01773-872670</a></li>
-                    </ul>
+                    <!-- Recent Works / Gallery Widget -->
+                    <div class="col-md-7 col-sm-6 col-12">
+                        <div class="footer-widget gallery-widget">
+                            <h4 class="widget-title">Recent Works</h4>
+                            <div class="row row-cols-3 g-2">
+                                @foreach($recentEnlistments as $enlistment)
+                                    @php
+                                        $enlistmentImage = ($enlistment->media->where('is_main', 1)->first()?->path) ?? 'frontend/images/resource/news-1.jpg';
+                                    @endphp
+                                    <div class="col">
+                                        <a href="{{ asset($enlistmentImage) }}" class="gallery-item glightbox" title="{{ $enlistment->title }}">
+                                            <img loading="lazy"
+                                                 src="{{ asset($enlistmentImage) }}"
+                                                 alt="{{ $enlistment->title }}">
+                                            <div class="gallery-overlay">
+                                                <i class="fa fa-search-plus"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            @endforelse
+            </div>
 
         </div>
 
-        <!-- Copyright Text -->
-        <div class="text-center pt-4 fs-7 text-muted">
-            {!! $settings?->copyright_text ?? '&copy; ' . date('Y') . ' CATERING SERVICE. All Rights Reserved. Crafted with Modern UI standards.' !!}
+        <!-- Copyright Bottom Bar -->
+        <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <p class="mb-0 text-white-50 small">&copy; {{ date('Y') }} {{ config('app.name', 'Pro Devs') }}. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#" class="text-white-50 text-decoration-none small hover-white me-3">Privacy Policy</a>
+                <a href="#" class="text-white-50 text-decoration-none small hover-white">Terms of Service</a>
+            </div>
         </div>
+
     </div>
 </footer>

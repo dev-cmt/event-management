@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('galleries', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->nullable();
-            $table->string('ip_address')->nullable();
+            $table->string('title')->nullable();
+            $table->string('category')->default('weddings'); // e.g. weddings, dishes, venues, corporate
+            $table->string('image');
+            $table->boolean('status')->default(true);
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('galleries');
     }
 };

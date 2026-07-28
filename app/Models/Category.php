@@ -22,9 +22,9 @@ class Category extends Model
         return $this->hasMany(BlogPost::class);
     }
 
-    public function projects()
+    public function enlistments()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Enlistment::class);
     }
 
     protected static function boot()

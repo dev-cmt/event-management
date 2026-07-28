@@ -13,8 +13,8 @@ class DefaultSettingSeeder extends Seeder
     public function run(): void
     {
         Setting::firstOrCreate([], [
-                'company_name' => 'Sky Tech Solve',
-                'email' => 'info@skytechsolve.com',
+                'company_name' => 'Pro Devs Ltd.',
+                'email' => 'info@prodevsltd.com',
         ]);
     }
 }

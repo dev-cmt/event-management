@@ -18,7 +18,7 @@
     @php
         $mainPages = [
             'page.about-us', 'page.contact-us', 'page.services',
-            'page.projects', 'page.products', 'page.blogs', 'page.teams',
+            'page.enlistments', 'page.blogs', 'page.teams',
             'page.videos'
         ];
     @endphp
@@ -69,12 +69,12 @@
         @endforeach
     @endif
 
-    {{-- Projects --}}
-    @if(!empty($projects))
-        @foreach($projects as $project)
+    {{-- Enlistments --}}
+    @if(!empty($enlistments))
+        @foreach($enlistments as $enlistment)
             <url>
-                <loc>{{ route('page.projects-details', $project->slug) }}</loc>
-                <lastmod>{{ $formatSitemapDate($project->updated_at) }}</lastmod>
+                <loc>{{ route('page.enlistments-details', $enlistment->slug) }}</loc>
+                <lastmod>{{ $formatSitemapDate($enlistment->updated_at) }}</lastmod>
                 <changefreq>monthly</changefreq>
                 <priority>0.8</priority>
             </url>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\VisitorRecord;
-use App\Models\Project;
+use App\Models\Enlistment;
 use App\Models\Service;
 use App\Models\BlogPost;
 use App\Models\Category;
@@ -25,7 +25,7 @@ class AdminController extends Controller
         $data['visits_today'] = VisitorRecord::whereDate('created_at', today())->count();
         $data['unique_today'] = VisitorRecord::whereDate('created_at', today())->distinct('ip_address')->count();
 
-        $data['total_projects'] = Project::count();
+        $data['total_enlistments'] = Enlistment::count();
         $data['total_services'] = Service::count();
         $data['total_blogs'] = BlogPost::count();
         $data['total_contacts'] = \DB::table('contacts')->count();
@@ -63,8 +63,9 @@ class AdminController extends Controller
         $data['lead_source_data'] = collect($data['lead_source_breakdown'])->pluck('count')->values()->all();
         $data['lead_source_total'] = array_sum($data['lead_source_data']);
 
-        // Recent Projects (as "Deals")
-        $data['recent_projects'] = Project::with('category')->latest()->take(5)->get();
+
+        // Recent Enlistments (as "Deals")
+        $data['recent_enlistments'] = Enlistment::with('category')->latest()->take(5)->get();
 
         // Recent Activity (Mixed)
         $blogs = BlogPost::latest()->take(5)->get()->map(fn($item) => [
@@ -75,7 +76,7 @@ class AdminController extends Controller
             'color' => 'primary'
         ]);
 
-        $projects = Project::latest()->take(5)->get()->map(fn($item) => [
+        $projects = Enlistment::latest()->take(5)->get()->map(fn($item) => [
             'type' => 'Project',
             'title' => 'New project: ' . $item->title,
             'time' => $item->created_at,
@@ -123,8 +124,8 @@ class AdminController extends Controller
         ];
 
         // Category stats (for Deals Status)
-        $data['category_distribution'] = Category::withCount('projects')
-            ->having('projects_count', '>', 0)
+        $data['category_distribution'] = Category::withCount('enlistments')
+            ->having('enlistments_count', '>', 0)
             ->get();
 
         return view('backend.dashboard', compact('data'));
@@ -166,7 +167,7 @@ class AdminController extends Controller
             'services',
             'testimonials',
             'achievements',
-            'projects',
+            'enlistments',
             'teams',
             'clients',
             'blogs',
@@ -181,7 +182,7 @@ class AdminController extends Controller
             'view story',
             'view missions',
             'view contact',
-            'view submissions',
+            'view bookings',
             'view seo',
             'view page content',
             'view developer api'

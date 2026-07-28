@@ -24,9 +24,9 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\EnlistmentController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\GalleryController;
 
 
 Route::get('/cc', function () {
@@ -49,15 +49,9 @@ Route::get('about-us', [HomeController::class, 'about'])->name('page.about-us');
 //______________ SERVICES
 Route::get('services-list', [HomeController::class, 'services'])->name('page.services');
 Route::get('services-details/{slug}', [HomeController::class, 'servicesDetails'])->name('page.services-details');
-//______________ PROJECTS
-Route::get('projects-list', [HomeController::class, 'projects'])->name('page.projects');
-Route::get('projects-details/{slug}', [HomeController::class, 'projectsDetails'])->name('page.projects-details');
-
-Route::get('videos', [HomeController::class, 'projectsVideo'])->name('page.videos');
-//______________ PRODUCTS
-Route::get('products-list', [HomeController::class, 'products'])->name('page.products');
-Route::get('products-details/{slug}', [HomeController::class, 'productsDetails'])->name('page.products-details');
-Route::post('products-details/{slug}/purchase', [HomeController::class, 'productsPurchaseEnquiry'])->name('page.products.purchase');
+//______________ ENLISTMENTS
+Route::get('enlistments-list', [HomeController::class, 'enlistments'])->name('page.enlistments');
+Route::get('enlistments-details/{slug}', [HomeController::class, 'enlistmentsDetails'])->name('page.enlistments-details');
 //______________ BLOGS
 Route::get('blogs-list', [HomeController::class, 'blogs'])->name('page.blogs');
 Route::get('blogs-details/{slug}', [HomeController::class, 'blogsDetails'])->name('page.blogs-details');
@@ -75,10 +69,11 @@ Route::get('teams-details/{slug}', [HomeController::class, 'teamsDetails'])->nam
 //______________ CONTACT
 Route::get('contact-us', [HomeController::class, 'contact'])->name('page.contact-us');
 Route::post('contact-us', [HomeController::class, 'contactStore'])->name('page.contact-us.store');
+//______________ GALLERY
+Route::get('gallery', [HomeController::class, 'gallery'])->name('page.gallery');
 
-//______________ FRODLY FROM
-Route::get('page/frodly', [HomeController::class, 'pageFrodly'])->name('page.frodly'); // Not used
-Route::get('get/frodly', [HomeController::class, 'getFrodly'])->name('get.frodly');
+//______________ BOOKING FORM
+Route::post('/booking/store', [HomeController::class, 'storeBooking'])->name('booking.store');
 
 // Admin dashboard
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -121,6 +116,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/sliders/update', [SliderController::class, 'update'])->name('sliders.update');
     Route::delete('/sliders/{slider}', [SliderController::class, 'destroy'])->name('sliders.destroy');
 
+    // Photo Gallery
+    Route::get('/galleries', [GalleryController::class, 'index'])->name('galleries.index');
+    Route::post('/galleries', [GalleryController::class, 'store'])->name('galleries.store');
+    Route::post('/galleries/update', [GalleryController::class, 'update'])->name('galleries.update');
+    Route::delete('/galleries/{gallery}', [GalleryController::class, 'destroy'])->name('galleries.destroy');
+
     // Story
     Route::get('/story', [StoryController::class, 'index'])->name('story.index');
     Route::put('/story/{id}', [StoryController::class, 'update'])->name('story.update');
@@ -131,9 +132,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('services/attachment/{attachment}', [ServiceController::class, 'deleteAttachment'])->name('services.attachment.delete');
     Route::resource('services', ServiceController::class);
 
-    // Projects
-    Route::resource('projects', ProjectController::class);
-    Route::delete('projects/image/{image}', [ProjectController::class, 'deleteImage'])->name('projects.image.delete');
+    // Enlistments
+    Route::resource('enlistments', EnlistmentController::class);
+    Route::delete('enlistments/image/{image}', [EnlistmentController::class, 'deleteImage'])->name('enlistments.image.delete');
 
     // Achievements
     Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
@@ -163,7 +164,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/contact/{id}/create-sale', [ContactController::class, 'createSaleFromContact'])->name('contact.create-sale');
     Route::delete('/contact/{id}', [ContactController::class, 'destroyContact'])->name('contact.destroy');
 
-    Route::get('/submissions', [ContactController::class, 'indexSubmissions'])->name('submissions.index');
+    Route::get('/bookings', [ContactController::class, 'indexBookings'])->name('bookings.index');
 });
 
 Route::middleware('auth')->group(function () {

@@ -1,22 +1,22 @@
-<x-frontend-layout title="Projects" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
+<x-frontend-layout title="Enlistments" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
     <!--Page Title-->
     <section class="page-title" style="background-image:url({{ asset('frontend/images/pages/bg-title.jpg') }});">
         <div class="auto-container">
             <div class="inner-container clearfix">
                 <div class="title-box">
-                    <h1>{{ data_get($page->content, 'header.title', 'Projects') }}</h1>
+                    <h1>{{ data_get($page->content, 'header.title', 'Enlistments') }}</h1>
                     <span
                         class="title">{{ data_get($page->content, 'header.subtitle', 'The Interior speak for themselves') }}</span>
                 </div>
                 <ul class="bread-crumb clearfix">
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li>Projects</li>
+                    <li>Enlistments</li>
                 </ul>
             </div>
         </div>
     </section>
-    <!-- Projects Section -->
-    <section class="projects-section alternate">
+    <!-- Enlistments Section -->
+    <section class="enlistments-section alternate">
         <div class="auto-container">
             <div class="mixitup-gallery">
 
@@ -24,41 +24,41 @@
                 <div class="filters text-center clearfix">
                     <ul class="filter-tabs filter-btns clearfix">
                         <li class="active filter" data-filter="all">All</li>
-                        @foreach($projects->pluck('category.category_name')->unique() as $cat)
+                        @foreach($enlistments->pluck('category.category_name')->unique() as $cat)
                             <li class="filter" data-filter=".{{ Str::slug($cat) }}">{{ strtoupper($cat) }}</li>
                         @endforeach
                     </ul>
                 </div>
 
-                <!-- Project Blocks -->
+                <!-- Enlistment Blocks -->
                 <div class="filter-list row">
-                    @foreach($projects as $project)
+                    @foreach($enlistments as $enlistment)
                         @php
-                            $defaultMedia = $project->media->where('is_main', true)->first();
+                            $defaultMedia = $enlistment->media->where('is_main', true)->first();
                             $imagePath = $defaultMedia ? asset($defaultMedia->path) : asset('images/placeholder.jpg');
                         @endphp
 
                         <div
-                            class="project-block all mix {{ Str::slug($project->category->category_name ?? '') }} col-lg-4 col-md-6 col-sm-12">
+                            class="project-block all mix {{ Str::slug($enlistment->category->category_name ?? '') }} col-lg-4 col-md-6 col-sm-12">
                             <div class="image-box">
                                 <figure class="image">
-                                    <img loading="lazy" src="{{ $imagePath }}" alt="{{ $project->title }}">
+                                    <img loading="lazy" src="{{ $imagePath }}" alt="{{ $enlistment->title }}">
                                 </figure>
                                 <div class="overlay-box">
                                     <h4>
-                                        <a href="{{ route('page.projects-details', $project->slug) }}">
-                                            {{ $project->title }}
+                                        <a href="{{ route('page.enlistments-details', $enlistment->slug) }}">
+                                            {{ $enlistment->title }}
                                         </a>
                                     </h4>
                                     <div class="btn-box">
                                         <a href="{{ $imagePath }}" class="lightbox-image" data-fancybox="gallery">
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a href="{{ route('page.projects-details', $project->slug) }}">
+                                        <a href="{{ route('page.enlistments-details', $enlistment->slug) }}">
                                             <i class="fa fa-external-link"></i>
                                         </a>
                                     </div>
-                                    <span class="tag">{{ $project->category->category_name ?? 'Uncategorized' }}</span>
+                                    <span class="tag">{{ $enlistment->category->category_name ?? 'Uncategorized' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -69,11 +69,11 @@
 
             <!-- Pagination -->
             <div class="styled-pagination">
-                {{ $projects->links('pagination::bootstrap-5') }}
+                {{ $enlistments->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </section>
-    <!--End Projects Section -->
+    <!--End Enlistments Section -->
 
 
     <!-- Contact Section -->

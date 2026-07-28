@@ -22,7 +22,7 @@
 	<link href="{{asset('frontend')}}/css/animate.css" rel="stylesheet">
 	<link href="{{asset('frontend')}}/css/aos.css" rel="stylesheet">
 	<link href="{{asset('frontend')}}/css/swiper-bundle.min.css" rel="stylesheet">
-	<link href="{{asset('frontend')}}/css/glightbox.min.min.css" rel="stylesheet">
+	<link href="{{asset('frontend')}}/css/glightbox.min.css" rel="stylesheet">
 	<link href="{{asset('frontend')}}/css/style.css" rel="stylesheet">
 
 	@stack('css')
@@ -44,7 +44,9 @@
     @include('frontend.partials.social-button')
 
 	<!--Scroll to top-->
-	<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-circle-o-up"></span></div>
+	<div class="scroll-to-top" data-target="html" title="Back to top" role="button" aria-label="Scroll to top">
+		<span class="fa fa-chevron-up"></span>
+	</div>
 
 	<script src="{{asset('frontend')}}/js/jquery.js"></script>
 	<script src="{{asset('frontend')}}/js/bootstrap.min.js"></script>

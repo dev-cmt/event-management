@@ -2,25 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PricePlan extends Model
+class Gallery extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'product_id',
-        'name',
-        'price',
-        'duration',
-        'features',
-        'is_popular',
+        'title',
+        'category',
+        'image',
+        'status',
         'sort_order',
-        'status'
     ];
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+    protected $casts = [
+        'status' => 'boolean',
+        'sort_order' => 'integer',
+    ];
 
     public function scopeActive($query)
     {

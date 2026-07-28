@@ -1,12 +1,12 @@
 <x-backend-layout title="Properties Management">
     <!-- Page Header -->
     <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-        <h1 class="page-title fw-semibold fs-18 mb-0">Projects Management</h1>
+        <h1 class="page-title fw-semibold fs-18 mb-0">Enlistments Management</h1>
         <div class="ms-md-1 ms-0">
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Projects</li>
+                    <li class="breadcrumb-item active" aria-current="page">Enlistments</li>
                 </ol>
             </nav>
         </div>
@@ -17,10 +17,10 @@
             <div class="card custom-card">
                 <div class="card-header justify-content-between">
                     <div class="card-title">
-                        Projects List
+                        Enlistments List
                     </div>
-                    <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm">
-                        <i class="ri-add-line me-1 fw-semibold align-middle"></i>Add New Project
+                    <a href="{{ route('enlistments.create') }}" class="btn btn-primary btn-sm">
+                        <i class="ri-add-line me-1 fw-semibold align-middle"></i>Add New Enlistment
                     </a>
                 </div>
                 <div class="card-body">
@@ -42,49 +42,41 @@
                                     <th scope="col">SL</th>
                                     <th scope="col">Image</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Client Name</th>
-                                    <th scope="col">Live Link</th>
+                                    <th scope="col">Location</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($projects as $key => $project)
+                                @forelse($enlistments as $key => $enlistment)
                                 <tr>
                                     <td>{{ ++$key }}</td>
                                     <td>
                                         @php
-                                            $mainMedia = $project->media->where('is_main', 1)->first();
+                                            $mainMedia = $enlistment->media->where('is_main', 1)->first();
                                         @endphp
                                         @if($mainMedia)
-                                            <img src="{{ asset($mainMedia->path) }}" alt="{{ $project->title }}" style="max-height: 50px; max-width: 80px;">
+                                            <img src="{{ asset($mainMedia->path) }}" alt="{{ $enlistment->title }}" style="max-height: 50px; max-width: 80px;">
                                         @else
                                             <span class="text-muted">No Image</span>
                                         @endif
                                     </td>
-                                    <td>{{ $project->title }}</td>
-                                    <td>{{$project->client_name }}</td>
+                                    <td>{{ $enlistment->title }}</td>
+                                    <td>{{ $enlistment->location }}</td>
                                     <td>
-                                        @if($project->live_link)
-                                            <a href="{{ $project->live_link }}" target="_blank">View Project</a>
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-{{ $project->status == true ? 'success' : 'danger' }}-transparent">
-                                            {{ $project->status == true ? 'Active' : 'Inactive' }}
+                                        <span class="badge bg-{{ $enlistment->status == true ? 'success' : 'danger' }}-transparent">
+                                            {{ $enlistment->status == true ? 'Active' : 'Inactive' }}
                                         </span>
                                     </td>
                                     <td>
                                         <div class="btn-list">
-                                            <a href="{{route('projects.edit',  $project->id)}}" class="btn btn-sm btn-warning-light btn-icon">
+                                            <a href="{{route('enlistments.edit',  $enlistment->id)}}" class="btn btn-sm btn-warning-light btn-icon">
                                                 <i class="ri-pencil-line"></i>
                                             </a>
-                                            <form action="{{ route('projects.destroy', $project->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('enlistments.destroy', $enlistment->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger-light btn-icon" onclick="return confirm('Are you sure you want to delete this project?')">
+                                                <button type="submit" class="btn btn-sm btn-danger-light btn-icon" onclick="return confirm('Are you sure you want to delete this enlistment?')">
                                                     <i class="ri-delete-bin-line"></i>
                                                 </button>
                                             </form>
@@ -93,7 +85,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="7" class="text-center">No projects found.</td>
+                                    <td colspan="7" class="text-center">No enlistments found.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -101,7 +93,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center mt-3">
-                        {{ $projects->links() }}
+                        {{ $enlistments->links() }}
                     </div>
                 </div>
             </div>

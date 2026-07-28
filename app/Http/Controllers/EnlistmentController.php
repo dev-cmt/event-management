@@ -2,38 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\Enlistment;
 use Illuminate\Http\Request;
 use App\Helpers\ImageHelper;
 use App\Models\Category;
 use App\Models\Media;
 
-class ProjectController extends Controller
+class EnlistmentController extends Controller
 {
     public function index()
     {
-        $projects = Project::paginate(10);
-        return view('backend.pages.projects.index', compact('projects'));
+        $enlistments = Enlistment::paginate(10);
+        return view('backend.pages.enlistments.index', compact('enlistments'));
     }
 
     public function create()
     {
         $categories = Category::where('status', true)->get();
-        return view('backend.pages.projects.create', compact('categories'));
+        return view('backend.pages.enlistments.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         // Validate the request data
         $validated = $request->validate([
-            'title'          => 'required|string|max:255|unique:projects,title',
+            'title'          => 'required|string|max:255|unique:enlistments,title',
             'description'    => 'nullable|string',
-            'client_name'    => 'nullable|string|max:255',
-            'location'       => 'nullable|string|max:255',
-            'tech_stack'     => 'nullable|string|max:255',
-            'launch_year'    => 'nullable|integer|min:1900|max:' . (date('Y') + 5),
-            'project_budget' => 'nullable|numeric|min:0',
-            'live_link'      => 'nullable|url|max:500',
         ]);
 
         $data = $request->all();
@@ -43,16 +37,16 @@ class ProjectController extends Controller
             $data['og_image'] = ImageHelper::uploadImage($request->file('meta_image'), 'uploads/seo');
         }
 
-        // Create Project
-        $project = Project::create($data);
+        // Create the enlistment record
+        $enlistment = Enlistment::create($data);
 
         // Create SEO record
-        $project->seo()->create($data);
+        $enlistment->seo()->create($data);
 
         // Handle Media uploads
         if ($request->hasFile('media')) {
-            $hasDefault = Media::where('model_id', $project->id)
-                ->where('model_type', Project::class)
+            $hasDefault = Media::where('model_id', $enlistment->id)
+                ->where('model_type', Enlistment::class)
                 ->where('is_main', true)
                 ->exists();
 
@@ -62,12 +56,12 @@ class ProjectController extends Controller
                 $path = ImageHelper::uploadImage($file, 'uploads');
 
                 Media::create([
-                    'model_type' => Project::class,
-                    'model_id'   => $project->id,
+                    'model_type' => Enlistment::class,
+                    'model_id'   => $enlistment->id,
                     'name'       => $name,
                     'path'       => $path,
                     'type'       => 'image',
-                    'alt_text'   => $project->title,
+                    'alt_text'   => $enlistment->title,
                     'size'       => $size,
                     'is_main'    => !$hasDefault && $key === 0,
                     'created_by' => auth()->id(),
@@ -76,35 +70,29 @@ class ProjectController extends Controller
             }
         }
 
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        return redirect()->route('enlistments.index')->with('success', 'Enlistment created successfully.');
     }
 
     public function edit($id)
     {
-        $project = Project::with(['category', 'media'])->findOrFail($id);
+        $enlistment = Enlistment::with(['category', 'media'])->findOrFail($id);
         $categories = Category::where('status', true)->get();
-        return view('backend.pages.projects.edit', compact('project', 'categories'));
+        return view('backend.pages.enlistments.edit', compact('enlistment', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
-        $project = Project::findOrFail($id);
+        $enlistment = Enlistment::findOrFail($id);
         // Validate the request data
         $validated = $request->validate([
-            'title'          => 'required|string|max:255|unique:projects,title,' . $id,
+            'title'          => 'required|string|max:255|unique:enlistments,title,' . $id,
             'description'    => 'nullable|string',
-            'client_name'    => 'nullable|string|max:255',
-            'location'       => 'nullable|string|max:255',
-            'tech_stack'     => 'nullable|string|max:255',
-            'launch_year'    => 'nullable|integer|min:1900|max:' . (date('Y') + 5),
-            'project_budget' => 'nullable|numeric|min:0',
-            'live_link'      => 'nullable|url|max:500',
         ]);
 
         $data = $request->all();
 
         // Handle OG image
-        $ogImagePath = $project->seo->og_image ?? null;
+        $ogImagePath = $enlistment->seo->og_image ?? null;
         if ($request->hasFile('meta_image')) {
             // Delete old OG image if exists
             if ($ogImagePath && file_exists(public_path($ogImagePath))) {
@@ -113,8 +101,8 @@ class ProjectController extends Controller
             $data['og_image'] = ImageHelper::uploadImage($request->file('meta_image'), 'uploads/seo');
         }
 
-        // Update project
-        $project->update($data);
+        // Update enlistment
+        $enlistment->update($data);
 
         // Prepare SEO data - only include relevant fields
         $seoData = [
@@ -125,19 +113,19 @@ class ProjectController extends Controller
         ];
 
         // Update or create SEO record
-        if ($project->seo) {
-            $project->seo()->update($seoData);
+        if ($enlistment->seo) {
+            $enlistment->seo()->update($seoData);
         } else {
-            $project->seo()->create($seoData);
+            $enlistment->seo()->create($seoData);
         }
 
         // Handle main image selection
         if ($request->filled('is_main')) {
             // Reset all media to not default
-            Media::where('model_id', $project->id)
-                ->where('model_type', Project::class)
+            Media::where('model_id', $enlistment->id)
+                ->where('model_type', Enlistment::class)
                 ->update(['is_main' => false]);
- 
+
             // Set the selected media as main
             if (str_starts_with($request->is_main, 'new_')) {
                 // This is a new image, we'll handle it after upload
@@ -145,8 +133,8 @@ class ProjectController extends Controller
             } else {
                 // This is an existing image
                 Media::where('id', $request->is_main)
-                    ->where('model_id', $project->id)
-                    ->where('model_type', Project::class)
+                    ->where('model_id', $enlistment->id)
+                    ->where('model_type', Enlistment::class)
                     ->update(['is_main' => true]);
             }
         }
@@ -155,7 +143,7 @@ class ProjectController extends Controller
         if ($request->filled('delete_media')) {
             foreach ($request->delete_media as $mediaId) {
                 $media = Media::find($mediaId);
-                if ($media && $media->model_id == $project->id && $media->model_type == Project::class) {
+                if ($media && $media->model_id == $enlistment->id && $media->model_type == Enlistment::class) {
                     ImageHelper::deleteImage($media->path);
                     $media->delete();
                 }
@@ -164,8 +152,8 @@ class ProjectController extends Controller
 
         // Handle Media uploads
         if ($request->hasFile('media')) {
-            $hasDefault = Media::where('model_id', $project->id)
-                ->where('model_type', Project::class)
+            $hasDefault = Media::where('model_id', $enlistment->id)
+                ->where('model_type', Enlistment::class)
                 ->where('is_main', true)
                 ->exists();
 
@@ -174,47 +162,47 @@ class ProjectController extends Controller
                 $name = $file->getClientOriginalName();
                 $size = $file->getSize();
                 $path = ImageHelper::uploadImage($file, 'uploads');
- 
+
                 Media::create([
-                    'model_type' => Project::class,
-                    'model_id'   => $project->id,
+                    'model_type' => Enlistment::class,
+                    'model_id'   => $enlistment->id,
                     'name'       => $name,
                     'path'       => $path,
                     'type'       => 'image',
-                    'alt_text'   => $project->title,
+                    'alt_text'   => $enlistment->title,
                     'size'       => $size,
                     'is_main'    => $isMain,
                     'created_by' => auth()->id(),
                 ]);
- 
+
                 if ($isMain) {
                     $hasDefault = true;
                     $newMainFlag = false;
                 }
             }
         }
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
+        return redirect()->route('enlistments.index')->with('success', 'Enlistment updated successfully.');
     }
 
     public function destroy($id)
     {
-        $project = Project::with(['media'])->findOrFail($id);
+        $enlistment = Enlistment::with(['media'])->findOrFail($id);
 
         // Delete SEO OG image
-        if ($og = $project->seo?->og_image) {
+        if ($og = $enlistment->seo?->og_image) {
             ImageHelper::deleteImage($og);
-            $project->seo()->delete();
+            $enlistment->seo()->delete();
         }
 
         // Delete media files
-        foreach ($project->media as $media) {
+        foreach ($enlistment->media as $media) {
             ImageHelper::deleteImage($media->path);
             $media->delete();
         }
 
-        $project->delete();
+        $enlistment->delete();
 
-        return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
+        return redirect()->route('enlistments.index')->with('success', 'Enlistment deleted successfully.');
     }
 
     public function deleteImage($id)
