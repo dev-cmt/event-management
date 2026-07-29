@@ -4,7 +4,7 @@
         PAGE HERO BANNER
     ========================================================= --}}
     <section class="detail-page-hero"
-             style="background-image: url('{{ asset('frontend/images/pages/bg-title.jpg') }}');">
+             style="background-image: url('{{ asset('frontend/images/bg-title.jpg') }}');">
         <div class="detail-page-hero-overlay"></div>
         <div class="container position-relative z-2">
             <div class="row align-items-center" style="min-height:260px;">
@@ -151,7 +151,7 @@
                     @endif
 
                     {{-- Info Tabs --}}
-                    <div class="mt-4">
+                    {{-- <div class="mt-4">
                         <ul class="nav service-detail-tabs mb-0" id="serviceDetailTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="service-tab-btn active" data-bs-toggle="tab"
@@ -185,7 +185,7 @@
                                 <p class="text-muted" style="line-height:1.85;">Our specializations and unique offerings for this service will appear here.</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>{{-- /main content --}}
 

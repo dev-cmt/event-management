@@ -20,6 +20,7 @@ class PageSeeder extends Seeder
             ['title' => 'services', 'slug' => 'services', 'content' => 'This is the home page content.'],
             ['title' => 'enlistments', 'slug' => 'enlistments', 'content' => 'This is the home page content.'],
             ['title' => 'blogs', 'slug' => 'blogs', 'content' => 'This is the home page content.'],
+            ['title' => 'menus', 'slug' => 'menus', 'content' => 'This is the home page content.'],
         ];
 
         foreach ($pages as $p) {

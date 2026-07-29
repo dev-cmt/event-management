@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
-use App\Models\Feature;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
 use App\Helpers\ImageHelper;
@@ -19,8 +18,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        $features = Feature::where('status', 'active')->get();
-        return view('backend.pages.services.create', compact('features'));
+        return view('backend.pages.services.create');
     }
 
     public function store(Request $request)
@@ -32,7 +30,7 @@ class ServiceController extends Controller
         ]);
 
         $data = $request->all();
-        
+
         // Upload main image (meta_image in your form)
         if ($request->hasFile('meta_image')) {
             $data['og_image'] = ImageHelper::uploadImage($request->file('meta_image'), 'uploads/seo');
@@ -43,11 +41,6 @@ class ServiceController extends Controller
 
         // Create SEO record
         $service->seo()->create($data);
-
-        // Attach features
-        if ($request->filled('features')) {
-            $service->features()->sync($request->features);
-        }
 
         // Handle Media uploads (Images)
         if ($request->hasFile('media')) {
@@ -82,7 +75,7 @@ class ServiceController extends Controller
                 $name = $request->attachment_names[$index] ?? $file->getClientOriginalName();
                 $size = $file->getSize();
                 $path = ImageHelper::uploadImage($file, 'uploads/attachments');
-                
+
                 Media::create([
                     'model_type' => Service::class,
                     'model_id'   => $service->id,
@@ -102,9 +95,8 @@ class ServiceController extends Controller
 
     public function edit($id)
     {
-        $service = Service::with(['features', 'attachments', 'media'])->findOrFail($id);
-        $features = Feature::where('status', 'active')->get();
-        return view('backend.pages.services.edit', compact('service', 'features'));
+        $service = Service::with(['attachments', 'media'])->findOrFail($id);
+        return view('backend.pages.services.edit', compact('service'));
     }
 
     public function update(Request $request, $id)
@@ -146,13 +138,6 @@ class ServiceController extends Controller
             $service->seo()->create($seoData);
         }
 
-        // Sync features
-        if ($request->filled('features')) {
-            $service->features()->sync($request->features);
-        } else {
-            $service->features()->detach();
-        }
-
         // Handle main image selection
         if ($request->filled('is_main')) {
             // Reset all media to not default
@@ -160,7 +145,7 @@ class ServiceController extends Controller
                 ->where('model_type', Service::class)
                 ->where('type', 'image')
                 ->update(['is_main' => false]);
-                
+
             // Set the selected media as main
             if (str_starts_with($request->is_main, 'new_')) {
                 // This is a new image, we'll handle it after upload
@@ -197,7 +182,7 @@ class ServiceController extends Controller
                 $name = $file->getClientOriginalName();
                 $size = $file->getSize();
                 $path = ImageHelper::uploadImage($file, 'uploads');
-                
+
                 Media::create([
                     'model_type' => Service::class,
                     'model_id'   => $service->id,
@@ -209,7 +194,7 @@ class ServiceController extends Controller
                     'is_main'    => $isMain,
                     'created_by' => auth()->id(),
                 ]);
-                
+
                 if ($isMain) {
                     $hasDefault = true;
                     $newMainFlag = false;
@@ -256,7 +241,7 @@ class ServiceController extends Controller
                 $name = $request->new_attachment_names[$index] ?? $file->getClientOriginalName();
                 $size = $file->getSize();
                 $path = ImageHelper::uploadImage($file, 'uploads/attachments');
-                
+
                 Media::create([
                     'model_type' => Service::class,
                     'model_id'   => $service->id,
@@ -295,9 +280,6 @@ class ServiceController extends Controller
             ImageHelper::deleteImage($attachment->path);
             $attachment->delete();
         }
-
-        // Detach related features (pivot table)
-        $service->features()->detach();
 
         $service->delete();
 

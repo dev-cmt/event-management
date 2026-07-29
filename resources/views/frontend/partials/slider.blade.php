@@ -1,6 +1,6 @@
 <!-- =========================================================
     HERO SLIDER SECTION (DYNAMIC SLIDER WITH KEN BURNS IMAGE ZOOM)
-    ========================================================= -->
+========================================================= -->
 <section class="hero-section">
     <div id="mainHeroCarousel" class="carousel slide carousel-fade hero-carousel" data-bs-ride="carousel" data-bs-interval="6500">
 

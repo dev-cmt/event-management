@@ -64,7 +64,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $service->title }}</td>
-                                    <td>{{ Str::limit($service->description, 50) }}</td>
+                                    <td>{!! Str::limit($service->description, 50) !!}</td>
                                     <td>{{ $service->sort_order }}</td>
                                     <td>
                                         <span class="badge bg-{{ $service->status == true ? 'success' : 'danger' }}-transparent">
@@ -120,7 +120,7 @@
                 var isChecked = $(this).is(':checked');
                 var serviceId = $(this).data('id');
                 var toggleUrl = "{{ route('services.toggle_menu', ':id') }}".replace(':id', serviceId);
-                
+
                 $.ajax({
                     url: toggleUrl,
                     type: 'POST',

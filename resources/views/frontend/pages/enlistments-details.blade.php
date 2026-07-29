@@ -4,7 +4,7 @@
         PAGE HERO BANNER
     ========================================================= --}}
     <section class="detail-page-hero"
-             style="background-image: url('{{ asset('frontend/images/pages/bg-title.jpg') }}');">
+             style="background-image: url('{{ asset('frontend/images/bg-title.jpg') }}');">
         <div class="detail-page-hero-overlay"></div>
         <div class="container position-relative z-2">
             <div class="row align-items-center" style="min-height:260px;">

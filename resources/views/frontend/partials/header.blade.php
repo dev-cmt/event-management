@@ -1,6 +1,7 @@
 @php
     $services = \App\Models\Service::where('is_menu', true)->get();
     $enlistments = \App\Models\Enlistment::where('status', true)->get();
+    $menuCategories = \App\Models\MenuCategory::with(['activePackages'])->where('status', true)->orderBy('order', 'asc')->get();
 @endphp
 <!-- =========================================================
     1. TOP HEADER CONTACT BAR & THEME SWITCHER
@@ -49,19 +50,23 @@
 ========================================================= -->
 <nav class="navbar navbar-expand-lg main-navbar">
     <div class="container">
-        <div class="d-flex w-100 align-items-center flex-wrap">
-            <!-- Logo - centered on mobile, left on desktop -->
-            <a class="navbar-brand order-2 order-lg-1" href="{{ url('/') }}">
-                <img src="{{ asset($settings?->logo ?? 'catering_logo.png') }}" height="40" alt="">
-            </a>
-
+        <div class="d-flex w-100 align-items-center justify-content-between">
             <!-- Toggler - left on mobile -->
-            <button class="navbar-toggler order-1 d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNavbar">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div class="navbar-toggler-wrapper">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNavbar" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Logo - centered on mobile, left on desktop -->
+            <div class="navbar-brand-wrapper">
+                <a class="navbar-brand me-0 me-lg-4" href="{{ url('/') }}">
+                    <img src="{{ asset($settings?->logo ?? 'catering_logo.png') }}" height="60" alt="">
+                </a>
+            </div>
 
             <!-- Desktop Menu - centered -->
-            <div class="collapse navbar-collapse order-3 order-lg-2" id="desktopNavbar">
+            <div class="collapse navbar-collapse" id="desktopNavbar">
                 <ul class="navbar-nav mx-auto align-items-lg-center">
                     <!-- nav items -->
                     <li class="nav-item">
@@ -89,36 +94,17 @@
 
                     <!-- Level 1 Dropdown: Menus -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="menusDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link" href="{{ route('page.menus') }}" id="menusDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Menus <i class="fa-solid fa-caret-down fs-7 ms-1 opacity-75"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menusDropdown">
-                            <li class="dropend">
-                                <a class="dropdown-item" href="#">
-                                    <span>Royal Kacchi Packages</span>
-                                    <i class="fas fa-chevron-right fs-7 ms-auto opacity-75"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#quoteSection">Gold Kacchi Feast</a></li>
-                                    <li><a class="dropdown-item" href="#quoteSection">Diamond Royal Feast</a></li>
-                                    <li><a class="dropdown-item" href="#quoteSection">Platinum Shahi Menu</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropend">
-                                <a class="dropdown-item" href="#">
-                                    <span>Buffet Packages</span>
-                                    <i class="fas fa-chevron-right fs-7 ms-auto opacity-75"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#quoteSection">Standard Buffet</a></li>
-                                    <li><a class="dropdown-item" href="#quoteSection">Premium Buffet</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#quoteSection">
-                                    <span>Custom Menu Builder</span>
-                                </a>
-                            </li>
+                            @foreach ($menuCategories as $cat)
+                                <li class="dropend">
+                                    <a class="dropdown-item" href="{{ route('page.menus', ['category' => $cat->slug]) }}">
+                                        <span>{{ $cat->name }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
                     </li>
 
@@ -142,9 +128,9 @@
                 </ul>
             </div>
 
-            <!-- Desktop CTA - right on desktop -->
-            <div class="d-none d-lg-flex order-3">
-                <a href="#quoteSection" class="btn btn-theme-accent">Book Now</a>
+            <!-- CTA / Book Now button - right on mobile & desktop -->
+            <div class="header-btn-wrapper">
+                <a href="{{ url('/#quoteSection') }}" class="btn btn-theme-accent header-btn-book">Book Now</a>
             </div>
         </div>
     </div>
@@ -152,50 +138,99 @@
 
 <!-- Mobile Drawer Offcanvas -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileNavbar">
-    <div class="offcanvas-header border-bottom">
+    <div class="offcanvas-header border-bottom py-3">
         <div class="d-flex align-items-center gap-2">
-            <img src="catering_logo.png" height="36" alt="">
-            <span class="fw-bold fs-5 text-theme-primary">Catering Service</span>
+            <img src="{{ asset($settings?->logo ?? 'catering_logo.png') }}" height="40" alt="Logo">
+            <span class="fw-bold fs-5 text-theme-primary">{{ $settings?->site_name ?? 'Catering Service' }}</span>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        <button type="button" class="btn-close text-reset" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-        <div class="accordion accordion-flush" id="mobileMenuAccordion">
-            <a href="#" class="mobile-nav-link text-theme-primary" data-bs-dismiss="offcanvas">Home</a>
 
-            <div class="accordion-item border-bottom">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMobileProfile">
-                        Profile & About
-                    </button>
-                </h2>
-                <div id="collapseMobileProfile" class="accordion-collapse collapse" data-bs-parent="#mobileMenuAccordion">
-                    <div class="accordion-body">
-                        <a href="#aboutSection" class="sub-item" data-bs-dismiss="offcanvas"><i class="fas fa-building text-theme-primary"></i> About Our Company</a>
-                        <a href="#ceoSection" class="sub-item" data-bs-dismiss="offcanvas"><i class="fas fa-user-tie text-theme-primary"></i> CEO Message</a>
-                        <a href="#whyUsSection" class="sub-item" data-bs-dismiss="offcanvas"><i class="fas fa-thumbs-up text-theme-primary"></i> Why Choose Us</a>
-                    </div>
-                </div>
-            </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-0">
+        <div class="accordion accordion-flush mobile-drawer-menu" id="mobileMenuAccordion">
+            <!-- 1. Home -->
+            <a href="{{ url('/') }}" class="mobile-nav-link text-theme-primary fw-semibold">
+                Home
+            </a>
 
+            <!-- 2. About Us -->
+            <a href="{{ url('/about-us') }}" class="mobile-nav-link">
+                About Us
+            </a>
+
+            <!-- 3. Services Dropdown -->
             <div class="accordion-item border-bottom">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMobileServices">
-                        Our Services
+                        Services
                     </button>
                 </h2>
                 <div id="collapseMobileServices" class="accordion-collapse collapse" data-bs-parent="#mobileMenuAccordion">
                     <div class="accordion-body">
-                        <a href="#servicesSection" class="sub-item" data-bs-dismiss="offcanvas"><i class="fas fa-ring text-danger"></i> Wedding & Holud Ceremonies</a>
-                        <a href="#servicesSection" class="sub-item" data-bs-dismiss="offcanvas"><i class="fas fa-briefcase text-primary"></i> Corporate Lunches & Galas</a>
-                        <a href="#servicesSection" class="sub-item" data-bs-dismiss="offcanvas"><i class="fas fa-gift text-warning"></i> Birthday & Social Parties</a>
+                        @foreach ($services as $service)
+                            <a href="{{ route('page.services-details', $service->slug) }}" class="sub-item">
+                                {{ $service->title }}
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
-            <a href="#venuesSection" class="mobile-nav-link" data-bs-dismiss="offcanvas">Enlisted Venues</a>
-            <a href="{{ route('page.gallery') }}" class="mobile-nav-link" data-bs-dismiss="offcanvas">Photo Gallery</a>
-            <a href="#quoteSection" class="mobile-nav-link text-theme-accent fw-bold" data-bs-dismiss="offcanvas"><i class="fas fa-calendar-check me-2"></i> Book Reservation</a>
+            <!-- 4. Menus Dropdown -->
+            <div class="accordion-item border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMobileMenus">
+                        Menus
+                    </button>
+                </h2>
+                <div id="collapseMobileMenus" class="accordion-collapse collapse" data-bs-parent="#mobileMenuAccordion">
+                    <div class="accordion-body">
+                        @foreach ($menuCategories as $cat)
+                            <a href="{{ route('page.menus', ['category' => $cat->slug]) }}" class="sub-item">
+                                {{ $cat->name }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Enlistments Dropdown -->
+            <div class="accordion-item border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMobileEnlistments">
+                        Enlistments
+                    </button>
+                </h2>
+                <div id="collapseMobileEnlistments" class="accordion-collapse collapse" data-bs-parent="#mobileMenuAccordion">
+                    <div class="accordion-body">
+                        @foreach ($enlistments as $enlistment)
+                            <a href="{{ route('page.enlistments-details', $enlistment->slug) }}" class="sub-item">
+                                {{ $enlistment->title }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Gallery -->
+            <a href="{{ route('page.gallery') }}" class="mobile-nav-link">
+                Gallery
+            </a>
+        </div>
+
+        <!-- Premium Mobile Drawer Footer CTA -->
+        <div class="offcanvas-footer p-3 border-top mt-auto">
+            <a href="{{ url('/#quoteSection') }}" class="btn btn-theme-accent w-100 py-2.5 rounded-3 fw-bold text-uppercase shadow-sm d-flex align-items-center justify-content-center gap-2 mobile-drawer-btn">
+                <i class="fas fa-calendar-check fs-6"></i>
+                <span>Book Now</span>
+            </a>
+            @if(!empty($settings?->phone))
+                <div class="text-center mt-2">
+                    <a href="tel:{{ $settings->phone }}" class="small text-muted text-decoration-none">
+                        <i class="fas fa-phone-alt me-1 text-theme-primary"></i> Call: {{ $settings->phone }}
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </div>

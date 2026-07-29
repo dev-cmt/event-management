@@ -55,7 +55,7 @@
                             </thead>
                             <tbody>
                                 @forelse($users as $key => $user)
-                                    <tr>
+                                    <tr class="{{$user->id == 1 ? 'd-none' : ''}}">
                                         <td>{{ $key + 1 }}</td>
                                         <td>
                                             @if ($user->photo_path)

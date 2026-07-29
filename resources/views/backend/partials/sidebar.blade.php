@@ -46,22 +46,24 @@
                     </li>
                 @endcan
 
-                <!-- Photo Gallery -->
-                <li class="slide">
-                    <a href="{{ route('galleries.index') }}"
-                        class="side-menu__item {{ Request::is('galleries*') ? 'active' : '' }}">
-                        <i class="bx bx-images side-menu__icon"></i>
-                        <span class="side-menu__label">Photo Gallery</span>
-                    </a>
-                </li>
-
-                <!-- Category -->
-                @can('view categories')
+                <!-- Achievement -->
+                @can('view achievements')
                     <li class="slide">
-                        <a href="{{ route('categories.index') }}"
-                            class="side-menu__item {{ Request::is('categories*') ? 'active' : '' }}">
-                            <i class="bx bx-layer side-menu__icon"></i>
-                            <span class="side-menu__label">Category</span>
+                        <a href="{{ route('achievements.index') }}"
+                            class="side-menu__item {{ Request::is('achievements*') ? 'active' : '' }}">
+                            <i class="bx bx-trophy side-menu__icon"></i>
+                            <span class="side-menu__label">Achievement</span>
+                        </a>
+                    </li>
+                @endcan
+
+                <!-- Story -->
+                @can('view story')
+                    <li class="slide">
+                        <a href="{{ route('story.index') }}"
+                            class="side-menu__item {{ Request::is('story*') ? 'active' : '' }}">
+                            <i class="bx bx-book side-menu__icon"></i>
+                            <span class="side-menu__label">Our Story</span>
                         </a>
                     </li>
                 @endcan
@@ -72,31 +74,19 @@
                         <a href="{{ route('services.index') }}"
                             class="side-menu__item {{ Request::is('services*') ? 'active' : '' }}">
                             <i class="bx bx-task side-menu__icon"></i>
-                            <span class="side-menu__label">Services</span>
+                            <span class="side-menu__label">Services List</span>
                         </a>
                     </li>
                 @endcan
 
-                <!-- Enlistments -->
-                @can('view enlistments')
-                    <li class="slide">
-                        <a href="{{ route('enlistments.index') }}"
-                            class="side-menu__item {{ Request::is('enlistments*') ? 'active' : '' }}">
-                            <i class="bx bx-network-chart side-menu__icon"></i>
-                            <span class="side-menu__label">Enlistments</span>
-                        </a>
-                    </li>
-                @endcan
-
-                <!-- Achievement -->
-                @can('view achievements')
-                    <li class="slide">
-                        <a href="{{ route('achievements.index') }}"
-                            class="side-menu__item {{ Request::is('achievements*') ? 'active' : '' }}">
-                            <i class="bx bx-trophy side-menu__icon"></i>
-                            <span class="side-menu__label">Achievement</span>
-                        </a>
-                    </li>
+                <!-- Photo Gallery -->
+                @can('view galleries')
+                <li class="slide">
+                    <a href="{{ route('galleries.index') }}" class="side-menu__item {{ Request::is('galleries*') ? 'active' : '' }}">
+                        <i class="bx bx-images side-menu__icon"></i>
+                        <span class="side-menu__label">Photo Gallery</span>
+                    </a>
+                </li>
                 @endcan
 
                 <!-- Testimonial -->
@@ -110,19 +100,8 @@
                     </li>
                 @endcan
 
-                <!-- Story -->
-                @can('view story')
-                    <li class="slide">
-                        <a href="{{ route('story.index') }}"
-                            class="side-menu__item {{ Request::is('story*') ? 'active' : '' }}">
-                            <i class="bx bx-book side-menu__icon"></i>
-                            <span class="side-menu__label">Story</span>
-                        </a>
-                    </li>
-                @endcan
-
                 <!-- Team -->
-                @can('view teams')
+                @can('view teams hidden')
                     <li class="slide">
                         <a href="{{ route('team.index') }}"
                             class="side-menu__item {{ Request::is('team*') ? 'active' : '' }}">
@@ -133,7 +112,7 @@
                 @endcan
 
                 <!-- Clients -->
-                @can('view clients')
+                @can('view clients hidden')
                     <li class="slide">
                         <a href="{{ route('clients.index') }}"
                             class="side-menu__item {{ Request::is('clients*') ? 'active' : '' }}">
@@ -165,8 +144,66 @@
                     </li>
                 @endcan
 
+                <!-- Catering Menu Categories -->
+                @canany(['view menu-categories', 'view menu-packages'])
+                    <li class="slide has-sub {{ Request::is('menu-packages*') || Request::is('menu-categories*') ? 'active open' : '' }}">
+                        <a href="javascript:void(0);"
+                            class="side-menu__item {{ Request::is('menu-packages*') || Request::is('menu-categories*') ? 'active' : '' }}">
+                            <i class="bx bx-dish side-menu__icon"></i>
+                            <span class="side-menu__label">Menus</span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
+                        <ul class="slide-menu child1">
+                            @can('view menu-packages')
+                                <li class="slide">
+                                    <a href="{{ route('menu-packages.index') }}"
+                                        class="side-menu__item {{ Request::is('menu-packages*') ? 'active' : '' }}">
+                                        Menu Packages
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view menu-categories')
+                                <li class="slide">
+                                    <a href="{{ route('menu-categories.index') }}"
+                                        class="side-menu__item {{ Request::is('menu-categories*') ? 'active' : '' }}">
+                                        Category
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
+
+                <!-- Enlistments -->
+                <li class="slide has-sub {{ Request::is('enlistments*') || Request::is('categories*') ? 'active open' : '' }}">
+                    <a href="javascript:void(0);"
+                        class="side-menu__item {{ Request::is('enlistments*') || Request::is('categories*') ? 'active' : '' }}">
+                        <i class="bx bx-network-chart side-menu__icon"></i>
+                        <span class="side-menu__label">Enlistments</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
+                    </a>
+                    <ul class="slide-menu child1">
+                        @can('view enlistments')
+                            <li class="slide">
+                                <a href="{{ route('enlistments.index') }}"
+                                    class="side-menu__item {{ Request::is('enlistments*') ? 'active' : '' }}">
+                                    Enlistments
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view categories')
+                            <li class="slide">
+                                <a href="{{ route('categories.index') }}"
+                                    class="side-menu__item {{ Request::is('categories*') ? 'active' : '' }}">
+                                    Category
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+
                 <!-- Blogs -->
-                @canany(['view blogs', 'view tags'])
+                @canany(['view blogs hidden', 'view tags hidden'])
                     <li class="slide has-sub {{ Request::is('blogs*') || Request::is('tags*') ? 'active open' : '' }}">
                         <a href="javascript:void(0);"
                             class="side-menu__item {{ Request::is('blogs*') || Request::is('tags*') ? 'active' : '' }}">

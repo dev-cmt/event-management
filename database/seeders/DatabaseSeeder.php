@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolePermissionSeeder::class,
             DefaultSettingSeeder::class,
+            PageSeeder::class,
+            MenuSeeder::class,
         ]);
     }
 }

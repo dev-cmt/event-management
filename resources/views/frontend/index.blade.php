@@ -1,15 +1,6 @@
 <x-frontend-layout title="Home Page" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
 
-    @if($settings->is_slider)
-        <!-- Banner Section -->
-        @include('frontend.partials.slider')
-        <!-- End Banner Section -->
-    @else
-        <!-- Hero Section -->
-        @include('frontend.partials.hero')
-        <!-- End Hero Section -->
-    @endif
-
+    @include('frontend.partials.slider')
 
     <!-- =========================================================
       1. STATS COUNTER CARDS
@@ -37,75 +28,83 @@
     <!-- =========================================================
        2. ABOUT SECTION WITH SWIPER IMAGE SLIDER
     ========================================================= -->
+    @if(isset($story) && $story->status)
     <section class="py-5" id="aboutSection">
         <div class="container py-4">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="about-img-box">
-                        <img src="{{ asset($story->image ?? 'frontend/images/about-us.jpg') }}" alt="Catering Excellence">
+                        <img src="{{ asset($story->image ?? 'frontend/images/about-us.jpg') }}" alt="{{ $story->title ?? 'About Us' }}">
+                        @if($story->experience_years)
                         <div class="about-experience-badge">
-                            <h2>30+</h2>
-                            <span>Years Heritage</span>
+                            <h2>{{ $story->experience_years }}</h2>
+                            <span>{{ $story->experience_title ?? 'Years Heritage' }}</span>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
-                    <span class="badge-theme mb-2">{{ $story->title ?? 'About Our Story' }}</span>
-                    <h2 class="display-6 fw-bold mb-3">Catering<span class="text-theme-accent"> Service</span></h2>
-                    <p class="text-muted mb-4">
-                        {!! $story->content !!}
+                    <span class="badge-theme mb-2">
+                        {{ data_get($page->content, 'our_story.badge_text', 'Our Story') }}
+                    </span>
+                    <h2 class="display-6 fw-bold mb-3">
+                        @include('frontend.partials.accent-title', [
+                            'title' => data_get($page->content, 'our_story.title', 'Our Story')
+                        ])
+                    </h2>
+                    <p class="text-muted mb-3">
+                        {{ data_get($page->content, 'our_story.sub_title', '') }}
                     </p>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-card">
-                                <i class="fas fa-check-circle fs-3 text-theme-primary"></i>
-                                <div>
-                                    <h6 class="mb-0 font-rajdhani fw-bold">Large-Scale Capacity</h6>
-                                    <small class="text-muted">Up to 30K guests at single event</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-card">
-                                <i class="fas fa-bolt fs-3 text-theme-accent"></i>
-                                <div>
-                                    <h6 class="mb-0 font-rajdhani fw-bold">12-Hour Urgent Prep</h6>
-                                    <small class="text-muted">Emergency catering execution</small>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="mb-4" style="border-left: 3px solid var(--primary-color); padding-left: 10px;">
+                        {!! $story->content !!}
                     </div>
 
+                    @php
+                        $features = is_array($story->features) ? $story->features : [];
+                    @endphp
+                    @if(!empty($features))
+                    <div class="row g-3 mb-3">
+                        @foreach($features as $feature)
+                        @if(!empty($feature['title']))
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-card">
+                                <i class="{{ $feature['icon'] ?? 'fas fa-check-circle' }} fs-3 text-theme-primary"></i>
+                                <div>
+                                    <h6 class="mb-0 font-rajdhani fw-bold">{{ $feature['title'] }}</h6>
+                                    <small class="text-muted">{{ $feature['subtitle'] ?? '' }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+                    @endif
+
                     <!-- About Gallery Swiper Slider -->
+                    @php
+                        $galleryImages = is_array($story->gallery_images) && count($story->gallery_images) > 0
+                            ? $story->gallery_images
+                            : [
+                                'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop',
+                                'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2070&auto=format&fit=crop',
+                                'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=2070&auto=format&fit=crop',
+                                'https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=2070&auto=format&fit=crop',
+                                'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop',
+                            ];
+                    @endphp
                     <div class="about-gallery-swiper" data-aos="fade-up" data-aos-delay="200">
                         <div class="swiper swiper-about-gallery">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <a href="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop" class="glightbox" data-gallery="about-gallery" data-title="Grand Banquet Setup">
-                                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=600&auto=format&fit=crop" alt="Grand Banquet">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2070&auto=format&fit=crop" class="glightbox" data-gallery="about-gallery" data-title="Event Catering Service">
-                                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600&auto=format&fit=crop" alt="Event Catering">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=2070&auto=format&fit=crop" class="glightbox" data-gallery="about-gallery" data-title="Banquet Hall Service">
-                                        <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=600&auto=format&fit=crop" alt="Banquet Hall">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=2070&auto=format&fit=crop" class="glightbox" data-gallery="about-gallery" data-title="Wedding Feast Setup">
-                                        <img src="https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=600&auto=format&fit=crop" alt="Wedding Feast">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop" class="glightbox" data-gallery="about-gallery" data-title="Corporate Event Setup">
-                                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=600&auto=format&fit=crop" alt="Corporate Setup">
-                                    </a>
-                                </div>
+                                @foreach($galleryImages as $img)
+                                    @php
+                                        $fullUrl = Str::startsWith($img, 'http') ? $img : asset($img);
+                                    @endphp
+                                    <div class="swiper-slide">
+                                        <a href="{{ $fullUrl }}" class="glightbox" data-gallery="about-gallery" data-title="{{ $story->title ?? 'Gallery Photo' }}">
+                                            <img src="{{ $fullUrl }}" alt="About Gallery Photo">
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
                             <div class="swiper-pagination about-gallery-pagination"></div>
                         </div>
@@ -116,6 +115,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- =========================================================
        3. OUR SERVICES SHOWCASE (INTERACTIVE SLIDER FORMAT)
@@ -154,7 +154,7 @@
                                 <div class="card-body">
                                     <h4 class="fw-bold font-rajdhani text-theme-primary mb-2">{{ $service->title }}</h4>
                                     <p class="text-muted flex-grow-1 fs-7">
-                                        {{ Str::limit($service->description, 100) }}
+                                        {!! Str::limit($service->description ?? '', 150) !!}
                                     </p>
                                     <a href="{{ route('page.services-details', $service->slug) }}" class="btn btn-outline-theme rounded-pill mt-3 w-100">Explore Menu <i class="fas fa-chevron-right ms-1 fs-7"></i></a>
                                 </div>
@@ -170,7 +170,7 @@
     </section>
     @endif
     <!-- =========================================================
-       4. TRUSTED CHOICE (WHY CHOOSE US) - CENTERED ROTATING ANIMATED IMAGE
+       4. TRUSTED CHOICE (WHY CHOOSE US)
     ========================================================= -->
     <section class="py-5" id="whyUsSection">
         <div class="container py-4">
@@ -181,43 +181,24 @@
                         'title' => data_get($page->content, 'why_us.title', 'Why Choose Catering Service')
                     ])
                 </h2>
+                @if(data_get($page->content, 'why_us.sub_title'))
                 <p class="text-muted">
-                    {{ data_get($page->content, 'why_us.sub_title', '') }}
+                    {{ data_get($page->content, 'why_us.sub_title') }}
                 </p>
+                @endif
             </div>
 
             <div class="row align-items-center g-4">
-                <!-- Left Column -->
-                <!-- <div class="col-lg-4" data-aos="fade-right">
-                    <div class="why-item-box">
-                        <div class="why-icon"><i class="fas fa-concierge-bell"></i></div>
-                        <div>
-                            <h5 class="fw-bold font-rajdhani text-theme-primary mb-1">Complete Solutions</h5>
-                            <p class="text-muted fs-7 mb-0">From menu consultation to final guest presentation, we manage every detail.</p>
-                        </div>
-                    </div>
-                    <div class="why-item-box">
-                        <div class="why-icon"><i class="fas fa-bolt"></i></div>
-                        <div>
-                            <h5 class="fw-bold font-rajdhani text-theme-primary mb-1">12-Hour Urgent Prep</h5>
-                            <p class="text-muted fs-7 mb-0">Capable of preparing and delivering fresh food within just 12 hours for urgent events.</p>
-                        </div>
-                    </div>
-                    <div class="why-item-box mb-0">
-                        <div class="why-icon"><i class="fas fa-user-shield"></i></div>
-                        <div>
-                            <h5 class="fw-bold font-rajdhani text-theme-primary mb-1">Experienced Chefs</h5>
-                            <p class="text-muted fs-7 mb-0">Our master chefs bring 30+ years of heritage and traditional culinary expertise.</p>
-                        </div>
-                    </div>
-                </div> -->
-
                 <!-- Centered Rotating Image -->
                 <div class="col-lg-6 text-center my-4 my-lg-0" data-aos="zoom-in">
                     <div class="why-center-wrapper">
                         <div class="why-rotate-ring-inner"></div>
                         <div class="why-rotate-ring"></div>
-                        <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2070&auto=format&fit=crop" alt="Master Chef" class="why-center-img">
+                        @php
+                            $whyUsImg = data_get($page->content, 'why_us.image');
+                            $whyUsImgUrl = $whyUsImg ? asset($whyUsImg) : 'https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2070&auto=format&fit=crop';
+                        @endphp
+                        <img src="{{ $whyUsImgUrl }}" alt="Why Choose Us" class="why-center-img">
                     </div>
                 </div>
 
@@ -225,13 +206,11 @@
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="why-item-box">
                         <div>
-                            <h5 class="fw-bold font-rajdhani text-theme-primary mb-1">Strict Hygiene Standard</h5>
-                            <p class="text-muted fs-7 mb-3">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum.
-                            </p>
-                            <p class="text-muted fs-7 mb-0">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum.
-                            </p>
+                            @if(data_get($page->content, 'why_us.description'))
+                                <div class="text-muted fs-7">
+                                    {!! data_get($page->content, 'why_us.description') !!}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -330,18 +309,31 @@
                 <div class="ceo-quote-mark">“</div>
                 <div class="row align-items-center g-4 position-relative z-2">
                     <div class="col-lg-8">
-                        <span class="badge bg-white text-theme-primary fw-bold mb-3 uppercase px-3 py-1">Leadership Message</span>
-                        <h2 class="display-6 fw-bold mb-3">Message From <span class="text-warning">The Chairman & CEO</span></h2>
-                        <p class="fs-5 fw-semibold text-light mb-3">"সংগ্রাম থেকেই স্বপ্নের শুরু। বিশ্বাস থেকেই প্রতিষ্ঠার গল্প।"</p>
-                        <p class="opacity-90 leading-relaxed mb-3">আমি <strong>ক্যাটরিন</strong>, প্রতিষ্ঠাতা ও চেয়ারম্যান, Catering Service। আজ থেকে প্রায় ৩৪ বছর আগে ঠাকুরগাঁও জেলা থেকে উচ্চশিক্ষার উদ্দেশ্যে ঢাকায় এসেছিলাম। আল্লাহ তালার অশেষ রহমত, গ্রাহকদের ভালোবাসা ও টিমের কঠোর পরিশ্রমে আমরা আজকের এই অবস্থানের পৌঁছেছি।</p>
+                        <span class="badge bg-white text-theme-primary fw-bold mb-3 uppercase px-3 py-1">{{ data_get($page->content, 'ceo.badge_text', 'Leadership Message') }}</span>
+                        <h2 class="display-6 fw-bold mb-3">{{ data_get($page->content, 'ceo.title', 'Message From The Chairman & CEO') }}</h2>
+
+                        @if(data_get($page->content, 'ceo.quote'))
+                            <p class="fs-5 fw-semibold text-light mb-3">"{{ data_get($page->content, 'ceo.quote') }}"</p>
+                        @endif
+
+                        @if(data_get($page->content, 'ceo.description'))
+                            <div class="opacity-90 leading-relaxed mb-3 text-light">
+                                {!! data_get($page->content, 'ceo.description') !!}
+                            </div>
+                        @endif
+
                         <div class="mt-4 pt-2 border-top border-light border-opacity-25">
-                            <h5 class="fw-bold mb-0 text-warning font-phudu">— ক্যাটরিন</h5>
-                            <small class="opacity-75">চেয়ারম্যান ও ব্যবস্থাপনা পরিচালক, Catering Service</small>
+                            <h5 class="fw-bold mb-0 text-warning font-phudu">{{ data_get($page->content, 'ceo.name', '— ক্যাটরিন') }}</h5>
+                            <small class="opacity-75">{{ data_get($page->content, 'ceo.designation', 'চেয়ারম্যান ও ব্যবস্থাপনা পরিচালক, Catering Service') }}</small>
                         </div>
                     </div>
                     <div class="col-lg-4 text-center">
                         <div class="ceo-img-container d-inline-block">
-                            <img src="https://www.shego.in/wp-content/uploads/2025/04/Picsart_24-11-03_12-41-54-427.jpeg" alt="" class="img-fluid" style="max-height: 380px;">
+                            @php
+                                $ceoImg = data_get($page->content, 'ceo.image');
+                                $ceoImgUrl = $ceoImg ? asset($ceoImg) : 'https://www.shego.in/wp-content/uploads/2025/04/Picsart_24-11-03_12-41-54-427.jpeg';
+                            @endphp
+                            <img src="{{ $ceoImgUrl }}" alt="{{ data_get($page->content, 'ceo.name', 'CEO') }}" class="img-fluid" style="max-height: 380px;">
                         </div>
                     </div>
                 </div>
@@ -352,9 +344,7 @@
     <!-- =========================================================
        7. FILTERABLE PHOTO GALLERY (GLIGHTBOX PLUGIN)
     ========================================================= -->
-    @php
-        $galleryCategories = isset($galleries) && $galleries->count() ? $galleries->pluck('category')->unique()->values() : collect(['weddings', 'dishes', 'venues']);
-    @endphp
+    @if ($galleries->isNotEmpty())
     <section class="py-5 bg-light" id="gallerySection">
         <div class="container py-4">
             <div class="text-center max-w-700 mx-auto mb-4" data-aos="fade-up">
@@ -372,55 +362,27 @@
             <!-- Filter Buttons -->
             <div class="text-center mb-4" data-aos="fade-up">
                 <button class="gallery-filter-btn active" data-filter="all">All Photos</button>
-                @foreach($galleryCategories as $cat)
-                    <button class="gallery-filter-btn text-capitalize" data-filter="{{ Str::slug($cat) }}">{{ $cat }}</button>
-                @endforeach
+                    @foreach($galleries->pluck('category')->unique()->values() as $cat)
+                        <button class="gallery-filter-btn text-capitalize" data-filter="{{ Str::slug($cat) }}">{{ $cat }}</button>
+                    @endforeach
             </div>
 
             <!-- Gallery Grid -->
             <div class="row g-4" id="galleryGrid">
-                @if(isset($galleries) && $galleries->isNotEmpty())
-                    @foreach($galleries as $item)
-                        <div class="col-md-6 col-lg-4 gallery-item" data-category="{{ Str::slug($item->category) }}" data-aos="zoom-in">
-                            <div class="gallery-item-box">
-                                <img src="{{ asset($item->image) }}" alt="{{ $item->title ?: 'Event Gallery Photo' }}">
-                                <a href="{{ asset($item->image) }}" class="glightbox gallery-item-overlay text-decoration-none" data-gallery="event-gallery" data-title="{{ $item->title ?: ucfirst($item->category) }}">
-                                    <div class="gallery-zoom-icon"><i class="fas fa-search-plus"></i></div>
-                                </a>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <div class="col-md-6 col-lg-4 gallery-item" data-category="weddings" data-aos="zoom-in">
+                @foreach($galleries as $item)
+                    <div class="col-md-6 col-lg-4 gallery-item" data-category="{{ Str::slug($item->category) }}" data-aos="zoom-in">
                         <div class="gallery-item-box">
-                            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop" alt="Royal Wedding Setup">
-                            <a href="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop" class="glightbox gallery-item-overlay text-decoration-none" data-gallery="event-gallery" data-title="Royal Wedding Banquet Setup">
+                            <img src="{{ asset($item->image) }}" alt="{{ $item->title ?: 'Event Gallery Photo' }}">
+                            <a href="{{ asset($item->image) }}" class="glightbox gallery-item-overlay text-decoration-none" data-gallery="event-gallery" data-title="{{ $item->title ?: ucfirst($item->category) }}">
                                 <div class="gallery-zoom-icon"><i class="fas fa-search-plus"></i></div>
                             </a>
                         </div>
                     </div>
-
-                    <div class="col-md-6 col-lg-4 gallery-item" data-category="dishes" data-aos="zoom-in">
-                        <div class="gallery-item-box">
-                            <img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=800&auto=format&fit=crop" alt="Shahi Biryani Feast">
-                            <a href="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070&auto=format&fit=crop" class="glightbox gallery-item-overlay text-decoration-none" data-gallery="event-gallery" data-title="Authentic Shahi Kacchi Feast">
-                                <div class="gallery-zoom-icon"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 gallery-item" data-category="venues" data-aos="zoom-in">
-                        <div class="gallery-item-box">
-                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop" alt="Raowa Convention Banquet">
-                            <a href="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop" class="glightbox gallery-item-overlay text-decoration-none" data-gallery="event-gallery" data-title="Raowa Convention Hall Catering">
-                                <div class="gallery-zoom-icon"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                    </div>
-                @endif
+                @endforeach
             </div>
         </div>
     </section>
+    @endif
 
     <!-- =========================================================
        8. TESTIMONIALS SECTION
@@ -466,8 +428,8 @@
     ========================================================= -->
     <section class="py-5" id="quoteSection">
         <div class="container py-4">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-5" data-aos="fade-right">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-4" data-aos="fade-right">
                     <span class="badge-theme mb-2">{{ data_get($page->content, 'reserve.badge_text', 'Reserve Your Event') }}</span>
                     <h2 class="display-6 fw-bold mb-3">
                         @include('frontend.partials.accent-title', [
@@ -484,15 +446,6 @@
                             <div>
                                 <h6 class="fw-bold mb-0">Direct Hotline</h6>
                                 <small class="text-muted">{{ $settings->phone }} {{ $settings->phone2 ? ' / ' . $settings->phone2 : '' }}</small>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="stat-icon-wrapper" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0">12-Hour Urgent Service</h6>
-                                <small class="text-muted">Emergency bookings catered instantly</small>
                             </div>
                         </div>
                     </div>
@@ -520,11 +473,12 @@
                                     <label class="form-label font-rajdhani fw-semibold fs-7 mb-1">Event Type</label>
                                     <select name="event_type" class="form-select" required>
                                         <option value="">Select Event Type</option>
-                                        <option value="Wedding Reception">Wedding Reception</option>
-                                        <option value="Holud Ceremony">Holud Ceremony</option>
-                                        <option value="Corporate Feast">Corporate Event</option>
-                                        <option value="Birthday Party">Birthday Party</option>
-                                        <option value="Ramadan Iftar">Ramadan Iftar Party</option>
+                                        @php
+                                            $eventTypes = \App\Models\Category::pluck('category_name')->unique();
+                                        @endphp
+                                        @foreach($eventTypes as $type)
+                                            <option value="{{ $type }}">{{ $type }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6">

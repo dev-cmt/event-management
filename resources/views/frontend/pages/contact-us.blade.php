@@ -42,7 +42,7 @@
     @endpush
 
     <!-- Hero / Page Header Section -->
-    <section class="page-title-banner position-relative py-5 text-white" style="background-image: url({{ asset('frontend/images/pages/bg-title.jpg') }});">
+    <section class="page-title-banner position-relative py-5 text-white" style="background-image: url({{ asset('frontend/images/bg-title.jpg') }});">
         <!-- Dark Overlay -->
         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
 

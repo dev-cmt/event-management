@@ -1,179 +1,102 @@
 <x-frontend-layout title="Enlistments" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
-    <!--Page Title-->
-    <section class="page-title" style="background-image:url({{ asset('frontend/images/pages/bg-title.jpg') }});">
-        <div class="auto-container">
-            <div class="inner-container clearfix">
-                <div class="title-box">
-                    <h1>{{ data_get($page->content, 'header.title', 'Enlistments') }}</h1>
-                    <span
-                        class="title">{{ data_get($page->content, 'header.subtitle', 'The Interior speak for themselves') }}</span>
+    {{-- =========================================================
+        PAGE HERO BANNER
+    ========================================================= --}}
+    <section class="detail-page-hero" style="background-image: url('{{ asset('frontend/images/bg-title.jpg') }}');">
+        <div class="detail-page-hero-overlay"></div>
+        <div class="container position-relative z-2">
+            <div class="row align-items-center" style="min-height:260px;">
+                <div class="col-12 text-center text-white">
+                    <span class="badge bg-white bg-opacity-20 text-dark fw-semibold mb-3 px-3 py-2 text-uppercase"
+                          style="letter-spacing:2px; font-size:.78rem;">{{ data_get($page->content, 'header.subtitle', 'The Interior speak for themselves') }}</span>
+                    <h1 class="display-5 fw-bold mb-3"
+                        style="text-shadow:0 4px 20px rgba(0,0,0,.5);">{{ data_get($page->content, 'header.title', 'Enlistments') }}</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ url('/') }}" class="text-white opacity-75 text-decoration-none">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">{{ data_get($page->content, 'header.title', 'Enlistments') }}</li>
+                        </ol>
+                    </nav>
                 </div>
-                <ul class="bread-crumb clearfix">
-                    <li><a href="{{ url('/') }}">Home</a></li>
-                    <li>Enlistments</li>
-                </ul>
             </div>
         </div>
     </section>
-    <!-- Enlistments Section -->
-    <section class="enlistments-section alternate">
-        <div class="auto-container">
-            <div class="mixitup-gallery">
 
-                <!-- Filter Tabs (Dynamic Categories) -->
-                <div class="filters text-center clearfix">
-                    <ul class="filter-tabs filter-btns clearfix">
-                        <li class="active filter" data-filter="all">All</li>
-                        @foreach($enlistments->pluck('category.category_name')->unique() as $cat)
-                            <li class="filter" data-filter=".{{ Str::slug($cat) }}">{{ strtoupper($cat) }}</li>
-                        @endforeach
-                    </ul>
+    <section class="py-5 bg-light" id="venuesSection">
+        <div class="container py-4">
+            <div class="d-flex flex-wrap justify-content-center align-items-end mb-4" data-aos="fade-up">
+                <div class="text-center max-w-700 mx-auto mb-0">
+                    <span class="badge-theme mb-2">{{ data_get($page->content, 'enlisted.badge_text', 'Our Presence') }}</span>
+                    <h2 class="display-5 fw-bold mb-0">
+                        @include('frontend.partials.accent-title', [
+                            'title' => data_get($page->content, 'enlisted.title', 'Our Venue Showcase')
+                        ])
+                    </h2>
+                    @if(data_get($page->content, 'enlisted.sub_title'))
+                        <p class="text-muted mb-0 mt-2">{{ data_get($page->content, 'enlisted.sub_title') }}</p>
+                    @endif
                 </div>
+            </div>
 
-                <!-- Enlistment Blocks -->
-                <div class="filter-list row">
+            @if (!empty($enlistments) && $enlistments->count() > 0)
+                <div class="row g-4">
                     @foreach($enlistments as $enlistment)
                         @php
                             $defaultMedia = $enlistment->media->where('is_main', true)->first();
                             $imagePath = $defaultMedia ? asset($defaultMedia->path) : asset('images/placeholder.jpg');
+                            $categoryName = $enlistment->category->category_name ?? 'Uncategorized';
                         @endphp
+                        <div class="col-12 col-sm-6 col-lg-4" data-aos="fade-up">
+                            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                                <div class="position-relative">
+                                    <img loading="lazy" src="{{ $imagePath }}" class="card-img-top object-fit-cover" style="height: 220px;" alt="{{ $enlistment->title }}">
+                                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-0 m-3 px-3 py-2">
+                                        {{ $categoryName }}
+                                    </span>
+                                </div>
 
-                        <div
-                            class="project-block all mix {{ Str::slug($enlistment->category->category_name ?? '') }} col-lg-4 col-md-6 col-sm-12">
-                            <div class="image-box">
-                                <figure class="image">
-                                    <img loading="lazy" src="{{ $imagePath }}" alt="{{ $enlistment->title }}">
-                                </figure>
-                                <div class="overlay-box">
-                                    <h4>
-                                        <a href="{{ route('page.enlistments-details', $enlistment->slug) }}">
-                                            {{ $enlistment->title }}
-                                        </a>
-                                    </h4>
-                                    <div class="btn-box">
-                                        <a href="{{ $imagePath }}" class="lightbox-image" data-fancybox="gallery">
-                                            <i class="fa fa-search"></i>
-                                        </a>
-                                        <a href="{{ route('page.enlistments-details', $enlistment->slug) }}">
-                                            <i class="fa fa-external-link"></i>
-                                        </a>
-                                    </div>
-                                    <span class="tag">{{ $enlistment->category->category_name ?? 'Uncategorized' }}</span>
+                                <div class="card-body d-flex flex-column p-4">
+                                    <h5 class="fw-bold font-rajdhani mb-2">{{ $enlistment->title }}</h5>
+
+                                    @if(!empty($enlistment->location))
+                                        <small class="text-muted mb-3 d-block">
+                                            <i class="fas fa-map-marker-alt text-warning me-1"></i>
+                                            {{ $enlistment->location }}
+                                        </small>
+                                    @endif
+
+                                    <p class="card-text text-muted small mb-4 flex-grow-1">
+                                        {{ Str::limit(strip_tags($enlistment->description ?? $enlistment->short_description ?? 'No description available for this venue.'), 120) }}
+                                    </p>
+
+                                    <a href="{{ route('page.enlistments-details', $enlistment->slug) }}" class="btn btn-primary w-100 mt-auto">
+                                        Book This Venue <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-            </div>
-
-            <!-- Pagination -->
-            <div class="styled-pagination">
-                {{ $enlistments->links('pagination::bootstrap-5') }}
-            </div>
-        </div>
-    </section>
-    <!--End Enlistments Section -->
-
-
-    <!-- Contact Section -->
-    <section class="contact-section">
-        <div class="inner-container">
-            <div class="sec-title">
-                <span class="float-text">informaer</span>
-                <h2>Contact Us</h2>
-            </div>
-
-            <div class="row">
-                <!-- Info Column -->
-                <div class="info-column col-lg-4 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <h4>Need Support</h4>
-                        <ul class="contact-info">
-                            <li>{{ $settings->address }}</li>
-                            <li>
-                                @if($settings->phone)
-                                    {{ $settings->phone }}
-                                @endif
-                                @if($settings->phone2)
-                                    <br> {{ $settings->phone2 }}
-                                @endif
-                            </li>
-                            <li>
-                                @if($settings->email)
-                                    {{ $settings->email }}
-                                @endif
-                                @if($settings->email2)
-                                    <br> {{ $settings->email2 }}
-                                @endif
-                            </li>
-                        </ul>
+                @if(method_exists($enlistments, 'links'))
+                    <div class="styled-pagination mt-5">
+                        {{ $enlistments->links('pagination::bootstrap-5') }}
                     </div>
-                </div>
-
-                <!-- Form Column -->
-                <div class="form-column col-lg-8 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <!-- Contact Form -->
-                        <div class="contact-form">
-                            @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @endif
-
-                            @if($errors->any())
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @endif
-
-                            <form action="{{ route('page.contact-us.store') }}" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="form-group col-lg-6 col-md-12 col-sm-12">
-                                        <input type="text" name="name" placeholder="Name" value="{{ old('name') }}"
-                                            required>
-                                    </div>
-
-                                    <div class="form-group col-lg-6 col-md-12 col-sm-12">
-                                        <input type="text" name="phone" placeholder="Phone" required="">
-                                    </div>
-
-                                    <div class="form-group col-lg-6 col-md-12 col-sm-12">
-                                        <input type="text" name="subject" placeholder="Subject"
-                                            value="{{ old('subject') }}">
-                                    </div>
-
-                                    <div class="form-group col-lg-6 col-md-12 col-sm-12">
-                                        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
-                                            required="">
-                                    </div>
-
-                                    <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                                        <textarea name="message" placeholder="Massage"
-                                            required>{{ old('message') }}</textarea>
-                                    </div>
-
-                                    <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                                        <button class="theme-btn btn-style-three" type="submit"
-                                            name="submit-form">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
+                @endif
+            @else
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <div class="p-5 rounded-4 bg-white shadow-sm border mx-auto" style="max-width: 520px;">
+                                <h4 class="fw-bold mb-2">No enlistments found</h4>
+                                <p class="text-muted mb-0">Once venue entries are published, they will show up here as clean cards.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
-    <!--End Contact Section -->
 </x-frontend-layout>

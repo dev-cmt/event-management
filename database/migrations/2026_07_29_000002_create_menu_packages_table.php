@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stories', function (Blueprint $table) {
+        Schema::create('menu_packages', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->longText('content')->nullable();
+            $table->foreignId('menu_category_id')->nullable()->constrained('menu_categories')->onDelete('cascade');
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('subtitle')->nullable();
             $table->string('image')->nullable();
-            $table->string('badge_text')->nullable();
-            $table->string('experience_years')->nullable();
-            $table->string('experience_title')->nullable();
-            $table->json('features')->nullable();
-            $table->json('gallery_images')->nullable();
+            $table->decimal('price', 10, 2)->nullable();
+            $table->integer('order')->default(0);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stories');
+        Schema::dropIfExists('menu_packages');
     }
 };

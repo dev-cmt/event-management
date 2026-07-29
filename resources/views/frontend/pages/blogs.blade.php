@@ -1,6 +1,6 @@
 <x-frontend-layout title="Blogs" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
     <!--Page Title-->
-    <section class="page-title" style="background-image:url({{ asset('frontend/images/pages/bg-title.jpg') }});">
+    <section class="page-title" style="background-image:url({{ asset('frontend/images/bg-title.jpg') }});">
         <div class="auto-container">
             <div class="inner-container clearfix">
                 <div class="title-box">

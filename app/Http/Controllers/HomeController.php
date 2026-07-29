@@ -23,6 +23,8 @@ use App\Models\Product;
 use App\Models\Gallery;
 use App\Models\Booking;
 use App\Models\Page;
+use App\Models\MenuCategory;
+use App\Models\MenuPackage;
 use App\Http\Traits\SeoTrait;
 
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -117,6 +119,40 @@ class HomeController extends Controller implements HasMiddleware
         ]);
 
         return view('frontend.pages.teams', compact('seotags', 'breadcrumbs', 'teams', 'page'));
+    }
+
+    /**________________________________________________________________________________________
+     * Catering Menus Page
+     * ________________________________________________________________________________________
+     */
+    public function menus(Request $request)
+    {
+        $categories = MenuCategory::with(['activePackages.items'])->where('status', true)->orderBy('order', 'asc')->get();
+        $selectedCategorySlug = $request->get('category', 'all');
+        $selectedCategoryExists = $selectedCategorySlug === 'all'
+            || $categories->contains('slug', $selectedCategorySlug);
+
+        if (! $selectedCategoryExists) {
+            $selectedCategorySlug = 'all';
+        }
+
+        // SEO
+        $page = Page::with('seo')->where('slug', 'menus')->first();
+        if (! $page) {
+            $page = new Page([
+                'title' => 'menus',
+                'slug' => 'menus',
+                'content' => 'This is the menu page content.',
+            ]);
+        }
+        $seotags = $this->applySeo($page);
+
+        $breadcrumbs = $this->generateBreadcrumbJsonLd([
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Menus', 'url' => url()->current()],
+        ]);
+
+        return view('frontend.pages.menus', compact('seotags', 'breadcrumbs', 'categories', 'selectedCategorySlug', 'page'));
     }
     public function teamsDetails($slug)
     {
@@ -248,7 +284,7 @@ class HomeController extends Controller implements HasMiddleware
      */
     public function enlistments()
     {
-        $enlistments = Enlistment::with('category')->latest()->paginate(9);
+        $enlistments = Enlistment::with(['category', 'media'])->latest()->get();
 
         // SEO
         $page = Page::with('seo')->where('slug', 'enlistments')->firstOrFail();

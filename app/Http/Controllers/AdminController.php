@@ -76,9 +76,9 @@ class AdminController extends Controller
             'color' => 'primary'
         ]);
 
-        $projects = Enlistment::latest()->take(5)->get()->map(fn($item) => [
-            'type' => 'Project',
-            'title' => 'New project: ' . $item->title,
+        $enlistments = Enlistment::latest()->take(5)->get()->map(fn($item) => [
+            'type' => 'Enlistment',
+            'title' => 'New enlistment: ' . $item->title,
             'time' => $item->created_at,
             'icon' => 'bi-briefcase',
             'color' => 'success'
@@ -92,7 +92,7 @@ class AdminController extends Controller
             'color' => 'warning'
         ]);
 
-        $data['recent_activity'] = $blogs->concat($projects)->concat($contacts)->sortByDesc('time')->take(10);
+        $data['recent_activity'] = $blogs->concat($enlistments)->concat($contacts)->sortByDesc('time')->take(10);
 
         // Recent Visitors (Paginated)
         $data['recent_visitors'] = VisitorRecord::latest()->paginate(10, ['*'], 'visitors_page');
@@ -168,6 +168,9 @@ class AdminController extends Controller
             'testimonials',
             'achievements',
             'enlistments',
+            'galleries',
+            'menu-packages',
+            'menu-categories',
             'teams',
             'clients',
             'blogs',
@@ -185,7 +188,6 @@ class AdminController extends Controller
             'view bookings',
             'view seo',
             'view page content',
-            'view developer api'
         ];
 
         $allPermissions = [];

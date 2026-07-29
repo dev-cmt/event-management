@@ -27,6 +27,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EnlistmentController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\MenuCategoryController;
+use App\Http\Controllers\MenuPackageController;
 
 
 Route::get('/cc', function () {
@@ -71,6 +73,8 @@ Route::get('contact-us', [HomeController::class, 'contact'])->name('page.contact
 Route::post('contact-us', [HomeController::class, 'contactStore'])->name('page.contact-us.store');
 //______________ GALLERY
 Route::get('gallery', [HomeController::class, 'gallery'])->name('page.gallery');
+//______________ MENUS
+Route::get('menus', [HomeController::class, 'menus'])->name('page.menus');
 
 //______________ BOOKING FORM
 Route::post('/booking/store', [HomeController::class, 'storeBooking'])->name('booking.store');
@@ -94,6 +98,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::post('/categories/update', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // Catering Menu Management
+    Route::get('/menu-categories', [MenuCategoryController::class, 'index'])->name('menu-categories.index');
+    Route::post('/menu-categories', [MenuCategoryController::class, 'store'])->name('menu-categories.store');
+    Route::post('/menu-categories/update', [MenuCategoryController::class, 'update'])->name('menu-categories.update');
+    Route::delete('/menu-categories/{id}', [MenuCategoryController::class, 'destroy'])->name('menu-categories.destroy');
+
+    Route::resource('menu-packages', MenuPackageController::class);
 
     // Tags Routes
     Route::get('tags', [TagController::class, 'index'])->name('tags.index');

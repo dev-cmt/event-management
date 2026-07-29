@@ -13,7 +13,7 @@
 
 <!-- Main Footer -->
 <footer class="main-footer pt-5 pb-4 text-white position-relative {{ request()->is('/') ? '' : 'alternate' }}"
-        style="background-image: url('{{ asset('frontend/images/pages/bg-ooter.jpg') }}');">
+        style="background-image: url('{{ asset('frontend/images/bg-offer.jpg') }}'); background-size: cover; background-position: center;">
 
     <div class="container position-relative z-2">
         <div class="row g-4 g-lg-5">
@@ -123,8 +123,8 @@
                             <ul class="footer-links list-unstyled mb-0">
                                 <li><a href="{{ route('page.about-us') }}">About Us</a></li>
                                 <li><a href="{{ route('page.services') }}">Our Services</a></li>
-                                <li><a href="{{ route('page.enlistments') }}">Recent Enlistments</a></li>
-                                <li><a href="{{ route('page.blogs') }}">Latest News</a></li>
+                                <li><a href="{{ route('page.enlistments') }}">Enlistments</a></li>
+                                <li><a href="{{ route('page.gallery') }}">Photo Gallery</a></li>
                                 <li><a href="{{ route('page.contact-us') }}">Contact Us</a></li>
                             </ul>
                         </div>
@@ -160,12 +160,8 @@
         </div>
 
         <!-- Copyright Bottom Bar -->
-        <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-center align-items-center gap-2">
             <p class="mb-0 text-white-50 small">&copy; {{ date('Y') }} {{ config('app.name', 'Pro Devs') }}. All rights reserved.</p>
-            <div class="footer-bottom-links">
-                <a href="#" class="text-white-50 text-decoration-none small hover-white me-3">Privacy Policy</a>
-                <a href="#" class="text-white-50 text-decoration-none small hover-white">Terms of Service</a>
-            </div>
         </div>
 
     </div>

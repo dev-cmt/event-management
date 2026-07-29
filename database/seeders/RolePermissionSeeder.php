@@ -37,6 +37,9 @@ class RolePermissionSeeder extends Seeder
             'enlistments',
             'testimonials',
             'achievements',
+            'galleries',
+            'menu-packages',
+            'menu-categories',
             'teams',
             'clients',
             'blogs',
@@ -67,7 +70,6 @@ class RolePermissionSeeder extends Seeder
             'view bookings',
             'view seo',
             'view page content',
-            'view developer api',
         ];
         foreach ($extraPermissions as $perm) {
             Permission::firstOrCreate(['name' => $perm]);
@@ -86,11 +88,6 @@ class RolePermissionSeeder extends Seeder
         // -------------------------------
         $superAdminRole->syncPermissions($permissions); // Super Admin: all permissions
         $adminRole->syncPermissions($permissions);      // Admin: all permissions
-
-        // Customer: only view developer api & dashboard
-        $customerPermissions = array_filter($permissions, function($p) {
-            return str_starts_with($p, 'view') && (str_contains($p, 'developer api') || str_contains($p, 'dashboard'));
-        });
         $customerRole->syncPermissions($customerPermissions);
 
         // -------------------------------
