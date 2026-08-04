@@ -17,6 +17,7 @@ class PageSeeder extends Seeder
             ['title' => 'about', 'slug' => 'about', 'content' => 'This is the home page content.'],
             ['title' => 'teams', 'slug' => 'teams', 'content' => 'This is the home page content.'],
             ['title' => 'contact', 'slug' => 'contact', 'content' => 'This is the home page content.'],
+            ['title' => 'packages', 'slug' => 'packages', 'content' => 'This is the home page content.'],
             ['title' => 'services', 'slug' => 'services', 'content' => 'This is the home page content.'],
             ['title' => 'enlistments', 'slug' => 'enlistments', 'content' => 'This is the home page content.'],
             ['title' => 'blogs', 'slug' => 'blogs', 'content' => 'This is the home page content.'],

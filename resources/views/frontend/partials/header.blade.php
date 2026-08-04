@@ -1,5 +1,6 @@
 @php
     $services = \App\Models\Service::where('is_menu', true)->get();
+    $packages = \App\Models\Package::where('status', true)->get();
     $enlistments = \App\Models\Enlistment::where('status', true)->get();
     $menuCategories = \App\Models\MenuCategory::with(['activePackages'])->where('status', true)->orderBy('order', 'asc')->get();
 @endphp
@@ -70,13 +71,29 @@
                 <ul class="navbar-nav mx-auto align-items-lg-center">
                     <!-- nav items -->
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{url('/')}}">Home</a>
+                        <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{url('/')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('/about-us')}}">About Us</a>
+                        <a class="nav-link {{ Request::is('about-us') ? 'active' : '' }}" href="{{url('/about-us')}}">About Us</a>
                     </li>
 
                     <!-- Level 1 Dropdown: Services -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#servicesSection" id="packagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Packages <i class="fa-solid fa-caret-down fs-7 ms-1 opacity-75"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="packagesDropdown">
+                            <li class="dropend">
+                                @foreach ($packages as $package)
+                                <a class="dropdown-item" href="{{ route('page.packages-details', $package->slug) }}">
+                                    <span>{{ $package->name }}</span>
+                                </a>
+                                @endforeach
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- <!-- Level 1 Dropdown: Services -->
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#servicesSection" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Services <i class="fa-solid fa-caret-down fs-7 ms-1 opacity-75"></i>
@@ -90,7 +107,7 @@
                                 @endforeach
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
                     <!-- Level 1 Dropdown: Menus -->
                     <li class="nav-item dropdown">
@@ -124,7 +141,9 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="{{ route('page.gallery') }}">Gallery</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('gallery') ? 'active' : '' }}" href="{{ route('page.gallery') }}">Gallery</a>
+                    </li>
                 </ul>
             </div>
 

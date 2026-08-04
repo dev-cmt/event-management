@@ -29,6 +29,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuPackageController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PackageItemController;
 
 
 Route::get('/cc', function () {
@@ -75,6 +77,9 @@ Route::post('contact-us', [HomeController::class, 'contactStore'])->name('page.c
 Route::get('gallery', [HomeController::class, 'gallery'])->name('page.gallery');
 //______________ MENUS
 Route::get('menus', [HomeController::class, 'menus'])->name('page.menus');
+Route::get('packages-showcase', [HomeController::class, 'packages'])->name('page.packages');
+Route::get('packages-showcase/{slug}', [HomeController::class, 'packageDetails'])->name('page.packages-details');
+Route::get('package-gallery/{itemSlug?}', [HomeController::class, 'packageGallery'])->name('page.package-gallery');
 
 //______________ BOOKING FORM
 Route::post('/booking/store', [HomeController::class, 'storeBooking'])->name('booking.store');
@@ -106,6 +111,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/menu-categories/{id}', [MenuCategoryController::class, 'destroy'])->name('menu-categories.destroy');
 
     Route::resource('menu-packages', MenuPackageController::class);
+
+    // Packages Management
+    Route::post('/packages/update', [PackageController::class, 'update'])->name('packages.update');
+    Route::resource('packages', PackageController::class);
+
+    // Package Items Management
+    Route::resource('package-items', PackageItemController::class);
+    Route::delete('package-items/gallery/{id}', [PackageItemController::class, 'deleteGalleryImage'])->name('package-items.gallery.delete');
+
 
     // Tags Routes
     Route::get('tags', [TagController::class, 'index'])->name('tags.index');
@@ -167,8 +181,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/clients/destroy/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
     // Missions
-    Route::get('/mission', [MissionController::class, 'index'])->name('mission.index');
-    Route::post('/mission/update', [MissionController::class, 'update'])->name('mission.update');
+    // Route::get('/mission', [MissionController::class, 'index'])->name('mission.index');
+    // Route::post('/mission/update', [MissionController::class, 'update'])->name('mission.update');
 
     // contact
     Route::get('/contact', [ContactController::class, 'indexContact'])->name('contact.index');

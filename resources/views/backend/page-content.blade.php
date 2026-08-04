@@ -135,9 +135,9 @@
                     <div class="col-xl-6 mb-3">
                         <div class="card custom-card mb-0">
                             <div class="card-header justify-content-between align-items-center">
-                                <div class="card-title">Services</div>
-                                @can('view services')
-                                    <a href="{{ route('services.index') }}" class="btn btn-sm btn-outline-primary py-0">
+                                <div class="card-title">Packages</div>
+                                @can('view packages')
+                                    <a href="{{ route('packages.index') }}" class="btn btn-sm btn-outline-primary py-0">
                                         <i class="ri-edit-2-line">Content Edit</i>
                                     </a>
                                 @endcan
@@ -145,20 +145,20 @@
                             <div class="card-body row">
                                 <div class="col-md-4 mb-3">
                                     <label>Badge Text</label>
-                                    <input type="text" name="content[services][badge_text]" class="form-control"
-                                        placeholder="Our Services"
-                                        value="{{ data_get($pages['home']->content, 'services.badge_text') }}">
+                                    <input type="text" name="content[packages][badge_text]" class="form-control"
+                                        placeholder="Our Packages"
+                                        value="{{ data_get($pages['home']->content, 'packages.badge_text') }}">
                                 </div>
                                 <div class="col-md-8 mb-3">
                                     <label>Title</label>
-                                    <input type="text" name="content[services][title]" class="form-control"
-                                        placeholder="Our Services"
-                                        value="{{ data_get($pages['home']->content, 'services.title') }}">
+                                    <input type="text" name="content[packages][title]" class="form-control"
+                                        placeholder="Our Packages"
+                                        value="{{ data_get($pages['home']->content, 'packages.title') }}">
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label>Sub Title</label>
-                                    <textarea name="content[services][sub_title]"
-                                        class="form-control">{{ data_get($pages['home']->content, 'services.sub_title') }}</textarea>
+                                    <textarea name="content[packages][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'packages.sub_title') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -264,6 +264,38 @@
                                             </div>
                                         </div>
                                     @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 mb-3">
+                        <div class="card custom-card mb-0">
+                            <div class="card-header justify-content-between align-items-center">
+                                <div class="card-title">Services</div>
+                                @can('view services')
+                                    <a href="{{ route('services.index') }}" class="btn btn-sm btn-outline-primary py-0">
+                                        <i class="ri-edit-2-line">Content Edit</i>
+                                    </a>
+                                @endcan
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-4 mb-3">
+                                    <label>Badge Text</label>
+                                    <input type="text" name="content[services][badge_text]" class="form-control"
+                                        placeholder="Our Services"
+                                        value="{{ data_get($pages['home']->content, 'services.badge_text') }}">
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="content[services][title]" class="form-control"
+                                        placeholder="Our Services"
+                                        value="{{ data_get($pages['home']->content, 'services.title') }}">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label>Sub Title</label>
+                                    <textarea name="content[services][sub_title]"
+                                        class="form-control">{{ data_get($pages['home']->content, 'services.sub_title') }}</textarea>
                                 </div>
                             </div>
                         </div>

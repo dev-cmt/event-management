@@ -4,6 +4,11 @@
         ->take(2)
         ->get();
 
+    $recentPackages = \App\Models\Package::where('status', 1)
+        ->latest()
+        ->take(6)
+        ->get();
+
     $recentEnlistments = \App\Models\Enlistment::active()
         ->with('media')
         ->latest()
@@ -13,7 +18,7 @@
 
 <!-- Main Footer -->
 <footer class="main-footer pt-5 pb-4 text-white position-relative {{ request()->is('/') ? '' : 'alternate' }}"
-        style="background-image: url('{{ asset('frontend/images/bg-offer.jpg') }}'); background-size: cover; background-position: center;">
+        style="background-image: url('{{ asset('frontend/images/bg-footer.jpg') }}'); background-size: cover; background-position: center;">
 
     <div class="container position-relative z-2">
         <div class="row g-4 g-lg-5">
@@ -26,7 +31,7 @@
                     <div class="col-md-6 col-12">
                         <div class="footer-widget about-widget pe-md-3">
                             <div class="footer-logo text-center mb-4">
-                                <a href="{{ url('/') }}" class="d-inline-block">
+                                <a href="{{ url('/') }}" class="d-inline-block bg-white rounded-1 p-2">
                                     <img loading="lazy"
                                          src="{{ asset($settings->logo ?? 'images/logo.png') }}"
                                          alt="Logo"
@@ -75,8 +80,8 @@
                         </div>
                     </div>
 
-                    <!-- Recent Posts Widget -->
-                    <div class="col-md-6 col-12">
+                    <!-- Recent Services Widget -->
+                    {{-- <div class="col-md-6 col-12">
                         <div class="footer-widget recent-posts">
                             <h4 class="widget-title">Services</h4>
                             <div class="widget-content d-flex flex-column gap-3">
@@ -107,6 +112,22 @@
                                 @endforeach
                             </div>
                         </div>
+                    </div> --}}
+
+                    <!-- Recent Packages Widget -->
+                    <div class="col-md-6 col-12">
+                        <div class="footer-widget recent-posts">
+                            <h4 class="widget-title">Packages</h4>
+                            <ul class="footer-links list-unstyled mb-0">
+                                @foreach($recentPackages as $package)
+                                    <li>
+                                        <a href="{{ route('page.packages-details', $package->slug) }}">
+                                            {{ $package->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -122,7 +143,8 @@
                             <h4 class="widget-title">Useful Links</h4>
                             <ul class="footer-links list-unstyled mb-0">
                                 <li><a href="{{ route('page.about-us') }}">About Us</a></li>
-                                <li><a href="{{ route('page.services') }}">Our Services</a></li>
+                                <li><a href="{{ route('page.packages') }}">Our Packages</a></li>
+                                <li><a href="{{ route('page.menus') }}">Our Menus</a></li>
                                 <li><a href="{{ route('page.enlistments') }}">Enlistments</a></li>
                                 <li><a href="{{ route('page.gallery') }}">Photo Gallery</a></li>
                                 <li><a href="{{ route('page.contact-us') }}">Contact Us</a></li>

@@ -1,27 +1,12 @@
 <x-frontend-layout title="Photo Gallery" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
-
-    {{-- ========================================================= --}}
-    {{--  GALLERY PAGE HERO BANNER                                  --}}
-    {{-- ========================================================= --}}
-    <section class="detail-page-hero" style="background-image: url('{{ asset('frontend/images/bg-title.jpg') }}');">
-        <div class="detail-page-hero-overlay"></div>
-        <div class="container position-relative z-2">
-            <div class="row align-items-center" style="min-height:260px;">
-                <div class="col-12 text-center text-white">
-                    <span class="badge bg-white bg-opacity-20 text-dark fw-semibold mb-3 px-3 py-2 text-uppercase ls-1" style="letter-spacing:2px; font-size:.78rem;">Visual Experience</span>
-                    <h1 class="display-4 fw-bold mb-3" style="text-shadow:0 4px 20px rgba(0,0,0,.5);">
-                        Our Event <span style="color: var(--accent-color);">Photo Gallery</span>
-                    </h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-white opacity-75 text-decoration-none">Home</a></li>
-                            <li class="breadcrumb-item active text-white" aria-current="page">Gallery</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('frontend.partials.detail-page-hero', [
+        'heroBadge' => 'Visual Experience',
+        'heroTitle' => 'Our Event Photo Gallery',
+        'heroBreadcrumbs' => [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Gallery', 'active' => true],
+        ],
+    ])
 
     {{-- ========================================================= --}}
     {{--  FILTERABLE GALLERY GRID                                   --}}

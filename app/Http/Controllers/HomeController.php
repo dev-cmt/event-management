@@ -25,6 +25,9 @@ use App\Models\Booking;
 use App\Models\Page;
 use App\Models\MenuCategory;
 use App\Models\MenuPackage;
+use App\Models\Package;
+use App\Models\PackageItem;
+use App\Models\PackageGallery;
 use App\Http\Traits\SeoTrait;
 
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -44,6 +47,7 @@ class HomeController extends Controller implements HasMiddleware
                 'teamsDetails',
                 'contact',
                 'services',
+                'packages',
                 'servicesDetails',
                 'enlistments',
                 'enlistmentsDetails',
@@ -62,6 +66,7 @@ class HomeController extends Controller implements HasMiddleware
         $testimonials = Testimonial::where('status', true)->latest()->get();
         $clients = Client::active()->ordered()->get();
         $services = Service::active()->ordered()->get();
+        $packages = Package::where('status', true)->orderBy('sort_order')->get();
         $teams = Team::where('status', true)->orderBy('order')->get();
         $achievements = Achievement::where('status', 'active')->orderBy('sort_order')->get();
         $enlistments = Enlistment::with('media')->latest()->take(8)->get();
@@ -76,7 +81,7 @@ class HomeController extends Controller implements HasMiddleware
             ['name' => 'Home', 'url' => url('/')],
         ]);
 
-        return view('frontend.index', compact('sliders', 'story', 'services', 'achievements', 'testimonials', 'teams', 'clients', 'enlistments', 'blogPosts', 'galleries', 'seotags', 'breadcrumbs', 'page'));
+        return view('frontend.index', compact('sliders', 'story', 'packages', 'services', 'achievements', 'testimonials', 'teams', 'clients', 'enlistments', 'blogPosts', 'galleries', 'seotags', 'breadcrumbs', 'page'));
     }
     /**________________________________________________________________________________________
      * About Menu Pages
@@ -121,6 +126,21 @@ class HomeController extends Controller implements HasMiddleware
         return view('frontend.pages.teams', compact('seotags', 'breadcrumbs', 'teams', 'page'));
     }
 
+    public function teamsDetails($slug)
+    {
+        $team = Team::with('seo')->where('slug', $slug)->firstOrFail();
+
+        // SEO
+        $seotags = $this->applySeo($team, $team->name);
+
+        $breadcrumbs = $this->generateBreadcrumbJsonLd([
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Teams', 'url' => url()->current()],
+        ]);
+
+        return view('frontend.pages.teams-details', compact('team', 'seotags', 'breadcrumbs'));
+    }
+
     /**________________________________________________________________________________________
      * Catering Menus Page
      * ________________________________________________________________________________________
@@ -137,14 +157,7 @@ class HomeController extends Controller implements HasMiddleware
         }
 
         // SEO
-        $page = Page::with('seo')->where('slug', 'menus')->first();
-        if (! $page) {
-            $page = new Page([
-                'title' => 'menus',
-                'slug' => 'menus',
-                'content' => 'This is the menu page content.',
-            ]);
-        }
+        $page = Page::with('seo')->where('slug', 'menus')->firstOrFail();
         $seotags = $this->applySeo($page);
 
         $breadcrumbs = $this->generateBreadcrumbJsonLd([
@@ -154,19 +167,58 @@ class HomeController extends Controller implements HasMiddleware
 
         return view('frontend.pages.menus', compact('seotags', 'breadcrumbs', 'categories', 'selectedCategorySlug', 'page'));
     }
-    public function teamsDetails($slug)
+
+    /**________________________________________________________________________________________
+     * Packages Showcase Pages
+     * ________________________________________________________________________________________
+     */
+    public function packages()
     {
-        $team = Team::with('seo')->where('slug', $slug)->firstOrFail();
+        $packages = Package::with('items')->where('status', true)->orderBy('sort_order', 'asc')->get();
 
         // SEO
-        $seotags = $this->applySeo($team, $team->name);
+        $page = Page::with('seo')->where('slug', 'packages')->firstOrFail();
+        $seotags = $this->applySeo($page);
 
         $breadcrumbs = $this->generateBreadcrumbJsonLd([
             ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Teams', 'url' => url()->current()],
+            ['name' => 'Packages', 'url' => url()->current()],
         ]);
 
-        return view('frontend.pages.teams-details', compact('team', 'seotags', 'breadcrumbs'));
+        return view('frontend.pages.packages', compact('packages', 'page', 'seotags', 'breadcrumbs'));
+    }
+
+    public function packageDetails($slug)
+    {
+        $package = Package::with(['items.galleries'])->where('slug', $slug)->firstOrFail();
+
+        // SEO
+        $seotags = $this->applySeo($package, $package->name);
+        $breadcrumbs = $this->generateBreadcrumbJsonLd([
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Packages', 'url' => route('page.packages')],
+            ['name' => $package->name, 'url' => url()->current()],
+        ]);
+
+        return view('frontend.pages.package-details', compact('package', 'seotags', 'breadcrumbs'));
+    }
+
+    public function packageGallery($itemSlug = null)
+    {
+        // 1. Fetch item
+        $selectedItem = PackageItem::when($itemSlug, fn($q) => $q->where('slug', $itemSlug))->firstOrFail();
+        $galleries = $selectedItem->galleries;
+
+        // SEO
+        $seotags = $this->applySeo($selectedItem, $selectedItem->name);
+        $breadcrumbs = $this->generateBreadcrumbJsonLd([
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => $selectedItem->name, 'url' => url()->current()],
+        ]);
+
+        return view('frontend.pages.package-gallery', compact(
+            'selectedItem', 'galleries', 'seotags', 'breadcrumbs'
+        ));
     }
     /**________________________________________________________________________________________
      * Contact Menu Pages
@@ -259,10 +311,7 @@ class HomeController extends Controller implements HasMiddleware
     public function servicesDetails($slug)
     {
         // Load service with all needed relations
-        $service = Service::with(['media', 'attachments', 'seo'])
-            ->where('slug', $slug)
-            ->active()
-            ->firstOrFail();
+        $service = Service::with(['media', 'attachments', 'seo'])->where('slug', $slug)->active()->firstOrFail();
 
         // Optional: Load all services for sidebar list
         $allServices = Service::active()->ordered()->get();
@@ -550,3 +599,4 @@ class HomeController extends Controller implements HasMiddleware
         ], 200);
     }
 }
+

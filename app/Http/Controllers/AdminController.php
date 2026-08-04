@@ -165,12 +165,16 @@ class AdminController extends Controller
             'categories',
             'tags',
             'services',
+            'packages',
+            'package-items',
             'testimonials',
             'achievements',
             'enlistments',
             'galleries',
             'menu-packages',
             'menu-categories',
+            'packages',
+            'package-items',
             'teams',
             'clients',
             'blogs',
@@ -188,6 +192,7 @@ class AdminController extends Controller
             'view bookings',
             'view seo',
             'view page content',
+            'view visitor log',
         ];
 
         $allPermissions = [];

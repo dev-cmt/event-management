@@ -1,35 +1,13 @@
 <x-frontend-layout title="{{ $enlistment->title ?? 'Enlistment Detail' }}" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
-
-    {{-- =========================================================
-        PAGE HERO BANNER
-    ========================================================= --}}
-    <section class="detail-page-hero"
-             style="background-image: url('{{ asset('frontend/images/bg-title.jpg') }}');">
-        <div class="detail-page-hero-overlay"></div>
-        <div class="container position-relative z-2">
-            <div class="row align-items-center" style="min-height:260px;">
-                <div class="col-12 text-center text-white">
-                    <span class="badge bg-white bg-opacity-20 text-dark fw-semibold mb-3 px-3 py-2 text-uppercase"
-                          style="letter-spacing:2px; font-size:.78rem;">
-                        {{ $enlistment->category->category_name ?? 'Enlistment' }}
-                    </span>
-                    <h1 class="display-5 fw-bold mb-3"
-                        style="text-shadow:0 4px 20px rgba(0,0,0,.5);">{{ $enlistment->title ?? 'Enlistment Detail' }}</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item">
-                                <a href="{{ url('/') }}" class="text-white opacity-75 text-decoration-none">Home</a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('page.enlistments') }}" class="text-white opacity-75 text-decoration-none">Enlistments</a>
-                            </li>
-                            <li class="breadcrumb-item active text-white" aria-current="page">{{ $enlistment->title ?? 'Detail' }}</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('frontend.partials.detail-page-hero', [
+        'heroBadge' => $enlistment->category->category_name ?? 'Enlistment',
+        'heroTitle' => $enlistment->title ?? 'Enlistment Detail',
+        'heroBreadcrumbs' => [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Enlistments', 'url' => route('page.enlistments')],
+            ['label' => $enlistment->title ?? 'Detail', 'active' => true],
+        ],
+    ])
 
     {{-- =========================================================
         CUSTOM IMAGE GALLERY STAGE

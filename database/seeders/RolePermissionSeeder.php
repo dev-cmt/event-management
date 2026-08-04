@@ -34,6 +34,8 @@ class RolePermissionSeeder extends Seeder
             'features',
             'tags',
             'services',
+            'packages',
+            'package-items',
             'enlistments',
             'testimonials',
             'achievements',
@@ -70,6 +72,7 @@ class RolePermissionSeeder extends Seeder
             'view bookings',
             'view seo',
             'view page content',
+            'view visitor log',
         ];
         foreach ($extraPermissions as $perm) {
             Permission::firstOrCreate(['name' => $perm]);

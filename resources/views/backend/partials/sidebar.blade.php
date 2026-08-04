@@ -174,6 +174,37 @@
                     </li>
                 @endcanany
 
+                <!-- Packages Module -->
+                @canany(['view packages', 'view package-items'])
+                    <li class="slide has-sub {{ Request::is('packages*') || Request::is('package-items*') ? 'active open' : '' }}">
+                        <a href="javascript:void(0);"
+                            class="side-menu__item {{ Request::is('packages*') || Request::is('package-items*') ? 'active' : '' }}">
+                            <i class="bx bx-package side-menu__icon"></i>
+                            <span class="side-menu__label">Packages</span>
+                            <i class="fe fe-chevron-right side-menu__angle"></i>
+                        </a>
+                        <ul class="slide-menu child1">
+                            @can('view packages')
+                                <li class="slide">
+                                    <a href="{{ route('packages.index') }}"
+                                        class="side-menu__item {{ Request::is('packages*') ? 'active' : '' }}">
+                                        Packages
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view package-items')
+                                <li class="slide">
+                                    <a href="{{ route('package-items.index') }}"
+                                        class="side-menu__item {{ Request::is('package-items*') ? 'active' : '' }}">
+                                        Package Items
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
+
+
                 <!-- Enlistments -->
                 <li class="slide has-sub {{ Request::is('enlistments*') || Request::is('categories*') ? 'active open' : '' }}">
                     <a href="javascript:void(0);"

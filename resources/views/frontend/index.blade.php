@@ -6,7 +6,7 @@
       1. STATS COUNTER CARDS
     ========================================================= -->
     @if ($achievements->isNotEmpty())
-    <section class="py-5">
+    <section class="py-5" id="statsSection">
         <div class="container">
             <div class="row g-4">
                 @foreach($achievements as $index => $achievement)
@@ -29,7 +29,7 @@
        2. ABOUT SECTION WITH SWIPER IMAGE SLIDER
     ========================================================= -->
     @if(isset($story) && $story->status)
-    <section class="py-5" id="aboutSection">
+    <section class="py-5 bg-light" id="aboutSection">
         <div class="container py-4">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
@@ -118,15 +118,63 @@
     @endif
 
     <!-- =========================================================
-       3. OUR SERVICES SHOWCASE (INTERACTIVE SLIDER FORMAT)
+       3. PACKAGES SECTION WITH IMAGE
+    ========================================================= -->
+    @if($packages->isNotEmpty())
+    <section class="py-5" id="packagesSection">
+        <div class="container py-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4" data-aos="fade-up">
+                <div>
+                    <span class="badge-theme mb-2">{{ data_get($page->content, 'packages.badge_text', 'Signature Packages') }}</span>
+                    <h2 class="display-6 fw-bold mb-2">
+                        @include('frontend.partials.accent-title', [
+                            'title' => data_get($page->content, 'packages.title', 'Packages With Image-First Appeal')
+                        ])
+                    </h2>
+                </div>
+                <a href="{{ route('page.packages') }}" class="btn btn-outline-theme rounded-pill px-4">
+                    View All Packages <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+            <div class="row g-4">
+                @foreach($packages->take(6) as $package)
+                    @php
+                        $packageImage = $package->image ? asset($package->image) : asset('frontend/images/bg-title.jpg');
+                    @endphp
+                    <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="{{ ($loop->index % 3) * 100 }}">
+                        <a href="{{ route('page.packages-details', $package->slug) }}" class="text-decoration-none">
+                            <article class="package-showcase-card h-100">
+                                <div class="package-showcase-media">
+                                    <img src="{{ $packageImage }}" alt="{{ $package->name }}">
+                                    <div class="package-showcase-overlay">
+                                        <span class="package-badge">{{ $package->name }}</span>
+                                        {{-- <h3>Package {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</h3> --}}
+                                    </div>
+                                </div>
+                                <div class="package-showcase-footer">
+                                    <span><i class="fas fa-images me-2"></i>View Details</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- =========================================================
+       4. OUR SERVICES SHOWCASE (INTERACTIVE SLIDER FORMAT)
     ========================================================= -->
     @if ($services->isNotEmpty())
-    <section class="py-5 bg-light" id="servicesSection">
+    <section class="py-5" id="servicesSection">
         <div class="container py-4">
             <div class="d-flex flex-wrap justify-content-between align-items-end mb-4" data-aos="fade-up">
                 <div>
                     <span class="badge-theme mb-2">{{ data_get($page->content, 'services.badge_text', 'Our Culinary Services') }}</span>
-                    <h2 class="display-5 fw-bold mb-0">
+                    <h2 class="display-6 fw-bold mb-0">
                         @include('frontend.partials.accent-title', [
                             'title' => data_get($page->content, 'services.title', 'Tailored Catering Solutions')
                         ])
@@ -169,14 +217,15 @@
         </div>
     </section>
     @endif
+
     <!-- =========================================================
-       4. TRUSTED CHOICE (WHY CHOOSE US)
+       5. TRUSTED CHOICE (WHY CHOOSE US)
     ========================================================= -->
-    <section class="py-5" id="whyUsSection">
+    <section class="py-5 bg-light" id="whyUsSection">
         <div class="container py-4">
             <div class="text-center max-w-700 mx-auto mb-5" data-aos="fade-up">
                 <span class="badge-theme mb-2">{{ data_get($page->content, 'why_us.badge_text', 'Trusted Choice') }}</span>
-                <h2 class="display-5 fw-bold mb-3">
+                <h2 class="display-6 fw-bold mb-3">
                     @include('frontend.partials.accent-title', [
                         'title' => data_get($page->content, 'why_us.title', 'Why Choose Catering Service')
                     ])
@@ -219,15 +268,15 @@
     </section>
 
     <!-- =========================================================
-       5. OUR PRESENCE — 3D FLIP CARD SWIPER (Y-AXIS FLIP ON HOVER)
+       6. OUR PRESENCE — 3D FLIP CARD SWIPER (Y-AXIS FLIP ON HOVER)
     ========================================================= -->
     @if ($enlistments->isNotEmpty())
-    <section class="py-5 bg-light" id="venuesSection">
+    <section class="py-5" id="venuesSection">
         <div class="container py-4">
             <div class="d-flex flex-wrap justify-content-between align-items-end mb-4" data-aos="fade-up">
                 <div>
                     <span class="badge-theme mb-2">{{ data_get($page->content, 'enlisted.badge_text', 'Our Presence') }}</span>
-                    <h2 class="display-5 fw-bold mb-0">
+                    <h2 class="display-6 fw-bold mb-0">
                         @include('frontend.partials.accent-title', [
                             'title' => data_get($page->content, 'enlisted.title', 'Our Venue Showcase')
                         ])
@@ -301,9 +350,9 @@
     @endif
 
     <!-- =========================================================
-       6. CEO MESSAGE SECTION
+       7. CEO MESSAGE SECTION
     ========================================================= -->
-    <section class="py-5" id="ceoSection">
+    <section class="py-5 bg-light" id="ceoSection">
         <div class="container">
             <div class="ceo-section-wrapper" data-aos="fade-up">
                 <div class="ceo-quote-mark">“</div>
@@ -342,14 +391,14 @@
     </section>
 
     <!-- =========================================================
-       7. FILTERABLE PHOTO GALLERY (GLIGHTBOX PLUGIN)
+       8. FILTERABLE PHOTO GALLERY (GLIGHTBOX PLUGIN)
     ========================================================= -->
     @if ($galleries->isNotEmpty())
-    <section class="py-5 bg-light" id="gallerySection">
+    <section class="py-5" id="gallerySection">
         <div class="container py-4">
             <div class="text-center max-w-700 mx-auto mb-4" data-aos="fade-up">
                 <span class="badge-theme mb-2">{{ data_get($page->content, 'gallery.badge_text', 'Gallery') }}</span>
-                <h2 class="display-5 fw-bold mb-3">
+                <h2 class="display-6 fw-bold mb-3">
                     @include('frontend.partials.accent-title', [
                         'title' => data_get($page->content, 'gallery.title', 'Event Gallery')
                     ])
@@ -385,14 +434,14 @@
     @endif
 
     <!-- =========================================================
-       8. TESTIMONIALS SECTION
+       9. TESTIMONIALS SECTION
     ========================================================= -->
     @if ($testimonials->isNotEmpty())
-    <section class="py-5" id="testimonialsSection">
+    <section class="py-5 bg-light" id="testimonialsSection">
         <div class="container py-4">
             <div class="text-center max-w-700 mx-auto mb-5" data-aos="fade-up">
                 <span class="badge-theme mb-2">Client Reviews</span>
-                <h2 class="display-5 fw-bold mb-3">
+                <h2 class="display-6 fw-bold mb-3">
                     @include('frontend.partials.accent-title', [
                         'title' => data_get($page->content, 'testimonial.title', 'What Client Says')
                     ])
@@ -424,9 +473,9 @@
     @endif
 
     <!-- =========================================================
-       9. RESERVATION & QUOTE FORM
+       10. RESERVATION & QUOTE FORM
     ========================================================= -->
-    <section class="py-5" id="quoteSection">
+    <section class="py-5 bg-light" id="quoteSection">
         <div class="container py-4">
             <div class="row align-items-center">
                 <div class="col-lg-5 mb-4" data-aos="fade-right">
