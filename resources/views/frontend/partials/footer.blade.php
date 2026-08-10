@@ -182,8 +182,30 @@
         </div>
 
         <!-- Copyright Bottom Bar -->
-        <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-center align-items-center gap-2">
+        <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 text-center text-md-start">
             <p class="mb-0 text-white-50 small">&copy; {{ date('Y') }} {{ config('app.name', 'Pro Devs') }}. All rights reserved.</p>
+            <div class="d-flex justify-content-center gap-2">
+                @if(!empty($settings?->facebook))
+                    <a href="{{ $settings->facebook }}" target="_blank" aria-label="Facebook" class="btn btn-outline-primary rounded-circle d-inline-flex align-items-center justify-content-center p-0" style="width: 38px; height: 38px;">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                @endif
+                @if(!empty($settings?->youtube))
+                    <a href="{{ $settings->youtube }}" target="_blank" aria-label="YouTube" class="btn btn-outline-danger rounded-circle d-inline-flex align-items-center justify-content-center p-0" style="width: 38px; height: 38px;">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                @endif
+                @if(!empty($settings?->linkedin))
+                    <a href="{{ $settings->linkedin }}" target="_blank" aria-label="LinkedIn" class="btn btn-outline-info rounded-circle d-inline-flex align-items-center justify-content-center p-0" style="width: 38px; height: 38px;">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                @endif
+                @if(!empty($settings?->instagram))
+                    <a href="{{ $settings->instagram }}" target="_blank" aria-label="Instagram" class="btn btn-outline-danger rounded-circle d-inline-flex align-items-center justify-content-center p-0" style="width: 38px; height: 38px;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                @endif
+            </div>
         </div>
 
     </div>
