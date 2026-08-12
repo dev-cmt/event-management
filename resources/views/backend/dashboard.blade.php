@@ -5,14 +5,6 @@
             <p class="fw-semibold fs-18 mb-0">Site Analytics Dashboard</p>
             <span class="fs-semibold text-muted">Real-time tracking of visits, enlistments, and site activity.</span>
         </div>
-        <div class="btn-list mt-md-0 mt-2">
-            <button type="button" class="btn btn-primary btn-wave">
-                <i class="ri-filter-3-fill me-2 align-middle d-inline-block"></i>Filters
-            </button>
-            <button type="button" class="btn btn-outline-secondary btn-wave">
-                <i class="ri-upload-cloud-line me-2 align-middle d-inline-block"></i>Export
-            </button>
-        </div>
     </div>
     <!-- End::page-header -->
 
@@ -30,17 +22,12 @@
                                             <div class="fw-semibold fs-18 text-fixed-white mb-2">Welcome, {{ Auth::user()->name }}</div>
                                             <span class="d-block fs-12 text-fixed-white">
                                                 <span class="op-7">You have</span>
-                                                <span class="fw-semibold text-warning">{{ $data['total_enlistments'] }}
-                                                    Enlistments</span>,
-                                                <span class="fw-semibold text-warning">{{ $data['total_services'] }}
-                                                    Services</span>, and
-                                                <span class="fw-semibold text-warning">{{ $data['total_blogs'] }}
-                                                    Blogs</span>
+                                                <span class="fw-semibold text-warning">{{ $data['total_enlistments'] }} Enlistments</span>
                                                 <span class="op-7">active on your website</span>.
                                             </span>
-                                            <span class="d-block fw-semibold mt-1"><a class="text-fixed-white"
-                                                    href="{{ route('settings.pages-content.index') }}"><u>Manage
-                                                        Content</u></a></span>
+                                            <span class="d-block fw-semibold mt-1">
+                                                <a class="text-fixed-white" href="{{ route('settings.pages-content.index') }}"><u>Manage Content</u></a>
+                                            </span>
                                         </div>
                                         <div>
                                             <div id="crm-main"></div>
@@ -244,12 +231,6 @@
                             <div class="card-title">
                                 Recent Visitors
                             </div>
-                            <div class="d-flex flex-wrap gap-2">
-                                <div>
-                                    <input class="form-control form-control-sm" type="text"
-                                        placeholder="Search Visitors" aria-label=".form-control-sm example">
-                                </div>
-                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -341,17 +322,6 @@
                                     <div class="card-title">
                                         Leads By Source
                                     </div>
-                                    <div class="dropdown">
-                                        <a aria-label="anchor" href="javascript:void(0);"
-                                            class="btn btn-icon btn-sm btn-light" data-bs-toggle="dropdown">
-                                            <i class="fe fe-more-vertical"></i>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Week</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Month</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Year</a></li>
-                                        </ul>
-                                    </div>
                                 </div>
                                 <div class="card-body p-0 overflow-hidden">
                                     <div class="leads-source-chart d-flex align-items-center justify-content-center">
@@ -380,18 +350,6 @@
                                 <div class="card-header justify-content-between">
                                     <div class="card-title">
                                         Device Distribution
-                                    </div>
-                                    <div class="dropdown">
-                                        <a href="javascript:void(0);" class="p-2 fs-12 text-muted"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            View All<i
-                                                class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Today</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">This Week</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">This Month</a></li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -469,16 +427,11 @@
                                         Recent Site Activity
                                     </div>
                                     <div class="dropdown">
-                                        <a href="javascript:void(0);" class="p-2 fs-12 text-muted"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            View All<i
-                                                class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                        <a href="javascript:void(0);" class="p-2 fs-12 text-muted" data-bs-toggle="dropdown" aria-expanded="false">
+                                            View All<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
                                         </a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a class="dropdown-item" href="{{ route('blogs.index') }}">Blogs</a>
-                                            </li>
-                                            <li><a class="dropdown-item"
-                                                    href="{{ route('enlistments.index') }}">Projects</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('enlistments.index') }}">Enlistments</a></li>
                                         </ul>
                                     </div>
                                 </div>

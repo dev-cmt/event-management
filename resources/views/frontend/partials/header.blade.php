@@ -162,7 +162,7 @@
             <img src="{{ asset($settings?->logo ?? 'catering_logo.png') }}" height="40" alt="Logo">
             <span class="fw-bold fs-5 text-theme-primary">{{ $settings?->site_name ?? 'Catering Service' }}</span>
         </div>
-        <button type="button" class="btn-close text-reset" aria-label="Close"></button>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div class="offcanvas-body d-flex flex-column justify-content-between p-0">

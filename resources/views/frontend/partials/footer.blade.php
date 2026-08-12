@@ -183,7 +183,7 @@
 
         <!-- Copyright Bottom Bar -->
         <div class="footer-bottom mt-5 pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 text-center text-md-start">
-            <p class="mb-0 text-white-50 small">&copy; {{ date('Y') }} {{ config('app.name', 'Pro Devs') }}. All rights reserved.</p>
+            <p class="mb-0 text-white-50 small">{!! $settings->copyright_text ?? '© ' . date('Y') . ' ' . config('app.name', 'Pro Devs') !!}  <span class="text-white"> Developed by <a href="https://prodevsltd.com" class="text-primary">prodevsltd.com</a></span></p>
             <div class="d-flex justify-content-center gap-2">
                 @if(!empty($settings?->facebook))
                     <a href="{{ $settings->facebook }}" target="_blank" aria-label="Facebook" class="btn btn-outline-primary rounded-circle d-inline-flex align-items-center justify-content-center p-0" style="width: 38px; height: 38px;">

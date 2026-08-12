@@ -36,7 +36,7 @@
         <div class="header-content-right">
 
             <!-- Start::header-search -->
-            <div class="header-element header-search">
+            <div class="header-element header-search d-none">
                 <!-- Start::header-link -->
                 <a href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <i class="bx bx-search-alt-2 header-link-icon"></i>
@@ -46,7 +46,7 @@
             <!-- End::header-search -->
 
             <!-- Start::header-notifications -->
-            <div class="header-element notifications-dropdown">
+            <div class="header-element notifications-dropdown d-none">
                 <!-- Start::header-link|dropdown-toggle -->
                 <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="messageDropdown" aria-expanded="false">
                     <i class="bx bx-bell header-link-icon"></i>
